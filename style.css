@@ -1,0 +1,39 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+#canvas-container {
+  width: 80%;
+  max-width: 1200px;
+  aspect-ratio: 1.78/1;
+/*   width: 720px;
+  height: 480px; */
+  background: url("./img/5.Fondo/Capas/5.cielo_1920-1080px.png");
+  background-size: 101%, 100%;
+  background-position: left;
+}
+
+canvas {
+  /* background: #000; */
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (min-aspect-ratio: 1.78 / 1) {
+  #canvas-container {
+    height: 90vh;
+    width: unset;
+  }
+}
+
+@media screen and (max-height: 400px) {
+  #canvas-container {
+    height: 100vh;
+    width: 100%;
+    aspect-ratio: auto;
+  }
+}
