@@ -1,4 +1,4 @@
-class Bottle extends MovableObject {
+class ThrownBottle extends MovableObject {
   IMAGES_ROTATING = [
     './img/6.botella/Rotacion/Mesa de trabajo 1 copia 3.png',
     './img/6.botella/Rotacion/Mesa de trabajo 1 copia 4.png',
