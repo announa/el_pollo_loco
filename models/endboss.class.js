@@ -16,7 +16,6 @@ class Endboss extends MovableObject {
     this.setDimensions(worldCanvas, bgImgAmount);
 
     this.animate();
-    console.log(this);
   }
 
   setDimensions(worldCanvas, bgImgAmount){

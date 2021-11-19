@@ -11,23 +11,25 @@ class StatusBar extends GameComponents {
     './img/7.Marcadores/Barra/Marcador_botella/Naranja/0_.png',
     './img/7.Marcadores/Barra/Marcador_botella/Naranja/20_.png',
     './img/7.Marcadores/Barra/Marcador_botella/Naranja/40_.png',
-    './img/7.Marcadores/Barra/Marcador_botella/verde/60_.png',
-    './img/7.Marcadores/Barra/Marcador_botella/verde/80_.png',
+    './img/7.Marcadores/Barra/Marcador_botella/Verde/60_.png',
+    './img/7.Marcadores/Barra/Marcador_botella/Verde/80_.png',
     './img/7.Marcadores/Barra/Marcador_botella/Verde/100_.png',
   ];
   images;
-  percentage_life = 100;
+  percentage
 
   constructor(worldCanvas, statusType) {
     super();
     if (statusType == 'life') {
       this.images = this.IMAGES_LIFE_BAR;
+      this.percentage = 100;
     } else if (statusType == 'bottles') {
       this.images = this.IMAGES_BOTTLE_BAR;
+      this.percentage = 0;
     }
     super.loadAllImages(this.images);
     this.setDimensions(worldCanvas, statusType);
-    this.updateStatusBar(100);
+    this.updateStatusBar(this.percentage);
   }
 
   setDimensions(worldCanvas, statusType) {
@@ -40,13 +42,13 @@ class StatusBar extends GameComponents {
     this.height = 0.05 * worldCanvas.width;
   }
 
-  updateStatusBar(percentage) {
-    this.percentage_life = percentage;
+  updateStatusBar(percentage, statusType) {
+    this.percentage = percentage;
     let path = this.images[this.imageIndex()];
     this.img = this.imageCache[path];
   }
 
   imageIndex() {
-    return Math.floor(this.percentage_life / 20);
+    return Math.floor(this.percentage / 20);
   }
 }

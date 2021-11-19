@@ -44,7 +44,6 @@ class Character extends MovableObject {
   sound_walking = new Audio('./audio/walking.mp3');
   world;
 
-
   constructor(worldCanvas) {
     super(worldCanvas);
     this.setDimensions(worldCanvas);
@@ -60,6 +59,10 @@ class Character extends MovableObject {
     this.animate(worldCanvas);
   }
 
+  /**
+   * Sets the characters dimensions which depend in the canvas size.
+   * @param {DOM object} worldCanvas - The Canvas
+   */
   setDimensions(worldCanvas) {
     this.x = 0.2 * worldCanvas.width;
     this.y = -0.1 * worldCanvas.height;
@@ -70,26 +73,85 @@ class Character extends MovableObject {
     this.moveX = worldCanvas.width / 100;
   }
 
+  /**
+   * Hands the parameters for calculating the collision coordinates of the character to setCollisionCoordinates().
+   */
+  getCollisionCoordinates() {
+    this.setCollisionCoordinates(
+      0.18 * this.width,
+      0.73 * this.width,
+      0.27 * this.width,
+      0.82 * this.width,
+      0,
+      0.95 * this.height,
+      this.changeDirection
+    );
+  }
+
+  /**
+   * Checks if the character collides with an object (bottle or enemy)
+   * @param {object} object - The object for which to check if the character is colliding with it.
+   * @returns string || boolean
+   */
+  isColliding(object) {
+    this.getCollisionCoordinates();
+    object.getCollisionCoordinates();
+    let a = this.cc;
+    let b = object.cc;
+   if(a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1 && this.moveY < 0){
+    return 'beat enemy'
+   } else if(a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1){
+      return 'hurt';
+    }
+    else{
+      return false;
+    }
+  }
+
+  /**
+   * animates the character.
+   * @param {DOM object} worldCanvas - The Canvas
+   */
   animate(worldCanvas) {
+   this.animateMovements(worldCanvas);
+   this.animateImages();
+  }
+
+  /**
+   * Aminates the position changing of the character.
+   */
+  animateMovements(){
     setInterval(() => {
       this.sound_walking.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-        this.turnLeft = false;
-        this.moveRight();
-        this.sound_walking.play();
+        this.walkRight();
       }
       if (this.world.keyboard.LEFT && this.x > 0.2 * worldCanvas.width) {
-        this.turnLeft = true;
-        this.moveLeft();
-        this.sound_walking.play();
+        this.walkLeft();
       }
       if (this.world.keyboard.UP && !this.isAboveGround(this.y_landing)) {
         this.jump(worldCanvas);
       }
-
       this.world.camera_X = -this.x + 0.07 * canvas.width;
     }, 1000 / 60);
+  }
 
+  walkRight(){
+    this.changeDirection = false;
+    this.moveRight();
+    this.sound_walking.play();
+  }
+
+  walkLeft(){
+    this.changeDirection = true;
+    this.moveLeft();
+    this.sound_walking.play();
+  }
+
+  /**
+   * Animates the images for the different character events.
+   */
+  animateImages(){
     setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
@@ -107,10 +169,10 @@ class Character extends MovableObject {
    * Checks if Pepe Peligroso is moving and if so, returns his speed for adding it to the speed of the bottle.
    * @returns number - The actual speed of Pepe Peligroso.
    */
-  detectCharacterSpeed(){
-    if(this.world.keyboard.LEFT || this.world.keyboard.RIGHT){
+  detectCharacterSpeed() {
+    if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT) {
       return this.moveX;
-    } else{
+    } else {
       return 0;
     }
   }

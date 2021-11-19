@@ -17,7 +17,7 @@ function setLevel1() {
 
 function createEnemies() {
   let enemies = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 6; i++) {
     let chicken = new Chicken(canvas, worldSize_l1);
     enemies.push(chicken);
   }

@@ -60,7 +60,7 @@ function setNewCanvasSize() {
 function resizeWorldObjects() {
   world.character.setDimensions(canvas);
   world.lifeBar.setDimensions(canvas);
-  world.bottleBar.setDimensions(canvas);
+  world.bottleBar.setDimensions(canvas, 'bottles');
   world.level.endboss.setDimensions(canvas, worldSize_l1);
   world.level.enemies.forEach((chicken) => chicken.setDimensions(canvas));
   world.level.bottlesOnTheGround.forEach((bottle) => bottle.setDimensions(canvas));

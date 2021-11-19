@@ -29,7 +29,7 @@ class ThrownBottle extends MovableObject {
     this.height = 0.1 * worldCanvas.height;
     this.width = 0.1 * worldCanvas.height;
     this.moveX = worldCanvas.width / 60 + startspeed_x;
-    this.y_landing = 0.74 * worldCanvas.height;
+    this.y_landing = 1 * worldCanvas.height;
   }
 
   animate(worldCanvas, toTheLeft) {
