@@ -2,6 +2,7 @@ class World {
   worldCanvas;
   character;
   lifeBar;
+  bottleBar;
   bottlesOnTheGround = [];
   collectedBottles = [];
   thrownBottles = [];
@@ -11,12 +12,13 @@ class World {
   keyboard;
   camera_X = 0;
 
-  constructor(canvasParam, keyboard) {
+  constructor(worldCanvas, keyboard) {
     this.keyboard = keyboard;
-    this.worldCanvas = canvasParam;
-    this.character = new Character(canvasParam);
+    this.worldCanvas = worldCanvas;
+    this.character = new Character(worldCanvas);
     this.character.world = this;
-    this.lifeBar = new StatusBar(canvasParam);
+    this.lifeBar = new StatusBar(worldCanvas, 'life');
+    this.bottleBar = new StatusBar(worldCanvas, 'bottles');
     this.ctx = canvas.getContext('2d');
     this.draw();
     this.checkEvents();
@@ -31,6 +33,7 @@ class World {
 
     this.ctx.translate(-this.camera_X, 0);
     this.renderObjects(this.lifeBar);
+    this.renderObjects(this.bottleBar);
     this.ctx.translate(this.camera_X, 0);
 
     this.renderObjects(this.character);
@@ -120,10 +123,14 @@ class World {
         this.lifeBar.updateStatusBar(this.character.energy);
       } else if (collidingObject instanceof BottleOnTheGround) {
         this.collectedBottles += 1;
-        this.bottleBar.updateStatusBar(this.collectedBottles);
+        this.bottleBar.updateStatusBar(this.percentageBottlBar());
         this.level.bottlesOnTheGround.splice(index, 1);
       }
     }
+  }
+
+  percentageBottlBar() {
+    return this.collectedBottles.length / (this.collectedBottles.length + this.bottlesOnTheGround.length);
   }
 
   checkBottleCollision() {
