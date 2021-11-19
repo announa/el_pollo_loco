@@ -4,7 +4,7 @@ let level1;
 let bgImgAmount = 4;
 
 function setLevel1() {
-  level1 = new Level([
+  level1 = new Level(
     canvas,
     bgImgAmount,
     createEnemies(),
@@ -12,7 +12,7 @@ function setLevel1() {
     createClouds(),
     createBgObjects(),
     new Endboss(canvas, bgImgAmount),
-  ]);
+  );
 }
 
 function createEnemies() {

@@ -18,11 +18,8 @@ class World {
     this.character.world = this;
     this.lifeBar = new StatusBar(canvasParam);
     this.ctx = canvas.getContext('2d');
-    setTimeout(() => {
-      
-      this.draw();
-      this.checkEvents();
-    }, 1000);
+    this.draw();
+    this.checkEvents();
   }
 
   draw() {
@@ -113,20 +110,20 @@ class World {
     });
   }
 
-  checkCharacterCollision(enemy){
+  checkCharacterCollision(enemy) {
     if (this.character.isColliding(enemy)) {
       this.character.looseEnergy();
       this.lifeBar.updateStatusBar(this.character.energy);
     }
   }
 
-  checkBottleCollision(){
-    console.log('Checking for collision with bottle')
+  checkBottleCollision() {
+    console.log('Checking for collision with bottle');
   }
 
   checkForThrownBottle() {
     if (this.keyboard.D) {
-      if (this.timeSinceLastBottle() > 200) {
+      if (this.timeSinceLastThrownBottle() > 200) {
         this.lastThrownBottle = new Date().getTime();
         this.throwBottle();
       }
