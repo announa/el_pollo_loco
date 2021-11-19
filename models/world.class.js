@@ -2,8 +2,10 @@ class World {
   worldCanvas;
   character;
   lifeBar;
-  bottles = [];
-  lastBottle = 0;
+  bottlesOnTheGround = [];
+  collectedBottles = [];
+  thrownBottles = [];
+  lastThrownBottle = 0;
   level = level1;
   ctx;
   keyboard;
@@ -16,8 +18,11 @@ class World {
     this.character.world = this;
     this.lifeBar = new StatusBar(canvasParam);
     this.ctx = canvas.getContext('2d');
-    this.draw();
-    this.checkEvents();
+    setTimeout(() => {
+      
+      this.draw();
+      this.checkEvents();
+    }, 1000);
   }
 
   draw() {
@@ -33,9 +38,10 @@ class World {
 
     this.renderObjects(this.character);
     this.addObjectToWorld(this.level.enemies);
+    this.addObjectToWorld(this.level.bottlesOnTheGround);
     this.renderObjects(this.level.endboss);
-    if (this.bottles) {
-      this.addObjectToWorld(this.bottles);
+    if (this.thrownBottles) {
+      this.addObjectToWorld(this.thrownBottles);
     }
     this.ctx.translate(-this.camera_X, 0);
 
@@ -97,7 +103,7 @@ class World {
     setInterval(() => {
       this.checkForCollisions();
       this.checkForThrownBottle();
-    }, 200);
+    }, 100);
   }
 
   checkForCollisions() {
@@ -120,22 +126,21 @@ class World {
 
   checkForThrownBottle() {
     if (this.keyboard.D) {
-      console.log('Key D')
       if (this.timeSinceLastBottle() > 200) {
-        this.lastBottle = new Date().getTime();
+        this.lastThrownBottle = new Date().getTime();
         this.throwBottle();
       }
     }
   }
-  timeSinceLastBottle() {
-    return new Date().getTime() - this.lastBottle;
+  timeSinceLastThrownBottle() {
+    return new Date().getTime() - this.lastThrownBottle;
   }
 
   throwBottle() {
     let bottle_x = this.character.x + 0.4 * this.character.width;
     let bottle_y = this.character.y + 0.5 * this.character.height;
     let bottle_startspeed_x = this.character.detectCharacterSpeed();
-    let bottle = new Bottle(this.worldCanvas, bottle_x, bottle_y, bottle_startspeed_x, this.character.turnLeft);
-    this.bottles.push(bottle);
+    let bottle = new ThrownBottle(this.worldCanvas, bottle_x, bottle_y, bottle_startspeed_x, this.character.turnLeft);
+    this.thrownBottles.push(bottle);
   }
 }
