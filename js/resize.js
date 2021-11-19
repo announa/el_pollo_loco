@@ -28,7 +28,7 @@ function getNonArrayObjectPositions() {
 }
 
 function getArrayObjectPositions() {
-  [world.level.enemies, world.level.clouds].forEach((array) => {
+  [world.level.enemies, world.level.bottlesOnTheGround, world.level.clouds].forEach((array) => {
     for (let i = 0; i < array.length; i++) {
       array[i].resizePosition = { x: array[i].x, y: array[i].y };
     }
@@ -44,7 +44,7 @@ function resizeWorld() {
     setNewCanvasSize();
     resizeWorldObjects();
     restoreObjectPositions();
-    world.level.level_end_x = (bgImgAmount - 1) * world.worldCanvas.width + 0.06 * world.worldCanvas.width;
+    world.level.level_end_x = (worldSize_l1 - 1) * world.worldCanvas.width + 0.06 * world.worldCanvas.width;
   }, 300);
 }
 
@@ -59,8 +59,10 @@ function setNewCanvasSize() {
  */
 function resizeWorldObjects() {
   world.character.setDimensions(canvas);
-  world.level.endboss.setDimensions(canvas, bgImgAmount);
+  world.lifeBar.setDimensions(canvas);
+  world.level.endboss.setDimensions(canvas, worldSize_l1);
   world.level.enemies.forEach((chicken) => chicken.setDimensions(canvas));
+  world.level.bottlesOnTheGround.forEach((bottle) => bottle.setDimensions(canvas));
   world.level.backgroundObjects.forEach((object) => object.setDimensions(canvas, object.position));
   world.level.clouds.forEach((cloud) => cloud.setDimensions(canvas, cloud.position));
 }
@@ -81,7 +83,7 @@ function restoreNonArrayObjects() {
 }
 
 function restoreArrayObjects() {
-  [world.level.enemies, world.level.clouds].forEach((array) => {
+  [world.level.enemies, world.level.bottlesOnTheGround, world.level.clouds].forEach((array) => {
     for (let i = 0; i < array.length; i++) {
       array[i].x = (array[i].resizePosition.x / canvasSize.x) * canvas.width;
       array[i].y = (array[i].resizePosition.y / canvasSize.y) * canvas.height;

@@ -28,11 +28,11 @@ class World {
     this.ctx.translate(this.camera_X, 0);
     this.addObjectToWorld(this.level.backgroundObjects);
     this.addObjectToWorld(this.level.clouds);
-
+    
     this.ctx.translate(-this.camera_X, 0);
     this.renderObjects(this.lifeBar);
     this.ctx.translate(this.camera_X, 0);
-
+    
     this.renderObjects(this.character);
     this.addObjectToWorld(this.level.enemies);
     this.addObjectToWorld(this.level.bottlesOnTheGround);

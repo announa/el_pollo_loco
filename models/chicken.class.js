@@ -5,17 +5,17 @@ class Chicken extends MovableObject {
     './img/3.Secuencias_Enemy_basico/Version_Gallinita/3.Ga_paso izquierdo.png',
   ];
 
-  constructor(worldCanvas) {
+  constructor(worldCanvas, worldSize) {
     super(worldCanvas);
-    this.setDimensions(worldCanvas);
+    this.setDimensions(worldCanvas, worldSize);
 
     super.loadImage('./img/3.Secuencias_Enemy_basico/Version_Gallinita/1.Ga_paso_derecho.png');
     super.loadAllImages(this.IMAGES_WALKING);
     this.animate();
   }
 
-  setDimensions(worldCanvas) {
-    this.x = 0.5 * worldCanvas.width + Math.random() * (0.5 * worldCanvas.width);
+  setDimensions(worldCanvas, worldSize) {
+    this.x = 0.5 * worldCanvas.width + Math.random() * worldCanvas.width * (worldSize - 1);
     this.y = 0.74 * worldCanvas.height;
     this.height = 0.15 * worldCanvas.height;
     this.width = 0.15 * worldCanvas.height;

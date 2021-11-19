@@ -11,11 +11,15 @@ class StatusBar extends GameComponents {
 
   constructor(worldCanvas) {
     super().loadAllImages(this.IMAGES_LIFE_BAR);
+    this.setDimensions(worldCanvas);
+    this.updateStatusBar(100);
+  }
+
+  setDimensions(worldCanvas){
     this.x = 0.05 * worldCanvas.width;
     this.y = 0.05 * worldCanvas.height;
     this.width = 0.3 * worldCanvas.width;
     this.height = 0.07 * worldCanvas.width;
-    this.updateStatusBar(100);
   }
 
   updateStatusBar(percentage) {
