@@ -28,11 +28,11 @@ class World {
     this.ctx.translate(this.camera_X, 0);
     this.addObjectToWorld(this.level.backgroundObjects);
     this.addObjectToWorld(this.level.clouds);
-    
+
     this.ctx.translate(-this.camera_X, 0);
     this.renderObjects(this.lifeBar);
     this.ctx.translate(this.camera_X, 0);
-    
+
     this.renderObjects(this.character);
     this.addObjectToWorld(this.level.enemies);
     this.addObjectToWorld(this.level.bottlesOnTheGround);
@@ -108,17 +108,32 @@ class World {
       this.checkCharacterCollision(enemy);
       /* this.checkBottleCollision(enemy); */
     });
+    this.level.bottlesOnTheGround.forEach((bottle, index) => {
+      this.checkCharacterCollision(bottle, index);
+    });
   }
 
-  checkCharacterCollision(enemy) {
-    if (this.character.isColliding(enemy)) {
-      this.character.looseEnergy();
-      this.lifeBar.updateStatusBar(this.character.energy);
+  checkCharacterCollision(collidingObject, index) {
+    if (this.character.isColliding(collidingObject)) {
+      if (collidingObject instanceof Chicken) {
+        this.character.looseEnergy();
+        this.lifeBar.updateStatusBar(this.character.energy);
+      } else if (collidingObject instanceof BottleOnTheGround) {
+        this.collectedBottles += 1;
+        this.bottleBar.updateStatusBar(this.collectedBottles);
+        this.level.bottlesOnTheGround.splice(index, 1);
+      }
     }
   }
 
   checkBottleCollision() {
     console.log('Checking for collision with bottle');
+  }
+
+  checkforCollectedBottle() {
+    if (this.character.isColliding(this.level.bottlesOnTheGround)) {
+      this.collectedBottle();
+    }
   }
 
   checkForThrownBottle() {

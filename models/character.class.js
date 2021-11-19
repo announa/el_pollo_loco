@@ -103,7 +103,6 @@ class Character extends MovableObject {
     }, 50);
   }
 
-
   /**
    * Checks if Pepe Peligroso is moving and if so, returns his speed for adding it to the speed of the bottle.
    * @returns number - The actual speed of Pepe Peligroso.
