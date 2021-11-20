@@ -3,6 +3,7 @@ class World {
   character;
   lifeBar;
   bottleBar;
+  endbossBar;
   bottlesAmount;
   collectedBottles = 0;
   thrownBottles = [];
@@ -19,6 +20,7 @@ class World {
     this.character.world = this;
     this.lifeBar = new StatusBar(worldCanvas, 'life');
     this.bottleBar = new StatusBar(worldCanvas, 'bottles');
+    this.endbossBar = new StatusBar(worldCanvas, 'endboss', this.level.endboss);
     this.bottlesAmount = this.level.bottlesOnTheGround.length;
     this.ctx = canvas.getContext('2d');
     this.draw();
@@ -36,10 +38,11 @@ class World {
     this.renderObjects(this.lifeBar);
     this.renderObjects(this.bottleBar);
     this.ctx.translate(this.camera_X, 0);
-
+    
     this.renderObjects(this.character);
     this.addObjectToWorld(this.level.enemies);
     this.addObjectToWorld(this.level.bottlesOnTheGround);
+    this.renderObjects(this.endbossBar);
     this.renderObjects(this.level.endboss);
     if (this.thrownBottles) {
       this.addObjectToWorld(this.thrownBottles);
@@ -74,12 +77,14 @@ class World {
   }
 
   drawBorder(obj) {
-    if (obj instanceof Character || obj instanceof Chicken || obj instanceof BottleOnTheGround) {
+    if (obj instanceof MovableObject || obj instanceof BottleOnTheGround) {
       this.ctx.beginPath();
       this.ctx.lineWidth = '2px';
       this.ctx.strokeStyle = 'blue';
       if (obj instanceof Chicken) {
         this.ctx.rect(obj.x, obj.y, obj.width, obj.height);
+      } else if (obj instanceof Endboss) {
+        this.ctx.rect(obj.x + 0.05 * obj.width, obj.y + 0.2 * obj.height, 0.85 * obj.width, 0.7 * obj.height);
       } else if (obj instanceof Character) {
         this.ctx.rect(obj.x + 0.18 * obj.width, obj.y, 0.55 * obj.width, 0.95 * obj.height);
       } else if (obj instanceof BottleOnTheGround) {
@@ -112,12 +117,16 @@ class World {
 
   checkForCollisions() {
     this.level.enemies.forEach((enemy, index, arr) => {
-      this.checkCharacterCollision(enemy, index, arr);
+      if (!this.character.isDead()) {
+        this.checkCharacterCollision(enemy, index, arr);
+      }
       this.checkBottleCollision(enemy, index, arr);
     });
     this.level.bottlesOnTheGround.forEach((bottle, index) => {
       this.checkCharacterCollision(bottle, index);
     });
+    /* this.checkCharacterCollision(this.level.endboss); */
+    this.checkBottleCollision(this.level.endboss);
   }
 
   checkCharacterCollision(collisionObject, index, arr) {
@@ -126,8 +135,8 @@ class World {
       this.collectedBottles += 1;
       this.level.bottlesOnTheGround.splice(index, 1);
       this.bottleBar.updateStatusBar(this.percentageBottlBar(), 'bottles');
-    } else if (collisionCheck == 'hurt' && collisionObject instanceof Chicken) {
-      this.character.looseEnergy();
+    } else if ((collisionCheck == 'hurt' && collisionObject instanceof Chicken) || (collisionCheck == 'hurt' && collisionObject instanceof Endboss)) {
+      this.character.looseEnergy(2.5);
       this.lifeBar.updateStatusBar(this.character.energy, 'life');
     } else if (collisionCheck == 'beat enemy' && collisionObject instanceof Chicken) {
       this.character.jump(this.worldCanvas);
@@ -142,8 +151,13 @@ class World {
   checkBottleCollision(enemy, index, arr) {
     this.thrownBottles.forEach((bottle) => {
       if (bottle.isColliding(enemy)) {
-        console.log('bottle colliding enemy')
+        console.log('bottle colliding enemy');
+        if(enemy instanceof Chicken){
         this.beatEnemy(enemy, index, arr);
+        } else{
+          this.hurtEndboss();
+          this.endbossBar.updateStatusBar(this.level.endboss.energy, 'life');
+        }
         bottle.explode = true;
       }
     });
@@ -190,9 +204,9 @@ class World {
     }
   }
 
-  deleteThrownBottles(){
+  deleteThrownBottles() {
     setTimeout(() => {
-        this.thrownBottles.splice(0, 1);
+      this.thrownBottles.splice(0, 1);
     }, 2000);
   }
 
@@ -201,5 +215,9 @@ class World {
     setTimeout(() => {
       enemiesArray.splice(index, 1);
     }, 500);
+  }
+
+  hurtEndboss(){
+    this.level.endboss.looseEnergy(20);
   }
 }

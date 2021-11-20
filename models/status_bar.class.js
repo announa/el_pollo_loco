@@ -15,34 +15,46 @@ class StatusBar extends GameComponents {
     './img/7.Marcadores/Barra/Marcador_botella/Verde/80_.png',
     './img/7.Marcadores/Barra/Marcador_botella/Verde/100_.png',
   ];
-  images;
-  percentage
 
-  constructor(worldCanvas, statusType) {
+  /* IMAGE_ENDBOSS = 'img/7.Marcadores/Icono/Mesa de trabajo 130.png';
+  iconImage; */
+  images;
+  percentage;
+
+  constructor(worldCanvas, statusType, referenceObject) {
     super(worldCanvas);
-    if (statusType == 'life') {
+    if (statusType == 'life' || statusType == 'endboss') {
       this.images = this.IMAGES_LIFE_BAR;
       this.percentage = 100;
+/*     }
+    if (statusType == 'endboss') {
+      this.iconImage = new Image();
+      this.iconImage.src = this.IMAGE_ENDBOSS; */
     } else if (statusType == 'bottles') {
       this.images = this.IMAGES_BOTTLE_BAR;
       this.percentage = 0;
     }
     super.loadAllImages(this.images);
-    this.setDimensions(statusType);
+    this.setDimensions(statusType, referenceObject);
     this.updateStatusBar(this.percentage);
   }
 
-  setDimensions(statusType) {
-    this.x = 0.05 * this.worldCanvas.width;
+  setDimensions(statusType, referenceObject) {
+    if (referenceObject) {
+      this.x = referenceObject.x + 0.15 * referenceObject.width;
+      this.y = referenceObject.y;
+    } else {
+      this.x = 0.05 * this.worldCanvas.width;
+      this.y = 0.05 * this.worldCanvas.height;
+    }
     if (statusType == 'bottles') {
       this.x = 0.4 * this.worldCanvas.width;
     }
-    this.y = 0.05 * this.worldCanvas.height;
     this.width = 0.25 * this.worldCanvas.width;
     this.height = 0.05 * this.worldCanvas.width;
   }
 
-  updateStatusBar(percentage, statusType) {
+  updateStatusBar(percentage) {
     this.percentage = percentage;
     let path = this.images[this.imageIndex()];
     this.img = this.imageCache[path];

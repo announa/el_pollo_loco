@@ -25,6 +25,21 @@ class Endboss extends MovableObject {
     this.y = 0.14 * this.worldCanvas.height;
   }
 
+    /**
+   * Hands the parameters for calculating the collision coordinates of the character to setCollisionCoordinates().
+   */
+     getCollisionCoordinates() {
+      this.setCollisionCoordinates(
+        0.05 * this.width,
+        0.9 * this.width,
+        0.05 * this.width,
+        0.9 * this.width,
+        0.2 * this.height,
+        0.9 * this.height,
+        this.changeDirection
+      );
+    }
+
   animate(){
     setInterval(() => {
       this.playAnimation(this.IMAGES_WALKING);

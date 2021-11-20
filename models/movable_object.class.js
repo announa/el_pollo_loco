@@ -12,10 +12,8 @@ class MovableObject extends GameComponents {
 
   constructor(worldCanvas) {
     super(worldCanvas);
-    this.gravAcceleration = canvas.height / 200;
+    this.gravAcceleration = worldCanvas.height / 200;
   }
-
-  // HIER WEITERMACHEN!!!
 
   playAnimation(images, repetitions) {
     if (!repetitions) {
@@ -25,6 +23,8 @@ class MovableObject extends GameComponents {
     let mod = this.currentImage % images.length;
     let path = images[mod];
     this.img = this.imageCache[path];
+
+    //repeats the same image several times until repetitions is reched, then increases currentImage --> for slower animations like character idle
     if(this.imageRepetitions < repetitions){
       this.imageRepetitions++;
     } else{
@@ -84,8 +84,8 @@ class MovableObject extends GameComponents {
     }
   }
 
-  looseEnergy() {
-    this.energy -= 2.5;
+  looseEnergy(energyLoss) {
+    this.energy -= energyLoss;
     if (this.energy < 0) {
       this.energy = 0;
     } else {
