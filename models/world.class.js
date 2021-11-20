@@ -13,8 +13,8 @@ class World {
   camera_X = 0;
 
   constructor(worldCanvas, keyboard) {
-    this.keyboard = keyboard;
     this.worldCanvas = worldCanvas;
+    this.keyboard = keyboard;
     this.character = new Character(worldCanvas);
     this.character.world = this;
     this.lifeBar = new StatusBar(worldCanvas, 'life');
@@ -127,7 +127,6 @@ class World {
       this.level.bottlesOnTheGround.splice(index, 1);
       this.bottleBar.updateStatusBar(this.percentageBottlBar(), 'bottles');
     } else if (collisionCheck == 'hurt' && collisionObject instanceof Chicken) {
-      console.log('collsion - hurt!');
       this.character.looseEnergy();
       this.lifeBar.updateStatusBar(this.character.energy, 'life');
     } else if (collisionCheck == 'beat enemy' && collisionObject instanceof Chicken) {

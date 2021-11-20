@@ -19,18 +19,18 @@ class ThrownBottle extends MovableObject {
     super(worldCanvas).loadImage(this.IMAGES_ROTATING[0]);
     super.loadAllImages(this.IMAGES_ROTATING);
     super.loadAllImages(this.IMAGES_SALSA);
-    this.setDimensions(worldCanvas, x, y, startspeed_x);
+    this.setDimensions(x, y, startspeed_x);
 
-    this.animate(worldCanvas, toTheLeft);
+    this.animate(toTheLeft);
   }
 
-  setDimensions(worldCanvas, x, y, startspeed_x) {
+  setDimensions(x, y, startspeed_x) {
     this.x = x;
     this.y = y;
-    this.height = 0.1 * worldCanvas.height;
-    this.width = 0.1 * worldCanvas.height;
-    this.moveX = worldCanvas.width / 40 + startspeed_x;
-    this.y_landing = 1 * worldCanvas.height;
+    this.height = 0.1 * this.worldCanvas.height;
+    this.width = 0.1 * this.worldCanvas.height;
+    this.moveX = this.worldCanvas.width / 40 + startspeed_x;
+    this.y_landing = 1 * this.worldCanvas.height;
   }
 
   getCollisionCoordinates() {
@@ -45,12 +45,12 @@ class ThrownBottle extends MovableObject {
     );
   }
 
-  animate(worldCanvas, toTheLeft) {
+  animate(toTheLeft) {
     setInterval(() => {
       if (this.explode == false) {
         this.playAnimation(this.IMAGES_ROTATING);
-        this.bottleUp(worldCanvas);
-        this.fallingAnimation(worldCanvas);
+        this.bottleUp(this.worldCanvas);
+        this.fallingAnimation(this.worldCanvas);
         if (toTheLeft) {
           this.moveLeft();
         } else {
@@ -62,7 +62,7 @@ class ThrownBottle extends MovableObject {
     }, 1000 / 25);
   }
 
-  bottleUp(worldCanvas) {
-    this.moveY = worldCanvas.height / 40;
+  bottleUp() {
+    this.moveY = this.worldCanvas.height / 40;
   }
 }

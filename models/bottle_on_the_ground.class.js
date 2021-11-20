@@ -2,15 +2,15 @@ class BottleOnTheGround extends GameComponents {
   IMAGES = ['./img/6.botella/2.Botella_enterrada1.png', './img/6.botella/2.Botella_enterrada2.png'];
 
   constructor(worldCanvas, worldSize) {
-    super().loadImage(this.IMAGES[Math.round(Math.random())]);
-    this.setDimensions(worldCanvas, worldSize);
+    super(worldCanvas).loadImage(this.IMAGES[Math.round(Math.random())]);
+    this.setDimensions(worldSize);
   }
 
-  setDimensions(worldCanvas, worldSize) {
-    this.x = 0.3 * worldCanvas.width + Math.random() * worldCanvas.width * (worldSize - 1.25);
-    this.y = 0.8 * worldCanvas.height;
-    this.height = 0.13 * worldCanvas.height;
-    this.width = 0.13 * worldCanvas.height;
+  setDimensions(worldSize) {
+    this.x = 0.3 * this.worldCanvas.width + Math.random() * this.worldCanvas.width * (worldSize - 1.25);
+    this.y = 0.8 * this.worldCanvas.height;
+    this.height = 0.13 * this.worldCanvas.height;
+    this.width = 0.13 * this.worldCanvas.height;
   }
 
   getCollisionCoordinates() {

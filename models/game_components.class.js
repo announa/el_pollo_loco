@@ -1,4 +1,5 @@
 class GameComponents {
+  worldCanvas;
   x;
   y;
   width;
@@ -12,6 +13,14 @@ class GameComponents {
     x_2: 0,
     y_1: 0,
     y_2: 0
+  }
+
+  constructor(worldCanvas){
+  this.setCanvas(worldCanvas)
+  }
+
+  setCanvas(worldCanvas){
+    this.worldCanvas = worldCanvas;
   }
 
   loadImage(path) {

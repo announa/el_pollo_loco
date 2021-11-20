@@ -9,7 +9,7 @@ class Chicken extends MovableObject {
 
   constructor(worldCanvas, worldSize) {
     super(worldCanvas);
-    this.setDimensions(worldCanvas, worldSize);
+    this.setDimensions(worldSize);
 
     super.loadImage('./img/3.Secuencias_Enemy_basico/Version_Gallinita/1.Ga_paso_derecho.png');
     super.loadAllImages(this.IMAGES_WALKING);
@@ -21,12 +21,12 @@ class Chicken extends MovableObject {
     this.setCollisionCoordinates(0, this.width, 0, this.width, 0, this.height, this.changeDirection);
   }
 
-  setDimensions(worldCanvas, worldSize) {
-    this.x = 0.5 * worldCanvas.width + Math.random() * worldCanvas.width * (worldSize - 1);
-    this.y = 0.74 * worldCanvas.height;
-    this.height = 0.15 * worldCanvas.height;
-    this.width = 0.15 * worldCanvas.height;
-    this.moveX = worldCanvas.width / 10000 + Math.random() * (worldCanvas.width / 5000);
+  setDimensions(worldSize) {
+    this.x = 0.5 * this.worldCanvas.width + Math.random() * this.worldCanvas.width * (worldSize - 1);
+    this.y = 0.74 * this.worldCanvas.height;
+    this.height = 0.15 * this.worldCanvas.height;
+    this.width = 0.15 * this.worldCanvas.height;
+    this.moveX = this.worldCanvas.width / 10000 + Math.random() * (this.worldCanvas.width / 5000);
   }
   animate() {
     setInterval(() => {

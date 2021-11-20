@@ -7,27 +7,30 @@ class MovableObject extends GameComponents {
   y_landing;
   energy = 100;
   timeWhenHurt = 0;
+  imageRepetitions = 0;
+  beatEnemy = false;
 
-  constructor(canvas) {
-    super();
+  constructor(worldCanvas) {
+    super(worldCanvas);
     this.gravAcceleration = canvas.height / 200;
   }
 
-  // HIER WEITERMACHEN!!! 
-  
+  // HIER WEITERMACHEN!!!
+
   playAnimation(images, repetitions) {
     if (!repetitions) {
       repetitions = 1;
     }
-    images.forEach(() => {
-      for (let i = 0; i < repetitions; i++) {
-        let mod = this.currentImage % images.length;
-        let path = images[mod];
-        this.img = this.imageCache[path];
-      }
-    });
+
+    let mod = this.currentImage % images.length;
+    let path = images[mod];
+    this.img = this.imageCache[path];
+    if(this.imageRepetitions < repetitions){
+      this.imageRepetitions++;
+    } else{
     this.currentImage++;
-  }
+    this.imageRepetitions = 0;
+  }}
 
   moveLeft() {
     this.x -= this.moveX;
@@ -37,7 +40,7 @@ class MovableObject extends GameComponents {
     this.x += this.moveX;
   }
 
-  fallingAnimation(worldCanvas) {
+  fallingAnimation() {
     setInterval(() => {
       if (this.moveY > 0 || this.isAboveGround(this.y_landing)) {
         this.moveY -= this.gravAcceleration;
@@ -51,8 +54,8 @@ class MovableObject extends GameComponents {
     }, 1000 / 25);
   }
 
-  jump(worldCanvas) {
-    this.moveY = worldCanvas.height / 20;
+  jump() {
+    this.moveY = this.worldCanvas.height / 20;
   }
 
   isAboveGround(y_landing) {
@@ -70,10 +73,13 @@ class MovableObject extends GameComponents {
     let a = this.cc;
     let b = object.cc;
     if (a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1 && a.y_1 < b.y_2 && this.moveY < 0) {
+      this.beatEnemy = true;
       return 'beat enemy';
     } else if (a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1 && a.y_1 < b.y_2) {
+      this.beatEnemy = false;
       return 'hurt';
     } else {
+      this.beatEnemy = false;
       return false;
     }
   }

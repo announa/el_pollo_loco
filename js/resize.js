@@ -50,23 +50,36 @@ function resizeWorld() {
 
 function setNewCanvasSize() {
   setCanvasSize();
-  world.worldCanvas.height = canvasContainer.clientHeight;
-  world.worldCanvas.width = canvasContainer.clientWidth;
+  resizeCanvasInObjects();
+}
+
+
+function resizeCanvasInObjects(){
+  world.worldCanvas = canvas;
+  world.character.setCanvas(canvas);
+  world.lifeBar.setCanvas(canvas);
+  world.bottleBar.setCanvas(canvas);
+  world.level.endboss.setCanvas(canvas);
+  world.level.enemies.forEach((chicken) => chicken.setCanvas(canvas));
+  world.level.bottlesOnTheGround.forEach((bottle) => bottle.setCanvas(canvas));
+  world.level.backgroundObjects.forEach((object) => object.setCanvas(canvas));
+  world.level.clouds.forEach((cloud) => cloud.setCanvas(canvas));
 }
 
 /**
  * Sets the new canvas and object-dimensions.
  */
 function resizeWorldObjects() {
-  world.character.setDimensions(canvas);
-  world.lifeBar.setDimensions(canvas);
-  world.bottleBar.setDimensions(canvas, 'bottles');
-  world.level.endboss.setDimensions(canvas, worldSize_l1);
-  world.level.enemies.forEach((chicken) => chicken.setDimensions(canvas));
-  world.level.bottlesOnTheGround.forEach((bottle) => bottle.setDimensions(canvas));
-  world.level.backgroundObjects.forEach((object) => object.setDimensions(canvas, object.position));
-  world.level.clouds.forEach((cloud) => cloud.setDimensions(canvas, cloud.position));
+  world.character.setDimensions();
+  world.lifeBar.setDimensions();
+  world.bottleBar.setDimensions('bottles');
+  world.level.endboss.setDimensions(worldSize_l1);
+  world.level.enemies.forEach((chicken) => chicken.setDimensions());
+  world.level.bottlesOnTheGround.forEach((bottle) => bottle.setDimensions());
+  world.level.backgroundObjects.forEach((object) => object.setDimensions(object.position));
+  world.level.clouds.forEach((cloud) => cloud.setDimensions(cloud.position));
 }
+
 
 /**
  * Restores the positions of the objects in the canvas in relation to the new canvas-size.

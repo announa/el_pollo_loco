@@ -19,7 +19,7 @@ class StatusBar extends GameComponents {
   percentage
 
   constructor(worldCanvas, statusType) {
-    super();
+    super(worldCanvas);
     if (statusType == 'life') {
       this.images = this.IMAGES_LIFE_BAR;
       this.percentage = 100;
@@ -28,18 +28,18 @@ class StatusBar extends GameComponents {
       this.percentage = 0;
     }
     super.loadAllImages(this.images);
-    this.setDimensions(worldCanvas, statusType);
+    this.setDimensions(statusType);
     this.updateStatusBar(this.percentage);
   }
 
-  setDimensions(worldCanvas, statusType) {
-    this.x = 0.05 * worldCanvas.width;
+  setDimensions(statusType) {
+    this.x = 0.05 * this.worldCanvas.width;
     if (statusType == 'bottles') {
-      this.x = 0.4 * worldCanvas.width;
+      this.x = 0.4 * this.worldCanvas.width;
     }
-    this.y = 0.05 * worldCanvas.height;
-    this.width = 0.25 * worldCanvas.width;
-    this.height = 0.05 * worldCanvas.width;
+    this.y = 0.05 * this.worldCanvas.height;
+    this.width = 0.25 * this.worldCanvas.width;
+    this.height = 0.05 * this.worldCanvas.width;
   }
 
   updateStatusBar(percentage, statusType) {

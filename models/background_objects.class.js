@@ -4,16 +4,16 @@ class BackgroundObject extends MovableObject {
 
   constructor(path, worldCanvas, position) {
     super(worldCanvas).loadImage(path);
-    this.setDimensions(worldCanvas, position);
+    this.setDimensions(position);
 /*     if(position > 0){
-      this.x = (worldCanvas.width) * position - 1;
+      this.x = (this.worldCanvas.width) * position - 1;
     } */
   }
 
-  setDimensions(worldCanvas, position){
+  setDimensions(position){
     this.position = position;
-    this.width = worldCanvas.width;
-    this.height = worldCanvas.height;
-    this.x = worldCanvas.width * this.position;
+    this.width = this.worldCanvas.width;
+    this.height = this.worldCanvas.height;
+    this.x = this.worldCanvas.width * this.position;
   }
 }
