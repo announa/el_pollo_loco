@@ -5,7 +5,7 @@ class World {
   bottleBar;
   endbossBar;
   bottlesAmount;
-  collectedBottles = 0;
+  collectedBottles = 5;
   thrownBottles = [];
   lastThrownBottle = 0;
   level = level1;
@@ -38,11 +38,13 @@ class World {
     this.renderObjects(this.lifeBar);
     this.renderObjects(this.bottleBar);
     this.ctx.translate(this.camera_X, 0);
-    
+
     this.renderObjects(this.character);
     this.addObjectToWorld(this.level.enemies);
     this.addObjectToWorld(this.level.bottlesOnTheGround);
-    this.renderObjects(this.endbossBar);
+    if (!this.level.endboss.isDead()) {
+      this.renderObjects(this.endbossBar);
+    }
     this.renderObjects(this.level.endboss);
     if (this.thrownBottles) {
       this.addObjectToWorld(this.thrownBottles);
@@ -135,7 +137,10 @@ class World {
       this.collectedBottles += 1;
       this.level.bottlesOnTheGround.splice(index, 1);
       this.bottleBar.updateStatusBar(this.percentageBottlBar(), 'bottles');
-    } else if ((collisionCheck == 'hurt' && collisionObject instanceof Chicken) || (collisionCheck == 'hurt' && collisionObject instanceof Endboss)) {
+    } else if (
+      (collisionCheck == 'hurt' && collisionObject instanceof Chicken) ||
+      (collisionCheck == 'hurt' && collisionObject instanceof Endboss)
+    ) {
       this.character.looseEnergy(2.5);
       this.lifeBar.updateStatusBar(this.character.energy, 'life');
     } else if (collisionCheck == 'beat enemy' && collisionObject instanceof Chicken) {
@@ -152,9 +157,9 @@ class World {
     this.thrownBottles.forEach((bottle) => {
       if (bottle.isColliding(enemy)) {
         console.log('bottle colliding enemy');
-        if(enemy instanceof Chicken){
-        this.beatEnemy(enemy, index, arr);
-        } else{
+        if (enemy instanceof Chicken) {
+          this.beatEnemy(enemy, index, arr);
+        } else {
           this.hurtEndboss();
           this.endbossBar.updateStatusBar(this.level.endboss.energy, 'life');
         }
@@ -217,7 +222,7 @@ class World {
     }, 500);
   }
 
-  hurtEndboss(){
+  hurtEndboss() {
     this.level.endboss.looseEnergy(20);
   }
 }

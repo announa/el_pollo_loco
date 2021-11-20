@@ -1,4 +1,5 @@
 class Chicken extends MovableObject {
+  a_name = 'Pollo Loco';
   IMAGES_WALKING = [
     './img/3.Secuencias_Enemy_basico/Version_Gallinita/1.Ga_paso_derecho.png',
     './img/3.Secuencias_Enemy_basico/Version_Gallinita/2-Ga_centro.png',

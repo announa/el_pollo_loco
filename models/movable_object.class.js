@@ -7,7 +7,7 @@ class MovableObject extends GameComponents {
   y_landing;
   energy = 100;
   timeWhenHurt = 0;
-  imageRepetitions = 0;
+  imageRepetitions = 1;
   beatEnemy = false;
 
   constructor(worldCanvas) {
@@ -25,12 +25,13 @@ class MovableObject extends GameComponents {
     this.img = this.imageCache[path];
 
     //repeats the same image several times until repetitions is reched, then increases currentImage --> for slower animations like character idle
-    if(this.imageRepetitions < repetitions){
+    if (this.imageRepetitions < repetitions) {
       this.imageRepetitions++;
-    } else{
-    this.currentImage++;
-    this.imageRepetitions = 0;
-  }}
+    } else {
+      this.currentImage++;
+      this.imageRepetitions = 1;
+    }
+  }
 
   moveLeft() {
     this.x -= this.moveX;
@@ -38,6 +39,18 @@ class MovableObject extends GameComponents {
 
   moveRight() {
     this.x += this.moveX;
+  }
+
+    walkRight(otherDirection) {
+    this.changeDirection = otherDirection;
+    this.moveRight();
+    this.sound_walking.play();
+  }
+
+  walkLeft(otherDirection) {
+    this.changeDirection = otherDirection;
+    this.moveLeft();
+    this.sound_walking.play();
   }
 
   fallingAnimation() {

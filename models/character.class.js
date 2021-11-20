@@ -1,4 +1,5 @@
 class Character extends MovableObject {
+  a_name = 'Pepe Peligroso';
   IMAGES_WALKING = [
     'img/2.Secuencias_Personaje-Pepe-correccion/2.Secuencia_caminata/W-21.png',
     'img/2.Secuencias_Personaje-Pepe-correccion/2.Secuencia_caminata/W-22.png',
@@ -131,10 +132,10 @@ class Character extends MovableObject {
         this.gameOver();
       } else {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-          this.walkRight();
+          this.walkRight(false);
         }
         if (this.world.keyboard.LEFT && this.x > 0.2 * this.worldCanvas.width) {
-          this.walkLeft();
+          this.walkLeft(true);
         }
         if (this.world.keyboard.UP && !this.isAboveGround(this.y_landing)) {
           this.jump();
@@ -144,16 +145,7 @@ class Character extends MovableObject {
     }, 1000 / 60);
   }
 
-  walkRight() {
-    this.changeDirection = false;
-    this.moveRight();
-    this.sound_walking.play();
-  }
-  walkLeft() {
-    this.changeDirection = true;
-    this.moveLeft();
-    this.sound_walking.play();
-  }
+
 
   animateImages() {
     setInterval(() => {
@@ -163,9 +155,9 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_HURT);
       } else if (this.moveY == this.worldCanvas.height / 20) {
         this.currentImage = 0;
-        this.playAnimation(this.IMAGES_JUMPING, 2);
+        this.playAnimation(this.IMAGES_JUMPING, 3);
       } else if (this.isAboveGround(this.y_landing)) {
-        this.playAnimation(this.IMAGES_JUMPING, 2);
+        this.playAnimation(this.IMAGES_JUMPING, 3);
       } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
         this.playAnimation(this.IMAGES_WALKING);
       } else {
