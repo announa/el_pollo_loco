@@ -98,29 +98,25 @@ class Character extends MovableObject {
     object.getCollisionCoordinates();
     let a = this.cc;
     let b = object.cc;
-   if(a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1 && this.moveY < 0){
-    return 'beat enemy'
-   } else if(a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1){
+    if (a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1 && this.moveY < 0) {
+      return 'beat enemy';
+    } else if (a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1) {
       return 'hurt';
-    }
-    else{
+    } else {
       return false;
     }
   }
 
   /**
-   * animates the character.
+   * animates the character
    * @param {DOM object} worldCanvas - The Canvas
    */
   animate(worldCanvas) {
-   this.animateMovements(worldCanvas);
-   this.animateImages();
+    this.animateMovements(worldCanvas);
+    this.animateImages(worldCanvas);
   }
 
-  /**
-   * Aminates the position changing of the character.
-   */
-  animateMovements(){
+  animateMovements(worldCanvas) {
     setInterval(() => {
       this.sound_walking.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -136,22 +132,18 @@ class Character extends MovableObject {
     }, 1000 / 60);
   }
 
-  walkRight(){
+  walkRight() {
     this.changeDirection = false;
     this.moveRight();
     this.sound_walking.play();
   }
-
-  walkLeft(){
+  walkLeft() {
     this.changeDirection = true;
     this.moveLeft();
     this.sound_walking.play();
   }
 
-  /**
-   * Animates the images for the different character events.
-   */
-  animateImages(){
+  animateImages(worldCanvas) {
     setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
