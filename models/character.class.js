@@ -89,25 +89,6 @@ class Character extends MovableObject {
   }
 
   /**
-   * Checks if the character collides with an object (bottle or enemy)
-   * @param {object} object - The object for which to check if the character is colliding with it.
-   * @returns string || boolean
-   */
-  isColliding(object) {
-    this.getCollisionCoordinates();
-    object.getCollisionCoordinates();
-    let a = this.cc;
-    let b = object.cc;
-    if (a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1 && this.moveY < 0) {
-      return 'beat enemy';
-    } else if (a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1) {
-      return 'hurt';
-    } else {
-      return false;
-    }
-  }
-
-  /**
    * animates the character
    * @param {DOM object} worldCanvas - The Canvas
    */

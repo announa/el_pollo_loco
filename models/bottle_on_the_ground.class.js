@@ -7,7 +7,7 @@ class BottleOnTheGround extends GameComponents {
   }
 
   setDimensions(worldCanvas, worldSize) {
-    this.x = 0.3 * worldCanvas.width + Math.random() * worldCanvas.width * (worldSize - 1);
+    this.x = 0.3 * worldCanvas.width + Math.random() * worldCanvas.width * (worldSize - 1.25);
     this.y = 0.8 * worldCanvas.height;
     this.height = 0.13 * worldCanvas.height;
     this.width = 0.13 * worldCanvas.height;

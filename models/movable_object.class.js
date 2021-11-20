@@ -33,6 +33,11 @@ class MovableObject extends GameComponents {
       if (this.moveY > 0 || this.isAboveGround(this.y_landing)) {
         this.moveY -= this.gravAcceleration;
         this.y -= this.moveY;
+        if(this.y > this.y_landing){
+          this.y = this.y_landing;
+        }
+/*         console.log('y-landing: ', this.y_landing)
+        console.log('this.y: ', this.y) */
       } else{
         this.moveY = 0;
       }
@@ -47,28 +52,27 @@ class MovableObject extends GameComponents {
     return this.y < y_landing;
   }
 
-/*   isColliding(object) {
+
+  /**
+   * Checks if the character collides with an object (bottle or enemy)
+   * @param {object} object - The object for which to check if the character is colliding with it.
+   * @returns string || boolean
+   */
+   isColliding(object) {
     this.getCollisionCoordinates();
     object.getCollisionCoordinates();
     let a = this.cc;
     let b = object.cc;
-    return ((a.x_2 > b.x_1 && a.x_1 < b.x_2) || (a.x_1 < b.x_2 && a.x_2 > b.x_1)) && a.y_2 > b.y_1 && a.y_1 < b.y_2;
-  } */
-  /*   isColliding(object) {
-    let x_start;
-    let x_end;
-    let y_end = this.y + 0.95 * this.height;
-    if (!this.changeDirection) {
-      x_start = this.x + 0.18 * this.width;
-      x_end = this.x + 0.73 * this.width;
+    if (a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1 && a.y_1 < b.y_2 && this.moveY < 0) {
+      console.log('beat enemy')
+      return 'beat enemy';
+    } else if (a.x_2 > b.x_1 && a.x_1 < b.x_2 && a.y_2 >= b.y_1 && a.y_1 < b.y_2 ) {
+      console.log('hurt')
+      return 'hurt';
     } else {
-      x_start = this.x + 0.27 * this.width;
-      x_end = this.x + 0.82 * this.width;
+      return false;
     }
-    return (
-      ((x_end > object.x && x_start < object.x) || (x_start < object.x + object.width && x_end > object.x)) &&
-      y_end > object.y && this.y < object.y);
-  } */
+  }
 
   looseEnergy() {
     this.energy -= 2.5;

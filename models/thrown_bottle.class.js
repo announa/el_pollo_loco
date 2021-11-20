@@ -13,13 +13,14 @@ class ThrownBottle extends MovableObject {
     './img/6.botella/Rotacion/Splash de salsa/Mesa de trabajo 1 copia 11.png',
     './img/6.botella/Rotacion/Splash de salsa/Mesa de trabajo 1 copia 12.png',
   ];
+  explode = false;
 
   constructor(worldCanvas, x, y, startspeed_x, toTheLeft) {
     super(worldCanvas).loadImage(this.IMAGES_ROTATING[0]);
     super.loadAllImages(this.IMAGES_ROTATING);
     super.loadAllImages(this.IMAGES_SALSA);
     this.setDimensions(worldCanvas, x, y, startspeed_x);
- 
+
     this.animate(worldCanvas, toTheLeft);
   }
 
@@ -28,24 +29,40 @@ class ThrownBottle extends MovableObject {
     this.y = y;
     this.height = 0.1 * worldCanvas.height;
     this.width = 0.1 * worldCanvas.height;
-    this.moveX = worldCanvas.width / 60 + startspeed_x;
+    this.moveX = worldCanvas.width / 40 + startspeed_x;
     this.y_landing = 1 * worldCanvas.height;
+  }
+
+  getCollisionCoordinates() {
+    this.setCollisionCoordinates(
+      0.2 * this.width,
+      0.8 * this.width,
+      0.2 * this.width,
+      0.8 * this.width,
+      0.2 * this.width,
+      0.8 * this.width,
+      this.changeDirection
+    );
   }
 
   animate(worldCanvas, toTheLeft) {
     setInterval(() => {
-      this.playAnimation(this.IMAGES_ROTATING);
-      this.bottleUp(worldCanvas);
-      this.fallingAnimation(worldCanvas);
-      if (toTheLeft) {
-        this.moveLeft();
+      if (this.explode == false) {
+        this.playAnimation(this.IMAGES_ROTATING);
+        this.bottleUp(worldCanvas);
+        this.fallingAnimation(worldCanvas);
+        if (toTheLeft) {
+          this.moveLeft();
+        } else {
+          this.moveRight();
+        }
       } else {
-        this.moveRight();
+        this.playAnimation(this.IMAGES_SALSA);
       }
     }, 1000 / 25);
   }
 
   bottleUp(worldCanvas) {
-    this.moveY = worldCanvas.height / 80;
+    this.moveY = worldCanvas.height / 40;
   }
 }
