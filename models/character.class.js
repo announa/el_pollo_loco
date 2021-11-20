@@ -7,6 +7,26 @@ class Character extends MovableObject {
     'img/2.Secuencias_Personaje-Pepe-correccion/2.Secuencia_caminata/W-25.png',
     'img/2.Secuencias_Personaje-Pepe-correccion/2.Secuencia_caminata/W-26.png',
   ];
+/* 
+  IMAGES_JUMPING = [
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-31.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-32.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-33.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-34.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-34.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-35.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-35.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-36.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-36.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-37.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-37.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-38.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-38.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-39.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-39.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-40.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-40.png',
+  ]; */
 
   IMAGES_JUMPING = [
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-31.png',
@@ -14,14 +34,13 @@ class Character extends MovableObject {
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-33.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-34.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-34.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-34.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-34.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-35.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-35.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-35.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-35.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-36.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-36.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-37.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-37.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-38.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-38.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-39.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-40.png',
@@ -41,6 +60,19 @@ class Character extends MovableObject {
     './img/2.Secuencias_Personaje-Pepe-correccion/5.Muerte/D-56.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/5.Muerte/D-57.png',
   ];
+
+  IMAGES_IDLE = [
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-1.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-2.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-3.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-4.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-5.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-6.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-7.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-8.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-9.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-10.png'
+  ]
   sound_walking = new Audio('./audio/walking.mp3');
   world;
 
@@ -52,6 +84,7 @@ class Character extends MovableObject {
     super.loadAllImages(this.IMAGES_JUMPING);
     super.loadAllImages(this.IMAGES_DEAD);
     super.loadAllImages(this.IMAGES_HURT);
+    super.loadAllImages(this.IMAGES_IDLE);
     this.sound_walking.volume = 0.5;
 
     this.fallingAnimation(worldCanvas);
@@ -126,16 +159,25 @@ class Character extends MovableObject {
 
   animateImages(worldCanvas) {
     setInterval(() => {
-      if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-      } else if (this.isAboveGround(worldCanvas)) {
-        this.playAnimation(this.IMAGES_JUMPING);
-      } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-        this.playAnimation(this.IMAGES_WALKING);
-      }
+      this.checkEvents()
     }, 50);
+  }
+
+  checkEvents(){
+    if (this.isDead()) {
+      this.playAnimation(this.IMAGES_DEAD);
+    } else if (this.isHurt()) {
+      this.playAnimation(this.IMAGES_HURT);
+    } else if(this.world.keyboard.UP && !this.isAboveGround(this.y_landing)){
+      this.currentImage = 0;
+      this.playAnimation(this.IMAGES_JUMPING);
+    } else if (this.isAboveGround(this.y_landing)) {
+      this.playAnimation(this.IMAGES_JUMPING);
+    } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+      this.playAnimation(this.IMAGES_WALKING);
+    } else {
+      this.playAnimation(this.IMAGES_IDLE, 4);
+    }
   }
 
   /**
