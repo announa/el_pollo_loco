@@ -1,4 +1,5 @@
 class StatusBar extends GameComponents {
+  name = 'status bar';
   IMAGES_LIFE_BAR = [
     './img/7.Marcadores/Barra/Marcador_vida/Naranja/0_.png',
     './img/7.Marcadores/Barra/Marcador_vida/Naranja/20_.png',
@@ -37,6 +38,9 @@ class StatusBar extends GameComponents {
     super.loadAllImages(this.images);
     this.setDimensions(statusType, referenceObject);
     this.updateStatusBar(this.percentage);
+/*     if(referenceObject){
+      this.moveWithReferenceObject(referenceObject);
+    } */
   }
 
   setDimensions(statusType, referenceObject) {

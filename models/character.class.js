@@ -1,5 +1,5 @@
 class Character extends MovableObject {
-  a_name = 'Pepe Peligroso';
+  name = 'Pepe Peligroso';
   IMAGES_WALKING = [
     'img/2.Secuencias_Personaje-Pepe-correccion/2.Secuencia_caminata/W-21.png',
     'img/2.Secuencias_Personaje-Pepe-correccion/2.Secuencia_caminata/W-22.png',
@@ -132,16 +132,18 @@ class Character extends MovableObject {
         this.gameOver();
       } else {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-          this.walkRight(false);
+          this.changeDirection = false;
+          this.walkRight();
         }
         if (this.world.keyboard.LEFT && this.x > 0.2 * this.worldCanvas.width) {
-          this.walkLeft(true);
+          this.changeDirection = true;
+          this.walkLeft();
         }
         if (this.world.keyboard.UP && !this.isAboveGround(this.y_landing)) {
-          this.jump();
+          this.jump(20);
         }
       }
-      this.world.camera_X = -this.x + 0.07 * canvas.width;
+      /* this.world.camera_X = -this.x + 0.07 * canvas.width; */
     }, 1000 / 60);
   }
 
@@ -170,7 +172,7 @@ class Character extends MovableObject {
     setTimeout(() => {
       return true;
     }, 2000);
-    this.jump();
+    this.jump(20);
     this.y_landing = this.worldCanvas.height;
     clearInterval(this.movementsInterval);
     setInterval(() => {

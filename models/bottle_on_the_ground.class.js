@@ -1,4 +1,5 @@
 class BottleOnTheGround extends GameComponents {
+  name = 'bottle on the ground';
   IMAGES = ['./img/6.botella/2.Botella_enterrada1.png', './img/6.botella/2.Botella_enterrada2.png'];
 
   constructor(worldCanvas, worldSize) {

@@ -1,4 +1,5 @@
 class BackgroundObject extends MovableObject {
+  name = 'background object';
   y = 0;
   position;
 

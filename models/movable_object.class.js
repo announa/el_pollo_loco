@@ -41,14 +41,12 @@ class MovableObject extends GameComponents {
     this.x += this.moveX;
   }
 
-    walkRight(otherDirection) {
-    this.changeDirection = otherDirection;
+    walkRight() {
     this.moveRight();
     this.sound_walking.play();
   }
 
-  walkLeft(otherDirection) {
-    this.changeDirection = otherDirection;
+  walkLeft() {
     this.moveLeft();
     this.sound_walking.play();
   }
@@ -67,8 +65,8 @@ class MovableObject extends GameComponents {
     }, 1000 / 25);
   }
 
-  jump() {
-    this.moveY = this.worldCanvas.height / 20;
+  jump(factor) {
+    this.moveY = this.worldCanvas.height / factor;
   }
 
   isAboveGround(y_landing) {

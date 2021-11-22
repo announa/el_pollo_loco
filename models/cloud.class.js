@@ -1,4 +1,5 @@
 class Cloud extends BackgroundObject {
+  name = 'clouds';
   moveX = 0.15;
   interval = 1000 / 60;
 

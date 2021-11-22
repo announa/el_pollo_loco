@@ -21,23 +21,26 @@ class World {
     this.lifeBar = new StatusBar(worldCanvas, 'life');
     this.bottleBar = new StatusBar(worldCanvas, 'bottles');
     this.endbossBar = new StatusBar(worldCanvas, 'endboss', this.level.endboss);
+    this.level.endboss.lifeBar = this.endbossBar;
+    this.level.endboss.gameCharacter = this.character;
     this.bottlesAmount = this.level.bottlesOnTheGround.length;
     this.ctx = canvas.getContext('2d');
     this.draw();
     this.checkEvents();
+
   }
 
   draw() {
     this.ctx.clearRect(0, 0, this.worldCanvas.width, this.worldCanvas.height);
 
-    this.ctx.translate(this.camera_X, 0);
+    /* this.ctx.translate(this.camera_X, 0); */
     this.addObjectToWorld(this.level.backgroundObjects);
-    this.addObjectToWorld(this.level.clouds);
+    /* this.addObjectToWorld(this.level.clouds); */
 
-    this.ctx.translate(-this.camera_X, 0);
+    /* this.ctx.translate(-this.camera_X, 0); */
     this.renderObjects(this.lifeBar);
     this.renderObjects(this.bottleBar);
-    this.ctx.translate(this.camera_X, 0);
+    /* this.ctx.translate(this.camera_X, 0); */
 
     this.renderObjects(this.character);
     this.addObjectToWorld(this.level.enemies);
@@ -73,7 +76,7 @@ class World {
       this.flipImageBack(object);
     }
   }
-
+  
   drawImage(obj) {
     this.ctx.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
   }
@@ -144,7 +147,7 @@ class World {
       this.character.looseEnergy(2.5);
       this.lifeBar.updateStatusBar(this.character.energy, 'life');
     } else if (collisionCheck == 'beat enemy' && collisionObject instanceof Chicken) {
-      this.character.jump(this.worldCanvas);
+      this.character.jump(20);
       this.beatEnemy(collisionObject, index, arr);
     }
   }
