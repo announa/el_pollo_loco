@@ -15,13 +15,15 @@ class ThrownBottle extends MovableObject {
     './img/6.botella/Rotacion/Splash de salsa/Mesa de trabajo 1 copia 12.png',
   ];
   explode = false;
+  hide = false;
+  bottleInterval = 0;
 
   constructor(worldCanvas, x, y, startspeed_x, toTheLeft) {
     super(worldCanvas).loadImage(this.IMAGES_ROTATING[0]);
     super.loadAllImages(this.IMAGES_ROTATING);
     super.loadAllImages(this.IMAGES_SALSA);
     this.setDimensions(x, y, startspeed_x);
-
+    /* this.fallingAnimation(this.worldCanvas); */
     this.animate(toTheLeft);
   }
 
@@ -47,23 +49,29 @@ class ThrownBottle extends MovableObject {
   }
 
   animate(toTheLeft) {
-    setInterval(() => {
-      if (this.explode == false) {
-        this.playAnimation(this.IMAGES_ROTATING);
-        this.bottleUp(this.worldCanvas);
+    this.bottleInterval = setInterval(() => {
+      if (!this.explode) {
         this.fallingAnimation(this.worldCanvas);
+        this.playAnimation(this.IMAGES_ROTATING);
+        this.jump(40);
         if (toTheLeft) {
           this.moveLeft();
         } else {
           this.moveRight();
         }
       } else {
+        this.y_landing = this.y;
         this.playAnimation(this.IMAGES_SALSA);
+        if(this.img.src.includes('12.png')){
+          clearInterval(this.bottleInterval)
+
+          /* hier weitermachen!! */
+          
+          setTimeout(() => {
+            this.hide == true;
+          }, 100);
+        }
       }
     }, 1000 / 25);
-  }
-
-  bottleUp() {
-    this.moveY = this.worldCanvas.height / 40;
   }
 }
