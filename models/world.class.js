@@ -5,7 +5,7 @@ class World {
   bottleBar;
   endbossBar;
   bottlesAmount;
-  collectedBottles = 5;
+  collectedBottles = 0;
   thrownBottles = [];
   lastThrownBottle = 0;
   level = level1;
@@ -172,13 +172,15 @@ class World {
 
   checkThrownBottleCollision(enemy, index, arr) {
     this.thrownBottles.forEach((bottle) => {
-      if (bottle.isColliding(enemy)) {
-        if (enemy instanceof Chicken) {
-          this.beatEnemy(enemy, index, arr);
-        } else {
-          this.hurtEndboss();
+      if (!bottle.explode) {
+        if (bottle.isColliding(enemy)) {
+          if (enemy instanceof Chicken) {
+            this.beatEnemy(enemy, index, arr);
+          } else {
+            this.hurtEndboss();
+          }
+          bottle.explode = true;
         }
-        bottle.explode = true;
       }
     });
   }

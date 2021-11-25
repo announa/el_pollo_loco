@@ -12,7 +12,6 @@ class MovableObject extends GameComponents {
 
   constructor(worldCanvas) {
     super(worldCanvas);
-    this.gravAcceleration = worldCanvas.height / 200;
   }
 
   playAnimation(images, repetitions) {
@@ -53,6 +52,7 @@ class MovableObject extends GameComponents {
 
   fallingAnimation() {
     setInterval(() => {
+      this.gravAcceleration = this.worldCanvas.height / 200;
       if (this.moveY > 0 || this.isAboveGround(this.y_landing)) {
         this.moveY -= this.gravAcceleration;
         this.y -= this.moveY;
