@@ -143,7 +143,7 @@ class Character extends MovableObject {
           this.jump(20);
         }
       }
-      /* this.world.camera_X = -this.x + 0.07 * canvas.width; */
+      this.world.camera_X = -this.x + 0.07 * canvas.width;
     }, 1000 / 60);
   }
 

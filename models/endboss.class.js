@@ -37,7 +37,6 @@ class Endboss extends MovableObject {
   startedWalking = 0;
   lifeBar = 0;
   gameCharacter;
-
   animationInterval;
 
   constructor(worldCanvas, bgImgAmount) {
@@ -48,6 +47,7 @@ class Endboss extends MovableObject {
     super.loadAllImages(this.IMAGES_DEAD);
     this.setDimensions(bgImgAmount);
     this.images = this.IMAGES_WALKING;
+    this.sound_walking.volume = 0.5;
 
     this.fallingAnimation();
     this.animate();
@@ -56,8 +56,8 @@ class Endboss extends MovableObject {
   setDimensions(bgImgAmount) {
     this.height = 0.8 * this.worldCanvas.height;
     this.width = 0.85 * 0.8 * this.worldCanvas.height;
-    this.x = this.worldCanvas.width;
-    /* this.x = bgImgAmount * this.worldCanvas.width - 0.5 * this.worldCanvas.width; */
+    /* this.x = this.worldCanvas.width; */
+    this.x = bgImgAmount * this.worldCanvas.width - 0.5 * this.worldCanvas.width;
     this.y = 0.14 * this.worldCanvas.height;
     this.y_landing = 0.14 * this.worldCanvas.height;
     this.moveX = this.worldCanvas.width / 100;
@@ -85,23 +85,25 @@ class Endboss extends MovableObject {
 
   animateMovements() {
     setInterval(() => {
-      this.sound_walking.pause();
-      if (this.isDead()) {
-        setInterval(() => {
-        this.moveRight();
-                }, 80);
-      } else {
-        if ((this.images == this.IMAGES_WALKING || this.isAboveGround(this.y_landing)) && !this.changeDirection) {
-          this.walkLeft();
+      if (this.nearCharacter()) {
+        this.sound_walking.pause();
+        if (this.isDead()) {
+          setInterval(() => {
+            this.moveRight();
+          }, 80);
+        } else {
+          if ((this.images == this.IMAGES_WALKING || this.isAboveGround(this.y_landing)) && !this.changeDirection) {
+            this.walkLeft();
+          }
+          if ((this.images == this.IMAGES_WALKING || this.isAboveGround(this.y_landing)) && this.changeDirection) {
+            this.walkRight();
+          }
+          if (this.img.src.includes('G15')) {
+            this.jump(30);
+          }
+          this.turnAround();
+          this.moveEndbossBar();
         }
-        if ((this.images == this.IMAGES_WALKING || this.isAboveGround(this.y_landing)) && this.changeDirection) {
-          this.walkRight();
-        }
-        if (this.img.src.includes('G15')) {
-          this.jump(30);
-        }
-        this.turnAround();
-        this.moveEndbossBar();
       }
     }, 100);
   }
@@ -124,7 +126,6 @@ class Endboss extends MovableObject {
     );
   }
 
-
   moveEndbossBar() {
     this.lifeBar.setDimensions('endboss', this);
   }
@@ -133,17 +134,19 @@ class Endboss extends MovableObject {
     let endbossDeadImg = 0;
     this.startedWalking = new Date().getTime();
     this.animationInterval = setInterval(() => {
-      if (this.isDead()) {
-        endbossDeadImg = this.endbossDies(endbossDeadImg);
-      } else {
-        this.checkEndbossEvents();
-        this.playAnimation(this.images, 2);
+      if (this.nearCharacter()) {
+        if (this.isDead()) {
+          endbossDeadImg = this.endbossDies(endbossDeadImg);
+        } else {
+          this.checkEndbossEvents();
+          this.playAnimation(this.images, 2);
+        }
       }
     }, 100);
   }
 
   checkEndbossEvents() {
-    if (this.nearCharacter()) {
+    if (this.nextToCharacter()) {
       this.attack();
     } else {
       if (this.images == this.IMAGES_ATTACK) {
@@ -167,11 +170,17 @@ class Endboss extends MovableObject {
 
   nearCharacter() {
     return (
+      this.gameCharacter.x + this.gameCharacter.width > this.x - this.worldCanvas.width &&
+      this.gameCharacter.x < this.x + this.width + this.worldCanvas.width
+    );
+  }
+
+  nextToCharacter() {
+    return (
       this.x - (this.gameCharacter.x + this.gameCharacter.width) < 0.2 * this.worldCanvas.width &&
       -(this.x + this.width - this.gameCharacter.x) < 0.2 * this.worldCanvas.width
     );
   }
-
 
   attack() {
     if (this.images != this.IMAGES_ATTACK) {

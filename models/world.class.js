@@ -31,16 +31,17 @@ class World {
 
   draw() {
     this.ctx.clearRect(0, 0, this.worldCanvas.width, this.worldCanvas.height);
+    this.initObjectRendering();
+    let self = this;
+    requestAnimationFrame(function () {
+      self.draw();
+    });
+  }
 
-    /* this.ctx.translate(this.camera_X, 0); */
+  initObjectRendering() {
+    this.ctx.translate(this.camera_X, 0);
     this.addObjectToWorld(this.level.backgroundObjects);
     /* this.addObjectToWorld(this.level.clouds); */
-
-    /* this.ctx.translate(-this.camera_X, 0); */
-    this.renderObjects(this.lifeBar);
-    this.renderObjects(this.bottleBar);
-    /* this.ctx.translate(this.camera_X, 0); */
-
     this.renderObjects(this.character);
     this.addObjectToWorld(this.level.enemies);
     this.addObjectToWorld(this.level.bottlesOnTheGround);
@@ -48,15 +49,10 @@ class World {
       this.renderObjects(this.endbossBar);
     }
     this.renderObjects(this.level.endboss);
-    if (this.thrownBottles) {
-      this.addObjectToWorld(this.thrownBottles);
-    }
+    this.addObjectToWorld(this.thrownBottles);
     this.ctx.translate(-this.camera_X, 0);
-
-    let self = this;
-    requestAnimationFrame(function () {
-      self.draw();
-    });
+    this.renderObjects(this.lifeBar);
+    this.renderObjects(this.bottleBar);
   }
 
   addObjectToWorld(object) {
@@ -77,9 +73,13 @@ class World {
   }
 
   drawImage(obj) {
-    if (!this.hide) {
+    if ((!obj.destroyed && this.isVisible(obj)) || obj instanceof StatusBar || obj instanceof Character) {
       this.ctx.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
     }
+  }
+
+  isVisible(obj) {
+    return !(-this.camera_X > obj.x + obj.width || -this.camera_X + this.worldCanvas.width < obj.x);
   }
 
   drawBorder(obj) {
