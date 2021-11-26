@@ -104,6 +104,11 @@ class MovableObject extends GameComponents {
     }
   }
 
+  getHurt(percentage, statusType){
+    this.looseEnergy(percentage);
+    this.lifeBar.updateStatusBar(this.energy, statusType);
+  }
+
   isHurt() {
     let timePassed = new Date().getTime() - this.timeWhenHurt;
     return timePassed < 500;

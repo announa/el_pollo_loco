@@ -17,20 +17,14 @@ class StatusBar extends GameComponents {
     './img/7.Marcadores/Barra/Marcador_botella/Verde/100_.png',
   ];
 
-  /* IMAGE_ENDBOSS = 'img/7.Marcadores/Icono/Mesa de trabajo 130.png';
-  iconImage; */
   images;
   percentage;
 
   constructor(worldCanvas, statusType, referenceObject) {
     super(worldCanvas);
-    if (statusType == 'life' || statusType == 'endboss') {
+    if (statusType == 'life') {
       this.images = this.IMAGES_LIFE_BAR;
       this.percentage = 100;
-/*     }
-    if (statusType == 'endboss') {
-      this.iconImage = new Image();
-      this.iconImage.src = this.IMAGE_ENDBOSS; */
     } else if (statusType == 'bottles') {
       this.images = this.IMAGES_BOTTLE_BAR;
       this.percentage = 0;
@@ -38,9 +32,6 @@ class StatusBar extends GameComponents {
     super.loadAllImages(this.images);
     this.setDimensions(statusType, referenceObject);
     this.updateStatusBar(this.percentage);
-/*     if(referenceObject){
-      this.moveWithReferenceObject(referenceObject);
-    } */
   }
 
   setDimensions(statusType, referenceObject) {

@@ -4,18 +4,18 @@ let keyboard = new Keyboard();
 world;
 
 function init() {
-  canvas = document.getElementById('canvas');
   setCanvasSize();
   setLevel1();
   world = new World(canvas, keyboard);
 }
 
 function setCanvasSize() {
+  canvas = document.getElementById('canvas');
   canvasContainer = document.getElementById('canvas-container');
   canvas.height = canvasContainer.clientHeight;
   canvas.width = canvasContainer.clientWidth;
-  /* canvas.width = 720;
-  canvas.height = 480; */
+  console.log(canvasContainer.clientHeight)
+  console.log(canvas.height)
 }
 
 window.addEventListener('keydown', (event) => checkKeyDown(event));
@@ -61,11 +61,3 @@ function checkKeyUp(event) {
     keyboard.D = false;
   }
 }
-
-/* window.onresize = () =>{
-  document.getElementById('fullscreen-btn').click();
-} */
-
-/* function fullscreen(){
-  canvas.requestFullscreen();
-} */

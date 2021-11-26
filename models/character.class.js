@@ -69,6 +69,10 @@ class Character extends MovableObject {
     './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-9.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-10.png',
   ];
+  lifeBar;
+  bottleBar;
+  collectedBottles = 0;
+  thrownBottles = [];
   sound_walking = new Audio('./audio/walking.mp3');
   world;
   movementsInterval;
@@ -82,6 +86,8 @@ class Character extends MovableObject {
     super.loadAllImages(this.IMAGES_DEAD);
     super.loadAllImages(this.IMAGES_HURT);
     super.loadAllImages(this.IMAGES_IDLE);
+    this.lifeBar = new StatusBar(worldCanvas, 'life');
+    this.bottleBar = new StatusBar(worldCanvas, 'bottles');
     this.sound_walking.volume = 0.5;
 
     this.fallingAnimation();
@@ -147,8 +153,6 @@ class Character extends MovableObject {
     }, 1000 / 60);
   }
 
-
-
   animateImages() {
     setInterval(() => {
       if (this.isDead()) {
@@ -180,9 +184,41 @@ class Character extends MovableObject {
     }, 1000 / 60);
   }
 
+  collectBottle(index) {
+    this.collectedBottles += 1;
+    this.world.level.bottlesOnTheGround.splice(index, 1);
+    this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
+  }
+
+  throwBottle() {
+    if (this.collectedBottles > 0) {
+      this.thrownBottles.push(this.createThrownBottle());
+      this.collectedBottles -= 1;
+      this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
+    }
+  }
+
+  percentageBottleBar() {
+    return (this.collectedBottles / this.world.bottlesAmount) * 100;
+  }
+
+  createThrownBottle() {
+    let bottle_x = this.x + 0.4 * this.width;
+    let bottle_y = this.y + 0.5 * this.height;
+    let bottle_startspeed_x = this.detectCharacterSpeed();
+    let bottle = new ThrownBottle(
+      this.worldCanvas,
+      bottle_x,
+      bottle_y,
+      bottle_startspeed_x,
+      this.changeDirection
+    );
+    return bottle;
+  }
+
   /**
-   * Checks if Pepe Peligroso is moving and if so, returns his speed for adding it to the speed of the bottle.
-   * @returns number - The actual speed of Pepe Peligroso.
+   * Checks if character is moving and if so, returns his speed for adding it to the speed of the bottle.
+   * @returns number - The actual speed of character.
    */
   detectCharacterSpeed() {
     if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT) {

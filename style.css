@@ -7,13 +7,13 @@ body {
 }
 
 #canvas-container {
-  width: 80%;
+  width: 90%;
   max-width: 1200px;
   aspect-ratio: 1.78/1;
 /*   width: 720px;
   height: 480px; */
   background: url("./img/5.Fondo/Capas/5.cielo_1920-1080px.png");
-  background-size: 101%, 100%;
+  background-size: cover;
   background-position: left;
 }
 

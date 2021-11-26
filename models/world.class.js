@@ -1,12 +1,7 @@
 class World {
   worldCanvas;
   character;
-  lifeBar;
-  bottleBar;
-  endbossBar;
   bottlesAmount;
-  collectedBottles = 0;
-  thrownBottles = [];
   lastThrownBottle = 0;
   level = level1;
   ctx;
@@ -18,10 +13,6 @@ class World {
     this.keyboard = keyboard;
     this.character = new Character(worldCanvas);
     this.character.world = this;
-    this.lifeBar = new StatusBar(worldCanvas, 'life');
-    this.bottleBar = new StatusBar(worldCanvas, 'bottles');
-    this.endbossBar = new StatusBar(worldCanvas, 'endboss', this.level.endboss);
-    this.level.endboss.lifeBar = this.endbossBar;
     this.level.endboss.gameCharacter = this.character;
     this.bottlesAmount = this.level.bottlesOnTheGround.length;
     this.ctx = canvas.getContext('2d');
@@ -40,19 +31,22 @@ class World {
 
   initObjectRendering() {
     this.ctx.translate(this.camera_X, 0);
-    this.addObjectToWorld(this.level.backgroundObjects);
-    /* this.addObjectToWorld(this.level.clouds); */
-    this.renderObjects(this.character);
-    this.addObjectToWorld(this.level.enemies);
-    this.addObjectToWorld(this.level.bottlesOnTheGround);
-    if (!this.level.endboss.isDead()) {
-      this.renderObjects(this.endbossBar);
-    }
-    this.renderObjects(this.level.endboss);
-    this.addObjectToWorld(this.thrownBottles);
+    this.renderMovingObjects();
     this.ctx.translate(-this.camera_X, 0);
-    this.renderObjects(this.lifeBar);
-    this.renderObjects(this.bottleBar);
+    this.renderStaticObjects();
+  }
+
+  renderMovingObjects() {
+    [this.level.backgroundObjects, this.level.clouds].forEach((e) => this.addObjectToWorld(e));
+    [this.character, this.level.endboss].forEach((e) => this.renderObjects(e));
+    [this.level.enemies, this.level.bottlesOnTheGround, this.character.thrownBottles].forEach((e) => this.addObjectToWorld(e));
+    if (!this.level.endboss.isDead()) {
+      this.renderObjects(this.level.endboss.lifeBar);
+    }
+  }
+
+  renderStaticObjects() {
+    [this.character.lifeBar, this.character.bottleBar].forEach((e) => this.renderObjects(e));
   }
 
   addObjectToWorld(object) {
@@ -123,12 +117,16 @@ class World {
 
   checkForThrownBottle() {
     if (this.keyboard.D) {
-      if (this.timeSinceLastThrownBottle() > 200 && this.collectedBottles > 0) {
+      if (this.timeSinceLastThrownBottle() > 200 && this.character.collectedBottles > 0) {
         this.lastThrownBottle = new Date().getTime();
-        this.throwBottle();
+        this.character.throwBottle();
         this.deleteThrownBottles();
       }
     }
+  }
+
+  timeSinceLastThrownBottle() {
+    return new Date().getTime() - this.lastThrownBottle;
   }
 
   /* COLLISION CHECKS */
@@ -159,25 +157,26 @@ class World {
     let characterIsColliding = this.character.isColliding(collisionObject);
 
     if (characterIsColliding && collisionObject instanceof BottleOnTheGround) {
-      this.collectBottle(index);
+      this.character.collectBottle(index);
     } else if (
       (characterIsColliding == 'hurt' && collisionObject instanceof Chicken) ||
       (characterIsColliding == 'hurt' && collisionObject instanceof Endboss)
     ) {
-      this.characterGetsHurt();
+      this.character.getHurt(2.5, 'life');
     } else if (characterIsColliding == 'beat enemy' && collisionObject instanceof Chicken) {
-      this.characterKillsChicken(collisionObject, index, arr);
+      this.character.jump(20);
+      this.enemyDies(collisionObject, index, arr);
     }
   }
 
   checkThrownBottleCollision(enemy, index, arr) {
-    this.thrownBottles.forEach((bottle) => {
+    this.character.thrownBottles.forEach((bottle) => {
       if (!bottle.explode) {
         if (bottle.isColliding(enemy)) {
           if (enemy instanceof Chicken) {
-            this.beatEnemy(enemy, index, arr);
+            this.enemyDies(enemy, index, arr);
           } else {
-            this.hurtEndboss();
+            this.level.endboss.getHurt(20, 'life');
           }
           bottle.explode = true;
         }
@@ -185,73 +184,18 @@ class World {
     });
   }
 
-  /* CHARACTER ACTIONS */
-
-  collectBottle(index) {
-    this.collectedBottles += 1;
-    this.level.bottlesOnTheGround.splice(index, 1);
-    this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
-  }
-
-  characterGetsHurt() {
-    this.character.looseEnergy(2.5);
-    this.lifeBar.updateStatusBar(this.character.energy, 'life');
-  }
-
-  characterKillsChicken(collisionObject, index, arr) {
-    this.character.jump(20);
-    this.beatEnemy(collisionObject, index, arr);
-  }
-
-  /* THROW BOTTLE */
-
-  timeSinceLastThrownBottle() {
-    return new Date().getTime() - this.lastThrownBottle;
-  }
-
-  throwBottle() {
-    if (this.collectedBottles > 0) {
-      this.thrownBottles.push(this.createThrownBottle());
-      this.collectedBottles -= 1;
-      this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
-    }
-  }
-
-  createThrownBottle() {
-    let bottle_x = this.character.x + 0.4 * this.character.width;
-    let bottle_y = this.character.y + 0.5 * this.character.height;
-    let bottle_startspeed_x = this.character.detectCharacterSpeed();
-    let bottle = new ThrownBottle(
-      this.worldCanvas,
-      bottle_x,
-      bottle_y,
-      bottle_startspeed_x,
-      this.character.changeDirection
-    );
-    return bottle;
-  }
+  /* DELETE OBJECTS */
 
   deleteThrownBottles() {
     setTimeout(() => {
-      this.thrownBottles.splice(0, 1);
+      this.character.thrownBottles.splice(0, 1);
     }, 2000);
   }
 
-  percentageBottleBar() {
-    return (this.collectedBottles / this.bottlesAmount) * 100;
-  }
-
-  /* BEAT ENEMIES */
-
-  beatEnemy(enemy, index, enemiesArray) {
+  enemyDies(enemy, index, enemiesArray) {
     enemy.alive = false;
     setTimeout(() => {
       enemiesArray.splice(index, 1);
     }, 500);
-  }
-
-  hurtEndboss() {
-    this.level.endboss.looseEnergy(20);
-    this.endbossBar.updateStatusBar(this.level.endboss.energy, 'life');
   }
 }

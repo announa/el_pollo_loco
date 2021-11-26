@@ -35,7 +35,7 @@ class Endboss extends MovableObject {
   images;
   sound_walking = new Audio('./audio/walking.mp3');
   startedWalking = 0;
-  lifeBar = 0;
+  lifeBar;
   gameCharacter;
   animationInterval;
 
@@ -46,6 +46,7 @@ class Endboss extends MovableObject {
     super.loadAllImages(this.IMAGES_ATTACK);
     super.loadAllImages(this.IMAGES_DEAD);
     this.setDimensions(bgImgAmount);
+    this.lifeBar = new StatusBar(this.worldCanvas, 'life', this)
     this.images = this.IMAGES_WALKING;
     this.sound_walking.volume = 0.5;
 
@@ -127,7 +128,7 @@ class Endboss extends MovableObject {
   }
 
   moveEndbossBar() {
-    this.lifeBar.setDimensions('endboss', this);
+    this.lifeBar.setDimensions('life', this);
   }
 
   animateImages() {
