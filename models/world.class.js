@@ -2,6 +2,7 @@ class World {
   worldCanvas;
   character;
   bottlesAmount;
+  coinsAmount;
   lastThrownBottle = 0;
   level = level1;
   ctx;
@@ -15,6 +16,7 @@ class World {
     this.character.world = this;
     this.level.endboss.gameCharacter = this.character;
     this.bottlesAmount = this.level.bottlesOnTheGround.length;
+    this.coinsAmount = this.level.coins.length;
     this.ctx = canvas.getContext('2d');
     this.draw();
     this.checkEvents();
@@ -31,22 +33,22 @@ class World {
 
   initObjectRendering() {
     this.ctx.translate(this.camera_X, 0);
-    this.renderMovingObjects();
+    this.renderFlexibleObjects();
     this.ctx.translate(-this.camera_X, 0);
     this.renderStaticObjects();
   }
 
-  renderMovingObjects() {
+  renderFlexibleObjects() {
     [this.level.backgroundObjects, this.level.clouds].forEach((e) => this.addObjectToWorld(e));
     [this.character, this.level.endboss].forEach((e) => this.renderObjects(e));
-    [this.level.enemies, this.level.bottlesOnTheGround, this.character.thrownBottles].forEach((e) => this.addObjectToWorld(e));
+    [this.level.enemies, this.level.bottlesOnTheGround, this.level.coins, this.character.thrownBottles].forEach((e) => this.addObjectToWorld(e));
     if (!this.level.endboss.isDead()) {
       this.renderObjects(this.level.endboss.lifeBar);
     }
   }
 
   renderStaticObjects() {
-    [this.character.lifeBar, this.character.bottleBar].forEach((e) => this.renderObjects(e));
+    [this.character.lifeBar, this.character.bottleBar, this.character.coinBar].forEach((e) => this.renderObjects(e));
   }
 
   addObjectToWorld(object) {
@@ -60,7 +62,7 @@ class World {
       this.flipImage(object);
     }
     this.drawImage(object);
-    this.drawBorder(object);
+/*     this.drawBorder(object); */
     if (object.changeDirection) {
       this.flipImageBack(object);
     }
@@ -76,8 +78,8 @@ class World {
     return !(-this.camera_X > obj.x + obj.width || -this.camera_X + this.worldCanvas.width < obj.x);
   }
 
-  drawBorder(obj) {
-    if (obj instanceof MovableObject || obj instanceof BottleOnTheGround) {
+/*   drawBorder(obj) {
+    if (obj instanceof MovableObject || obj instanceof BottleOnTheGround || obj instanceof Coin) {
       this.ctx.beginPath();
       this.ctx.lineWidth = '2px';
       this.ctx.strokeStyle = 'blue';
@@ -86,15 +88,17 @@ class World {
       } else if (obj instanceof Endboss) {
         this.ctx.rect(obj.x + 0.05 * obj.width, obj.y + 0.2 * obj.height, 0.85 * obj.width, 0.7 * obj.height);
       } else if (obj instanceof Character) {
-        this.ctx.rect(obj.x + 0.18 * obj.width, obj.y, 0.55 * obj.width, 0.95 * obj.height);
+        this.ctx.rect(obj.x + 0.18 * obj.width, obj.y + 0.4 * obj.height, 0.55 * obj.width, 0.55 * obj.height);
       } else if (obj instanceof BottleOnTheGround) {
         this.ctx.rect(obj.x + 0.35 * obj.width, obj.y + 0.2 * obj.height, 0.4 * obj.width, 0.7 * obj.height);
+      } else if (obj instanceof Coin) {
+        this.ctx.rect(obj.x + 0.35 * obj.width, obj.y + 0.35 * obj.height, 0.3 * obj.width, 0.3 * obj.height);
       } else if (obj instanceof ThrownBottle) {
         this.ctx.rect(obj.x + 0.25 * obj.width, obj.y + 0.25 * obj.height, 0.5 * obj.width, 0.5 * obj.height);
       }
       this.ctx.stroke();
     }
-  }
+  } */
 
   flipImage(obj) {
     this.ctx.save();
@@ -133,9 +137,10 @@ class World {
 
   checkForCollisions() {
     this.checkChickenCollisions();
-    this.checkBottleOnTheGroundCollisions();
     this.characterCollidesWith(this.level.endboss);
     this.checkThrownBottleCollision(this.level.endboss);
+    this.checkBottleOnTheGroundCollisions();
+    this.checkCoinCollisions();
   }
 
   checkChickenCollisions() {
@@ -147,17 +152,11 @@ class World {
     });
   }
 
-  checkBottleOnTheGroundCollisions() {
-    this.level.bottlesOnTheGround.forEach((bottle, index) => {
-      this.characterCollidesWith(bottle, index);
-    });
-  }
-
   characterCollidesWith(collisionObject, index, arr) {
     let characterIsColliding = this.character.isColliding(collisionObject);
 
-    if (characterIsColliding && collisionObject instanceof BottleOnTheGround) {
-      this.character.collectBottle(index);
+    if (characterIsColliding && (collisionObject instanceof BottleOnTheGround || collisionObject instanceof Coin)) {
+      this.character.collectObject(collisionObject, index, arr);
     } else if (
       (characterIsColliding == 'hurt' && collisionObject instanceof Chicken) ||
       (characterIsColliding == 'hurt' && collisionObject instanceof Endboss)
@@ -182,6 +181,18 @@ class World {
         }
       }
     });
+  }
+
+  checkBottleOnTheGroundCollisions() {
+    this.level.bottlesOnTheGround.forEach((bottle, index, arr) => {
+      this.characterCollidesWith(bottle, index, arr);
+    });
+  }
+
+  checkCoinCollisions(){
+    this.level.coins.forEach((coin, index, arr) => {
+      this.characterCollidesWith(coin, index, arr);
+    })
   }
 
   /* DELETE OBJECTS */

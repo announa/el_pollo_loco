@@ -1,5 +1,4 @@
 class StatusBar extends GameComponents {
-  name = 'status bar';
   IMAGES_LIFE_BAR = [
     './img/7.Marcadores/Barra/Marcador_vida/Naranja/0_.png',
     './img/7.Marcadores/Barra/Marcador_vida/Naranja/20_.png',
@@ -16,25 +15,36 @@ class StatusBar extends GameComponents {
     './img/7.Marcadores/Barra/Marcador_botella/Verde/80_.png',
     './img/7.Marcadores/Barra/Marcador_botella/Verde/100_.png',
   ];
+  IMAGES_COIN_BAR = [
+    './img/7.Marcadores/Barra/Marcador moneda/Naranja/0_.png',
+    './img/7.Marcadores/Barra/Marcador moneda/Naranja/20_.png',
+    './img/7.Marcadores/Barra/Marcador moneda/Naranja/40_.png',
+    './img/7.Marcadores/Barra/Marcador moneda/Verde/60_.png',
+    './img/7.Marcadores/Barra/Marcador moneda/Verde/80_.png',
+    './img/7.Marcadores/Barra/Marcador moneda/Verde/100_.png',
+  ];
 
   images;
   percentage;
 
-  constructor(worldCanvas, statusType, referenceObject) {
+  constructor(worldCanvas, barType, referenceObject) {
     super(worldCanvas);
-    if (statusType == 'life') {
+    if (barType == 'life') {
       this.images = this.IMAGES_LIFE_BAR;
       this.percentage = 100;
-    } else if (statusType == 'bottles') {
+    } else if (barType == 'bottles') {
       this.images = this.IMAGES_BOTTLE_BAR;
+      this.percentage = 0;
+    } else if(barType == 'coins'){
+      this.images = this.IMAGES_COIN_BAR;
       this.percentage = 0;
     }
     super.loadAllImages(this.images);
-    this.setDimensions(statusType, referenceObject);
+    this.setDimensions(barType, referenceObject);
     this.updateStatusBar(this.percentage);
   }
 
-  setDimensions(statusType, referenceObject) {
+  setDimensions(barType, referenceObject) {
     if (referenceObject) {
       this.x = referenceObject.x + 0.15 * referenceObject.width;
       this.y = referenceObject.y;
@@ -42,10 +52,13 @@ class StatusBar extends GameComponents {
       this.x = 0.05 * this.worldCanvas.width;
       this.y = 0.05 * this.worldCanvas.height;
     }
-    if (statusType == 'bottles') {
+    if (barType == 'bottles') {
       this.x = 0.4 * this.worldCanvas.width;
     }
-    this.width = 0.25 * this.worldCanvas.width;
+    if(barType == 'coins'){
+      this.x = 0.75 * this.worldCanvas.width;
+    }
+    this.width = 0.2 * this.worldCanvas.width;
     this.height = 0.05 * this.worldCanvas.width;
   }
 

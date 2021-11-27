@@ -8,30 +8,8 @@ class Character extends MovableObject {
     'img/2.Secuencias_Personaje-Pepe-correccion/2.Secuencia_caminata/W-25.png',
     'img/2.Secuencias_Personaje-Pepe-correccion/2.Secuencia_caminata/W-26.png',
   ];
-  /* 
-  IMAGES_JUMPING = [
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-31.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-32.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-33.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-34.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-34.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-35.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-35.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-36.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-36.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-37.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-37.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-38.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-38.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-39.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-39.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-40.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-40.png',
-  ]; */
 
   IMAGES_JUMPING = [
-    /* './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-31.png', */
-    /* './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-32.png', */
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-33.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-34.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-35.png',
@@ -71,7 +49,9 @@ class Character extends MovableObject {
   ];
   lifeBar;
   bottleBar;
+  coinBar;
   collectedBottles = 0;
+  collectedCoins = 0;
   thrownBottles = [];
   sound_walking = new Audio('./audio/walking.mp3');
   world;
@@ -88,6 +68,7 @@ class Character extends MovableObject {
     super.loadAllImages(this.IMAGES_IDLE);
     this.lifeBar = new StatusBar(worldCanvas, 'life');
     this.bottleBar = new StatusBar(worldCanvas, 'bottles');
+    this.coinBar = new StatusBar(worldCanvas, 'coins');
     this.sound_walking.volume = 0.5;
 
     this.fallingAnimation();
@@ -117,7 +98,7 @@ class Character extends MovableObject {
       0.73 * this.width,
       0.27 * this.width,
       0.82 * this.width,
-      0,
+      0.4 * this.height,
       0.95 * this.height,
       this.changeDirection
     );
@@ -184,10 +165,15 @@ class Character extends MovableObject {
     }, 1000 / 60);
   }
 
-  collectBottle(index) {
+  collectObject(collisionObject, index, arr) {
+    if(collisionObject instanceof BottleOnTheGround){
     this.collectedBottles += 1;
-    this.world.level.bottlesOnTheGround.splice(index, 1);
     this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
+  } else if(collisionObject instanceof Coin){
+    this.collectedCoins += 1;
+    this.coinBar.updateStatusBar(this.percentageCoinBar(), 'coins');
+    }
+    arr.splice(index, 1);
   }
 
   throwBottle() {
@@ -200,6 +186,10 @@ class Character extends MovableObject {
 
   percentageBottleBar() {
     return (this.collectedBottles / this.world.bottlesAmount) * 100;
+  }
+
+  percentageCoinBar() {
+    return (this.collectedCoins / this.world.coinsAmount) * 100;
   }
 
   createThrownBottle() {

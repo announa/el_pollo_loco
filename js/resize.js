@@ -28,7 +28,7 @@ function getNonArrayObjectPositions() {
 }
 
 function getArrayObjectPositions() {
-  [world.level.enemies, world.level.bottlesOnTheGround, world.level.clouds].forEach((array) => {
+  [world.level.enemies, world.level.bottlesOnTheGround, world.level.coins, world.level.clouds].forEach((array) => {
     for (let i = 0; i < array.length; i++) {
       array[i].resizePosition = { x: array[i].x, y: array[i].y };
     }
@@ -42,7 +42,7 @@ function resizeWorld() {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
     setNewCanvasSize();
-    resizeWorldObjects();
+    resizeObjects();
     restoreObjectPositions();
     world.level.level_end_x = (worldSize_l1 - 1) * world.worldCanvas.width + 0.06 * world.worldCanvas.width;
   }, 300);
@@ -53,33 +53,43 @@ function setNewCanvasSize() {
   resizeCanvasInObjects();
 }
 
-
-function resizeCanvasInObjects(){
+function resizeCanvasInObjects() {
   world.worldCanvas = canvas;
-  world.character.setCanvas(canvas);
+  resizeCanvasInNonArrayObjects();
+/*   world.character.setCanvas(canvas);
   world.character.lifeBar.setCanvas(canvas);
   world.character.bottleBar.setCanvas(canvas);
-  world.level.endboss.setCanvas(canvas);
+  world.character.coinBar.setCanvas(canvas);
+  world.level.endboss.setCanvas(canvas); */
   world.level.enemies.forEach((chicken) => chicken.setCanvas(canvas));
   world.level.bottlesOnTheGround.forEach((bottle) => bottle.setCanvas(canvas));
+  world.level.coins.forEach((coin) => coin.setCanvas(canvas));
   world.level.backgroundObjects.forEach((object) => object.setCanvas(canvas));
   world.level.clouds.forEach((cloud) => cloud.setCanvas(canvas));
+}
+
+function resizeCanvasInNonArrayObjects(){
+  let char = world.character;
+  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss].forEach(obj => {
+    obj.setCanvas(canvas)
+  })
 }
 
 /**
  * Sets the new canvas and object-dimensions.
  */
-function resizeWorldObjects() {
+function resizeObjects() {
   world.character.setDimensions();
   world.character.lifeBar.setDimensions();
   world.character.bottleBar.setDimensions('bottles');
+  world.character.coinBar.setDimensions('coins');
   world.level.endboss.setDimensions(worldSize_l1);
   world.level.enemies.forEach((chicken) => chicken.setDimensions());
   world.level.bottlesOnTheGround.forEach((bottle) => bottle.setDimensions());
+  world.level.coins.forEach((coin) => coin.setDimensions());
   world.level.backgroundObjects.forEach((object) => object.setDimensions(object.position));
   world.level.clouds.forEach((cloud) => cloud.setDimensions(cloud.position));
 }
-
 
 /**
  * Restores the positions of the objects in the canvas in relation to the new canvas-size.
@@ -97,7 +107,7 @@ function restoreNonArrayObjects() {
 }
 
 function restoreArrayObjects() {
-  [world.level.enemies, world.level.bottlesOnTheGround, world.level.clouds].forEach((array) => {
+  [world.level.enemies, world.level.bottlesOnTheGround, world.level.coins, world.level.clouds].forEach((array) => {
     for (let i = 0; i < array.length; i++) {
       array[i].x = (array[i].resizePosition.x / canvasSize.x) * canvas.width;
       array[i].y = (array[i].resizePosition.y / canvasSize.y) * canvas.height;

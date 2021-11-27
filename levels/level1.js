@@ -9,6 +9,7 @@ function setLevel1() {
     worldSize_l1,
     createEnemies(),
     createBottlesOnTheGround(),
+    createCoins(),
     createClouds(),
     createBgObjects(),
     new Endboss(canvas, worldSize_l1),
@@ -31,6 +32,15 @@ function createBottlesOnTheGround() {
     bottles.push(bottle);
   }
   return bottles;
+}
+
+function createCoins(){
+  let coins = [];
+  for(let i = 0; i < 10; i++){
+    let coin = new Coin(canvas, worldSize_l1);
+    coins.push(coin);
+  }
+  return coins;
 }
 
 function createClouds() {
