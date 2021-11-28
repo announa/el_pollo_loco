@@ -35,8 +35,8 @@ class World {
   }
 
   initObjectRendering() {
-    if(!this.gameOver){
-    this.camera_X = -this.character.x + 0.07 * this.worldCanvas.width;
+    if (!this.gameOver) {
+      this.camera_X = -this.character.x + 0.07 * this.worldCanvas.width;
     }
     this.ctx.translate(this.camera_X, 0);
     this.renderFlexibleObjects();
@@ -47,7 +47,9 @@ class World {
   renderFlexibleObjects() {
     [this.level.backgroundObjects, this.level.clouds].forEach((e) => this.addObjectToWorld(e));
     [this.character, this.level.endboss].forEach((e) => this.renderObjects(e));
-    [this.level.enemies, this.level.bottlesOnTheGround, this.level.coins, this.character.thrownBottles].forEach((e) => this.addObjectToWorld(e));
+    [this.level.enemies, this.level.bottlesOnTheGround, this.level.coins, this.character.thrownBottles].forEach((e) =>
+      this.addObjectToWorld(e)
+    );
     if (!this.level.endboss.isDead()) {
       this.renderObjects(this.level.endboss.lifeBar);
     }
@@ -68,7 +70,7 @@ class World {
       this.flipImage(object);
     }
     this.drawImage(object);
-/*     this.drawBorder(object); */
+    /*     this.drawBorder(object); */
     if (object.changeDirection) {
       this.flipImageBack(object);
     }
@@ -84,7 +86,7 @@ class World {
     return !(-this.camera_X > obj.x + obj.width || -this.camera_X + this.worldCanvas.width < obj.x);
   }
 
-/*   drawBorder(obj) {
+  /*   drawBorder(obj) {
     if (obj instanceof MovableObject || obj instanceof BottleOnTheGround || obj instanceof Coin) {
       this.ctx.beginPath();
       this.ctx.lineWidth = '2px';
@@ -140,8 +142,8 @@ class World {
     return new Date().getTime() - this.lastThrownBottle;
   }
 
-  checkIfGameOver(){
-    if(this.character.isDead()){
+  checkIfGameOver() {
+    if (this.character.isDead()) {
       this.gameOver = true;
     }
   }
@@ -149,18 +151,18 @@ class World {
   /* COLLISION CHECKS */
 
   checkForCollisions() {
-    this.checkChickenCollisions();
-    this.characterCollidesWith(this.level.endboss);
-    this.checkThrownBottleCollision(this.level.endboss);
-    this.checkBottleOnTheGroundCollisions();
-    this.checkCoinCollisions();
+    if (!this.character.isDead()) {
+      this.checkChickenCollisions();
+      this.characterCollidesWith(this.level.endboss);
+      this.checkThrownBottleCollision(this.level.endboss);
+      this.checkBottleOnTheGroundCollisions();
+      this.checkCoinCollisions();
+    }
   }
 
   checkChickenCollisions() {
     this.level.enemies.forEach((enemy, index, arr) => {
-      if (!this.character.isDead()) {
-        this.characterCollidesWith(enemy, index, arr);
-      }
+      this.characterCollidesWith(enemy, index, arr);
       this.checkThrownBottleCollision(enemy, index, arr);
     });
   }
@@ -202,10 +204,10 @@ class World {
     });
   }
 
-  checkCoinCollisions(){
+  checkCoinCollisions() {
     this.level.coins.forEach((coin, index, arr) => {
       this.characterCollidesWith(coin, index, arr);
-    })
+    });
   }
 
   /* DELETE OBJECTS */

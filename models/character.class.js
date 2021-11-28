@@ -134,12 +134,7 @@ class Character extends MovableObject {
       this.stopAnimation(this.movementsInterval, 1500);
     } else {
       this.playAnimation([this.IMAGES_IDLE[0]], 30);
-      if (Date.now() - this.world.lastKeyEvent > 1000) {
-        this.playAnimation(this.IMAGES_IDLE, 30);
-      }
-      if (!this.world.lastKeyEvent || Date.now() - this.world.lastKeyEvent > 4000) {
-        this.playAnimation(this.IMAGES_LONG_IDLE, 30);
-      }
+      this.checkForIdle();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.walkRight();
       }
@@ -156,6 +151,15 @@ class Character extends MovableObject {
       if (this.isAboveGround(this.y_landing)) {
         this.jumpingAnimation();
       }
+    }
+  }
+
+  checkForIdle() {
+    if (Date.now() - this.world.lastKeyEvent > 1000) {
+      this.playAnimation(this.IMAGES_IDLE, 30);
+    }
+    if (!this.world.lastKeyEvent || Date.now() - this.world.lastKeyEvent > 4000) {
+      this.playAnimation(this.IMAGES_LONG_IDLE, 30);
     }
   }
 
@@ -202,20 +206,18 @@ class Character extends MovableObject {
     this.playAnimation(this.IMAGES_DEAD, 5);
   }
 
-  setDyingImage(){
-
-  }
+  setDyingImage() {}
 
   collectObject(collisionObject, index, arr) {
-    if (collisionObject instanceof BottleOnTheGround) {
-      this.collectedBottles += 1;
-      this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
-    } else if (collisionObject instanceof Coin) {
-      this.collectedCoins += 1;
-      this.coinBar.updateStatusBar(this.percentageCoinBar(), 'coins');
+      if (collisionObject instanceof BottleOnTheGround) {
+        this.collectedBottles += 1;
+        this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
+      } else if (collisionObject instanceof Coin) {
+        this.collectedCoins += 1;
+        this.coinBar.updateStatusBar(this.percentageCoinBar(), 'coins');
+      }
+      arr.splice(index, 1);
     }
-    arr.splice(index, 1);
-  }
 
   throwBottle() {
     if (this.collectedBottles > 0) {
