@@ -37,7 +37,7 @@ class World {
   initObjectRendering() {
     if (!this.gameOver) {
       this.camera_X = -this.character.x + 0.07 * this.worldCanvas.width;
-      if(this.camera_X < -(this.level.level_end_x - 0.8 * this.worldCanvas.width)){
+      if (this.camera_X < -(this.level.level_end_x - 0.8 * this.worldCanvas.width)) {
         this.camera_X = -(this.level.level_end_x - 0.8 * this.worldCanvas.width);
       }
     }
@@ -80,13 +80,20 @@ class World {
   }
 
   drawImage(obj) {
-    if ((!obj.destroyed && this.isVisible(obj)) || obj instanceof StatusBar || obj instanceof Character) {
+    if ((!obj.destroyed && this.isVisible(obj)) || obj instanceof StatusBar) {
+      if (obj instanceof Character && obj.isAboveGround(obj.y_landing)) {
+        console.log(obj.img.src);
+      }
       this.ctx.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
     }
   }
 
   isVisible(obj) {
-    return !(-this.camera_X > obj.x + obj.width || -this.camera_X + this.worldCanvas.width < obj.x);
+    /* return true; */
+    return !(
+      (!obj.changeDirection && (-this.camera_X > obj.x + obj.width || -this.camera_X + this.worldCanvas.width < obj.x)) ||
+      (obj.changeDirection && (this.camera_X < obj.x - obj.width || this.camera_X - this.worldCanvas.width > obj.x))
+    );
   }
 
   /*   drawBorder(obj) {

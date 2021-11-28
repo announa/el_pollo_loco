@@ -102,7 +102,6 @@ class Endboss extends MovableObject {
     }
   }
 
-
   checkEndbossEvents() {
     if ((this.images == this.IMAGES_WALKING || this.isAboveGround(this.y_landing)) && !this.changeDirection) {
       this.walkLeft();
@@ -122,13 +121,13 @@ class Endboss extends MovableObject {
     }
   }
 
-  walkLeft(){
+  walkLeft() {
     this.moveLeft();
-    this.sound_walking.play()
+    this.sound_walking.play();
   }
-  walkRight(){
+  walkRight() {
     this.moveRight();
-    this.sound_walking.play()
+    this.sound_walking.play();
   }
 
   switchAnimations() {
@@ -144,7 +143,7 @@ class Endboss extends MovableObject {
   }
 
   turnAround() {
-    if (this.nearCanvasLimits()) {
+    if (this.notWatchingCharacter()) {
       if (this.changeDirection) {
         this.changeDirection = false;
       } else {
@@ -153,13 +152,20 @@ class Endboss extends MovableObject {
     }
   }
 
-  nearCanvasLimits() {
+  notWatchingCharacter() {
+    return (
+      (this.x + 0.5 * this.width < this.gameCharacter.x && !this.changeDirection) ||
+      (this.x + 0.5 * this.width > this.gameCharacter.x + this.gameCharacter.width && this.changeDirection)
+    );
+  }
+
+  /*  nearCanvasLimits() {
     return (
       ((this.x < 0.25 * this.worldCanvas.width && !this.changeDirection) ||
         (this.x + this.width > this.worldCanvas.width && this.changeDirection)) &&
       (this.images == this.IMAGES_WALKING || /G12|G20/.test(this.img.src))
     );
-  }
+  } */
 
   moveEndbossBar() {
     this.lifeBar.setDimensions('life', this);
