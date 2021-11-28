@@ -84,7 +84,7 @@ class Character extends MovableObject {
     this.coinBar = new StatusBar(worldCanvas, 'coins');
     this.sound_walking.volume = 0.5;
 
-    this.fallingAnimation();
+    this.applyGravity();
 
     this.animate();
   }

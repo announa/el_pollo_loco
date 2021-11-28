@@ -23,7 +23,7 @@ class ThrownBottle extends MovableObject {
     super.loadAllImages(this.IMAGES_ROTATING);
     super.loadAllImages(this.IMAGES_SALSA);
     this.setDimensions(x, y, startspeed_x);
-    /* this.fallingAnimation(this.worldCanvas); */
+    /* this.applyGravity(this.worldCanvas); */
     this.animate(toTheLeft);
   }
 
@@ -51,7 +51,7 @@ class ThrownBottle extends MovableObject {
   animate(toTheLeft) {
     this.bottleInterval = setInterval(() => {
       if (!this.explode) {
-        this.fallingAnimation(this.worldCanvas);
+        this.applyGravity(this.worldCanvas);
         this.playAnimation(this.IMAGES_ROTATING);
         this.jump(40);
         if (toTheLeft) {

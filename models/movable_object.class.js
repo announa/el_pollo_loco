@@ -40,21 +40,20 @@ class MovableObject extends GameComponents {
     this.x += this.moveX;
   }
 
-  fallingAnimation() {
-    setInterval(() => {
+  applyGravity() {
+    let gravityInterval = setInterval(() => {
       this.gravAcceleration = this.worldCanvas.height / 200;
-      if (this.moveY > 0 || this.isAboveGround(this.y_landing)) {
+      if (this.moveY != 0) {
         this.moveY -= this.gravAcceleration;
         this.y -= this.moveY;
         if (this.y > this.y_landing) {
           this.y = this.y_landing;
+          this.moveY = 0;
         }
-      } else {
-        this.moveY = 0;
       }
     }, 1000 / 25);
   }
-  
+
   jump(factor) {
     this.moveY = this.worldCanvas.height / factor;
   }
@@ -94,7 +93,7 @@ class MovableObject extends GameComponents {
     }
   }
 
-  getHurt(percentage, statusType){
+  getHurt(percentage, statusType) {
     this.looseEnergy(percentage);
     this.lifeBar.updateStatusBar(this.energy, statusType);
   }
@@ -108,7 +107,7 @@ class MovableObject extends GameComponents {
     return this.energy == 0;
   }
 
-  stopAnimation(interval, timeout){
+  stopAnimation(interval, timeout) {
     setTimeout(() => {
       clearInterval(interval);
     }, timeout);

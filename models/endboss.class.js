@@ -50,7 +50,7 @@ class Endboss extends MovableObject {
     this.images = this.IMAGES_WALKING;
     this.sound_walking.volume = 0.5;
 
-    this.fallingAnimation();
+    this.applyGravity();
     this.animate();
   }
 
