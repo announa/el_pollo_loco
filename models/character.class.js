@@ -47,6 +47,18 @@ class Character extends MovableObject {
     './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-9.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/IDLE/I-10.png',
   ];
+  IMAGES_LONG_IDLE = [
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-11.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-12.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-13.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-14.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-15.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-16.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-17.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-18.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-19.png',
+    './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-20.png',
+  ];
   lifeBar;
   bottleBar;
   coinBar;
@@ -60,12 +72,13 @@ class Character extends MovableObject {
   constructor(worldCanvas) {
     super(worldCanvas);
     this.setDimensions();
-    super.loadImage(this.IMAGES_WALKING[0]);
+    super.loadImage(this.IMAGES_IDLE[0]);
     super.loadAllImages(this.IMAGES_WALKING);
     super.loadAllImages(this.IMAGES_JUMPING);
     super.loadAllImages(this.IMAGES_DEAD);
     super.loadAllImages(this.IMAGES_HURT);
     super.loadAllImages(this.IMAGES_IDLE);
+    super.loadAllImages(this.IMAGES_LONG_IDLE);
     this.lifeBar = new StatusBar(worldCanvas, 'life');
     this.bottleBar = new StatusBar(worldCanvas, 'bottles');
     this.coinBar = new StatusBar(worldCanvas, 'coins');
@@ -81,8 +94,8 @@ class Character extends MovableObject {
    */
   setDimensions() {
     this.x = 0.2 * this.worldCanvas.width;
-    this.y = -0.1 * this.worldCanvas.height;
-    /* this.y = 0.31 * this.worldCanvas.height; */
+    /* this.y = -0.1 * this.worldCanvas.height; */
+    this.y = 0.31 * this.worldCanvas.height;
     this.height = 0.6 * this.worldCanvas.height;
     this.width = 0.3 * this.worldCanvas.height;
     this.y_landing = 0.31 * this.worldCanvas.height;
@@ -108,67 +121,89 @@ class Character extends MovableObject {
    * animates the character
    */
   animate() {
-    this.animateMovements();
-    this.animateImages();
+    this.movementsInterval = setInterval(() => {
+      this.animateMovements();
+      /* this.animateImages(); */
+    }, 1000 / 60);
   }
 
   animateMovements() {
-    this.movementsInterval = setInterval(() => {
-      this.sound_walking.pause();
-      if (this.isDead()) {
-        this.gameOver();
-      } else {
-        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-          this.changeDirection = false;
-          this.walkRight();
-        }
-        if (this.world.keyboard.LEFT && this.x > 0.2 * this.worldCanvas.width) {
-          this.changeDirection = true;
-          this.walkLeft();
-        }
-        if (this.world.keyboard.UP && !this.isAboveGround(this.y_landing)) {
-          this.jump(20);
-        }
+    this.sound_walking.pause();
+    if (this.isDead()) {
+      this.dyingAnimation();
+      this.stopAnimation(this.movementsInterval, 1500);
+    } else {
+      this.playAnimation([this.IMAGES_IDLE[0]], 30);
+      if (Date.now() - this.world.lastKeyEvent > 1000) {
+        this.playAnimation(this.IMAGES_IDLE, 30);
       }
-      this.world.camera_X = -this.x + 0.07 * canvas.width;
-    }, 1000 / 60);
+      if (!this.world.lastKeyEvent || Date.now() - this.world.lastKeyEvent > 4000) {
+        this.playAnimation(this.IMAGES_LONG_IDLE, 30);
+      }
+      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+        this.walkRight();
+      }
+      if (this.world.keyboard.LEFT && this.x > 0.2 * this.worldCanvas.width) {
+        this.walkLeft();
+      }
+      if (this.isHurt()) {
+        this.playAnimation(this.IMAGES_HURT, 6);
+      }
+      if (this.world.keyboard.UP && !this.isAboveGround(this.y_landing)) {
+        this.jump(20);
+        this.jumpingAnimation();
+      }
+      if (this.isAboveGround(this.y_landing)) {
+        this.jumpingAnimation();
+      }
+    }
   }
 
-  animateImages() {
-    let imageInterval = setInterval(() => {
-      if (this.isDead()) {
-        if (!this.img.src.includes('Muerte')) {
-          this.currentImage = 0;
-        }
-        this.playAnimation(this.IMAGES_DEAD);
-        if (this.img.src.includes('D-56')) {
-          clearInterval(imageInterval);
-        }
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-      } else if (this.moveY == this.worldCanvas.height / 20) {
+  walkRight() {
+    this.changeDirection = false;
+    this.moveRight();
+    if (!this.isAboveGround(this.y_landing)) {
+      this.playAnimation(this.IMAGES_WALKING, 3);
+      this.sound_walking.play();
+    }
+  }
+
+  walkLeft() {
+    this.changeDirection = true;
+    this.moveLeft();
+    if (!this.isAboveGround(this.y_landing)) {
+      this.playAnimation(this.IMAGES_WALKING, 3);
+      this.sound_walking.play();
+    }
+  }
+
+  jumpingAnimation() {
+    if (!this.isHurt()) {
+      if (this.moveY == this.worldCanvas.height / 20) {
         this.currentImage = 0;
-        this.playAnimation(this.IMAGES_JUMPING, 3);
-      } else if (this.isAboveGround(this.y_landing)) {
-        this.playAnimation(this.IMAGES_JUMPING, 3);
-      } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-        this.playAnimation(this.IMAGES_WALKING);
-      } else {
-        this.playAnimation(this.IMAGES_IDLE, 10);
       }
-    }, 50);
+      if (this.currentImage > 7) {
+        this.currentImage = 7;
+      }
+      this.playAnimation(this.IMAGES_JUMPING, 11);
+    }
   }
 
-  gameOver() {
-    setTimeout(() => {
-      return true;
-    }, 2000);
-    this.jump(20);
-    this.y_landing = this.worldCanvas.height;
-    clearInterval(this.movementsInterval);
-    setInterval(() => {
-      this.moveRight();
-    }, 1000 / 60);
+  dyingAnimation() {
+    if (!this.img.src.includes('Muerte')) {
+      this.y_landing = this.worldCanvas.height;
+      this.currentImage = 0;
+      this.jump(20);
+    }
+    if (this.currentImage > 5) {
+      this.currentImage = 5;
+    }
+    this.moveRight();
+    this.playAnimation(this.IMAGES_DEAD, 5);
+  }
+
+  setDyingImage(){
+
   }
 
   collectObject(collisionObject, index, arr) {

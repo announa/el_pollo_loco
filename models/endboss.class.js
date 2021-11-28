@@ -122,6 +122,15 @@ class Endboss extends MovableObject {
     }
   }
 
+  walkLeft(){
+    this.moveLeft();
+    this.sound_walking.play()
+  }
+  walkRight(){
+    this.moveRight();
+    this.sound_walking.play()
+  }
+
   switchAnimations() {
     if (this.images == this.IMAGES_WALKING && new Date().getTime() - this.startedWalking > 1500) {
       this.currentImage = 0;

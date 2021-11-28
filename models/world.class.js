@@ -1,5 +1,6 @@
 class World {
   worldCanvas;
+  lastKeyEvent;
   character;
   bottlesAmount;
   coinsAmount;
@@ -9,6 +10,7 @@ class World {
   keyboard;
   camera_X = 0;
   play = false;
+  gameOver = false;
 
   constructor(worldCanvas, keyboard) {
     this.worldCanvas = worldCanvas;
@@ -33,6 +35,9 @@ class World {
   }
 
   initObjectRendering() {
+    if(!this.gameOver){
+    this.camera_X = -this.character.x + 0.07 * this.worldCanvas.width;
+    }
     this.ctx.translate(this.camera_X, 0);
     this.renderFlexibleObjects();
     this.ctx.translate(-this.camera_X, 0);
@@ -117,6 +122,7 @@ class World {
     setInterval(() => {
       this.checkForThrownBottle();
       this.checkForCollisions();
+      this.checkIfGameOver();
     }, 1000 / 25);
   }
 
@@ -132,6 +138,12 @@ class World {
 
   timeSinceLastThrownBottle() {
     return new Date().getTime() - this.lastThrownBottle;
+  }
+
+  checkIfGameOver(){
+    if(this.character.isDead()){
+      this.gameOver = true;
+    }
   }
 
   /* COLLISION CHECKS */

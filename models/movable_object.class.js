@@ -40,16 +40,6 @@ class MovableObject extends GameComponents {
     this.x += this.moveX;
   }
 
-    walkRight() {
-    this.moveRight();
-    this.sound_walking.play();
-  }
-
-  walkLeft() {
-    this.moveLeft();
-    this.sound_walking.play();
-  }
-
   fallingAnimation() {
     setInterval(() => {
       this.gravAcceleration = this.worldCanvas.height / 200;
@@ -64,7 +54,7 @@ class MovableObject extends GameComponents {
       }
     }, 1000 / 25);
   }
-
+  
   jump(factor) {
     this.moveY = this.worldCanvas.height / factor;
   }
@@ -116,5 +106,11 @@ class MovableObject extends GameComponents {
 
   isDead() {
     return this.energy == 0;
+  }
+
+  stopAnimation(interval, timeout){
+    setTimeout(() => {
+      clearInterval(interval);
+    }, timeout);
   }
 }

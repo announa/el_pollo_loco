@@ -27,15 +27,13 @@ class Chicken extends MovableObject {
     this.y = 0.74 * this.worldCanvas.height;
     this.height = 0.15 * this.worldCanvas.height;
     this.width = 0.15 * this.worldCanvas.height;
-    this.moveX = this.worldCanvas.width / 10000 + Math.random() * (this.worldCanvas.width / 5000);
+    this.moveX = this.worldCanvas.width / 1000 + Math.random() * (this.worldCanvas.width / 300);
   }
   animate() {
     setInterval(() => {
-      this.moveLeft();
-    }, 1000 / 60);
-    setInterval(() => {
       if (this.alive) {
         this.playAnimation(this.IMAGES_WALKING);
+        this.moveLeft();
       } else {
         this.img = this.imageCache[this.IMAGE_DEAD[0]];
       }
