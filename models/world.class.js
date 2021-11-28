@@ -37,6 +37,9 @@ class World {
   initObjectRendering() {
     if (!this.gameOver) {
       this.camera_X = -this.character.x + 0.07 * this.worldCanvas.width;
+      if(this.camera_X < -(this.level.level_end_x - 0.8 * this.worldCanvas.width)){
+        this.camera_X = -(this.level.level_end_x - 0.8 * this.worldCanvas.width);
+      }
     }
     this.ctx.translate(this.camera_X, 0);
     this.renderFlexibleObjects();

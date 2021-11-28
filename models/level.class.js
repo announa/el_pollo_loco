@@ -14,6 +14,6 @@ class Level {
     this.clouds = clouds;
     this.backgroundObjects = backgroundObjects;
     this.endboss = endboss;
-    this.level_end_x = (bgImgAmount - 1) * worldCanvas.width;
+    this.level_end_x = bgImgAmount * worldCanvas.width - 0.2 * worldCanvas.width;
   }
 }
