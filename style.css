@@ -14,11 +14,24 @@ body {
   background: url('./img/5.Fondo/Capas/5.cielo_1920-1080px.png');
   background-size: cover;
   background-position: left;
+  position: relative;
 }
 
 canvas {
   width: 100%;
   height: 100%;
+  display: block;
+}
+
+#startscreen{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+button{
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
 }
 
 @media screen and (min-aspect-ratio: 16/9) {

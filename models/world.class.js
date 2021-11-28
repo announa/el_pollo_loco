@@ -8,6 +8,7 @@ class World {
   ctx;
   keyboard;
   camera_X = 0;
+  play = false;
 
   constructor(worldCanvas, keyboard) {
     this.worldCanvas = worldCanvas;
@@ -114,8 +115,8 @@ class World {
 
   checkEvents() {
     setInterval(() => {
-      this.checkForCollisions();
       this.checkForThrownBottle();
+      this.checkForCollisions();
     }, 1000 / 25);
   }
 

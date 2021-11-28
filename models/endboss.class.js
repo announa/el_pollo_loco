@@ -46,7 +46,7 @@ class Endboss extends MovableObject {
     super.loadAllImages(this.IMAGES_ATTACK);
     super.loadAllImages(this.IMAGES_DEAD);
     this.setDimensions(bgImgAmount);
-    this.lifeBar = new StatusBar(this.worldCanvas, 'life', this)
+    this.lifeBar = new StatusBar(this.worldCanvas, 'life', this);
     this.images = this.IMAGES_WALKING;
     this.sound_walking.volume = 0.5;
 
@@ -57,7 +57,6 @@ class Endboss extends MovableObject {
   setDimensions(bgImgAmount) {
     this.height = 0.8 * this.worldCanvas.height;
     this.width = 0.85 * 0.8 * this.worldCanvas.height;
-    /* this.x = this.worldCanvas.width; */
     this.x = bgImgAmount * this.worldCanvas.width - 0.5 * this.worldCanvas.width;
     this.y = 0.14 * this.worldCanvas.height;
     this.y_landing = 0.14 * this.worldCanvas.height;
@@ -80,33 +79,59 @@ class Endboss extends MovableObject {
   }
 
   animate() {
-    this.animateMovements();
-    this.animateImages();
-  }
-
-  animateMovements() {
     setInterval(() => {
       if (this.nearCharacter()) {
-        this.sound_walking.pause();
-        if (this.isDead()) {
-          setInterval(() => {
-            this.moveRight();
-          }, 80);
-        } else {
-          if ((this.images == this.IMAGES_WALKING || this.isAboveGround(this.y_landing)) && !this.changeDirection) {
-            this.walkLeft();
-          }
-          if ((this.images == this.IMAGES_WALKING || this.isAboveGround(this.y_landing)) && this.changeDirection) {
-            this.walkRight();
-          }
-          if (this.img.src.includes('G15')) {
-            this.jump(30);
-          }
-          this.turnAround();
-          this.moveEndbossBar();
-        }
+        this.startAnimation();
       }
     }, 100);
+  }
+
+  startAnimation() {
+    this.sound_walking.pause();
+    if (this.isDead()) {
+      this.dyingAnimation();
+    } else {
+      if (this.startedWalking == 0) {
+        this.startedWalking = new Date().getTime();
+      }
+      this.checkEndbossEvents();
+      this.switchAnimations();
+      this.turnAround();
+      this.moveEndbossBar();
+      this.playAnimation(this.images, 2);
+    }
+  }
+
+
+  checkEndbossEvents() {
+    if ((this.images == this.IMAGES_WALKING || this.isAboveGround(this.y_landing)) && !this.changeDirection) {
+      this.walkLeft();
+    }
+    if ((this.images == this.IMAGES_WALKING || this.isAboveGround(this.y_landing)) && this.changeDirection) {
+      this.walkRight();
+    }
+    if (this.img.src.includes('G15')) {
+      this.jump(30);
+    }
+    if (this.nextToCharacter()) {
+      this.attack();
+    } else {
+      if (this.images == this.IMAGES_ATTACK) {
+        this.images = this.IMAGES_WALKING;
+      }
+    }
+  }
+
+  switchAnimations() {
+    if (this.images == this.IMAGES_WALKING && new Date().getTime() - this.startedWalking > 1500) {
+      this.currentImage = 0;
+      this.images = this.IMAGES_ATTENTION;
+    }
+    if (this.img.src.includes('G12') && this.imageRepetitions == 2) {
+      this.currentImage = 0;
+      this.startedWalking = new Date().getTime();
+      this.images = this.IMAGES_WALKING;
+    }
   }
 
   turnAround() {
@@ -131,44 +156,6 @@ class Endboss extends MovableObject {
     this.lifeBar.setDimensions('life', this);
   }
 
-  animateImages() {
-    let endbossDeadImg = 0;
-    this.startedWalking = new Date().getTime();
-    this.animationInterval = setInterval(() => {
-      if (this.nearCharacter()) {
-        if (this.isDead()) {
-          endbossDeadImg = this.endbossDies(endbossDeadImg);
-        } else {
-          this.checkEndbossEvents();
-          this.playAnimation(this.images, 2);
-        }
-      }
-    }, 100);
-  }
-
-  checkEndbossEvents() {
-    if (this.nextToCharacter()) {
-      this.attack();
-    } else {
-      if (this.images == this.IMAGES_ATTACK) {
-        this.images = this.IMAGES_WALKING;
-      }
-      this.switchAnimations();
-    }
-  }
-
-  switchAnimations() {
-    if (this.images == this.IMAGES_WALKING && new Date().getTime() - this.startedWalking > 1500) {
-      this.currentImage = 0;
-      this.images = this.IMAGES_ATTENTION;
-    }
-    if (this.img.src.includes('G12') && this.imageRepetitions == 2) {
-      this.currentImage = 0;
-      this.startedWalking = new Date().getTime();
-      this.images = this.IMAGES_WALKING;
-    }
-  }
-
   nearCharacter() {
     return (
       this.gameCharacter.x + this.gameCharacter.width > this.x - this.worldCanvas.width &&
@@ -190,15 +177,16 @@ class Endboss extends MovableObject {
     this.images = this.IMAGES_ATTACK;
   }
 
-  endbossDies(endbossDeadImg) {
-    if (endbossDeadImg == 0) {
+  dyingAnimation() {
+    setInterval(() => {
+      this.moveRight();
+    }, 80);
+    if (!this.img.src.includes('Muerte')) {
       this.currentImage = 0;
     }
     this.playAnimation(this.IMAGES_DEAD);
-    endbossDeadImg++;
-    if (endbossDeadImg == 3) {
-      clearInterval(this.animationInterval);
+    if (this.currentImage > 2) {
+      this.currentImage = 2;
     }
-    return endbossDeadImg;
   }
 }

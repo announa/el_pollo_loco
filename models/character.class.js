@@ -135,9 +135,15 @@ class Character extends MovableObject {
   }
 
   animateImages() {
-    setInterval(() => {
+    let imageInterval = setInterval(() => {
       if (this.isDead()) {
+        if (!this.img.src.includes('Muerte')) {
+          this.currentImage = 0;
+        }
         this.playAnimation(this.IMAGES_DEAD);
+        if (this.img.src.includes('D-56')) {
+          clearInterval(imageInterval);
+        }
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
       } else if (this.moveY == this.worldCanvas.height / 20) {
@@ -166,12 +172,12 @@ class Character extends MovableObject {
   }
 
   collectObject(collisionObject, index, arr) {
-    if(collisionObject instanceof BottleOnTheGround){
-    this.collectedBottles += 1;
-    this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
-  } else if(collisionObject instanceof Coin){
-    this.collectedCoins += 1;
-    this.coinBar.updateStatusBar(this.percentageCoinBar(), 'coins');
+    if (collisionObject instanceof BottleOnTheGround) {
+      this.collectedBottles += 1;
+      this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
+    } else if (collisionObject instanceof Coin) {
+      this.collectedCoins += 1;
+      this.coinBar.updateStatusBar(this.percentageCoinBar(), 'coins');
     }
     arr.splice(index, 1);
   }
@@ -196,13 +202,7 @@ class Character extends MovableObject {
     let bottle_x = this.x + 0.4 * this.width;
     let bottle_y = this.y + 0.5 * this.height;
     let bottle_startspeed_x = this.detectCharacterSpeed();
-    let bottle = new ThrownBottle(
-      this.worldCanvas,
-      bottle_x,
-      bottle_y,
-      bottle_startspeed_x,
-      this.changeDirection
-    );
+    let bottle = new ThrownBottle(this.worldCanvas, bottle_x, bottle_y, bottle_startspeed_x, this.changeDirection);
     return bottle;
   }
 
