@@ -81,15 +81,11 @@ class World {
 
   drawImage(obj) {
     if ((!obj.destroyed && this.isVisible(obj)) || obj instanceof StatusBar) {
-      if (obj instanceof Character && obj.isAboveGround(obj.y_landing)) {
-        console.log(obj.img.src);
-      }
       this.ctx.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
     }
   }
 
   isVisible(obj) {
-    /* return true; */
     return !(
       (!obj.changeDirection && (-this.camera_X > obj.x + obj.width || -this.camera_X + this.worldCanvas.width < obj.x)) ||
       (obj.changeDirection && (this.camera_X < obj.x - obj.width || this.camera_X - this.worldCanvas.width > obj.x))

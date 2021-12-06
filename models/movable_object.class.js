@@ -41,7 +41,7 @@ class MovableObject extends GameComponents {
   }
 
   applyGravity() {
-    let gravityInterval = setInterval(() => {
+    setInterval(() => {
       this.gravAcceleration = this.worldCanvas.height / 200;
       if (this.moveY != 0) {
         this.moveY -= this.gravAcceleration;
