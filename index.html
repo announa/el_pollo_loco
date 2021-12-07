@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@900&family=Sigmar+One&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@900&family=Sigmar+One&display=swap"
+      rel="stylesheet"
+    />
     <script src="./models/keyboard.class.js"></script>
     <script src="./models/game_components.class.js"></script>
     <script src="./models/movable_object.class.js"></script>
@@ -28,16 +31,54 @@
     <title>El Pollo Loco</title>
   </head>
   <body onload="init()">
-    <div id="canvas-container">
+    <div id="canvas-container" class="container-size">
       <div id="startscreen" class="screen"></div>
       <canvas id="canvas"></canvas>
       <div id="endscreen" class="screen d-none"></div>
+      <div id="help-modal" class="container-size d-none">
+        <div id="close-help" onclick="closeHelp()">
+          <img src="./img/icon_close2.svg" alt="Close Help" />
+        </div>
+        <h1>El Pollo Pelogroso - Help</h1>
+        <p>Help Pepe Peligroso to find his way through the world of El Pollo Poligroso!</p>
+        <p>
+          Collect coins to gain life and collect bottles for throwing them at enemies - but be careful: the endboss can
+          only be beaten with bottles, so don't waste them!
+        </p>
+        <p>Avoid collisions with enemies, even with the chickens. They may seem small but they can be painful!</p>
+        <p>Jump on them for beating them.</p>
+        <h2>How to move Pepe?</h2>
+        <table id="keys-table">
+          <tbody>
+            <tr>
+              <td class="standard-font">&larr;</td>
+              <td>-</td>
+              <td>Move left</td>
+            </tr>
+            <tr>
+              <td class="standard-font">&rarr;</td>
+              <td>-</td>
+              <td>Move right</td>
+            </tr>
+            <tr>
+              <td class="standard-font">&uarr;</td>
+              <td>-</td>
+              <td>Jump</td>
+            </tr>
+            <tr>
+              <td>D</td>
+              <td>-</td>
+              <td>Throw bottle</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div id="button-container">
       <button id="start-btn" onclick="startGame()">Start Game</button>
       <button id="restart-btn" class="d-none">Start New Game</button>
-      <button id="help-btn">Help</button>
-      <button id="pause-btn">Pause</button>
+      <button id="help-btn" onclick="openHelp()">Help</button>
+      <button id="pause-btn" disabled onclick="pauseGame()">Pause</button>
     </div>
   </body>
 </html>

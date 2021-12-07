@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let playing = false;
+let pause = true;
 
 function init() {
   setCanvasSize();
@@ -26,8 +27,10 @@ function sizeButtonContainer() {
 
 function startGame() {
   playing = true;
+  pause = false;
   world.draw();
   hideStartscreen();
+  document.getElementById('pause-btn').disabled = false;
 }
 
 function hideStartscreen() {
@@ -37,6 +40,35 @@ function hideStartscreen() {
     startscreen.classList.add('d-none');
     startscreen.classList.remove('hide-startscreen');
   }, 300);
+}
+
+function openHelp() {
+  if (playing) {
+    pause = true;
+  }
+  document.getElementById('help-modal').classList.remove('d-none');
+}
+
+function closeHelp() {
+  document.getElementById('help-modal').classList.add('d-none');
+  pause = false;
+  if (playing && document.getElementById('pause-btn').innerHTML == 'Pause') {
+    world.draw();
+  }
+}
+
+function pauseGame() {
+  if (playing) {
+    let pauseBtn = document.getElementById('pause-btn');
+    if (!pause) {
+      pause = true;
+      pauseBtn.innerHTML = 'Go on!';
+    } else {
+      pause = false;
+      pauseBtn.innerHTML = 'Pause';
+      world.draw();
+    }
+  }
 }
 
 window.addEventListener('keydown', (event) => checkKeyDown(event));

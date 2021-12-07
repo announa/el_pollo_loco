@@ -50,31 +50,33 @@ class ThrownBottle extends MovableObject {
 
   animate(toTheLeft) {
     this.bottleInterval = setInterval(() => {
-      if (!this.explode) {
-        this.applyGravity(this.worldCanvas);
-        this.playAnimation(this.IMAGES_ROTATING);
-        this.jump(40);
-        if (toTheLeft) {
-          this.moveLeft();
+      if (!pause) {
+        if (!this.explode) {
+          this.applyGravity(this.worldCanvas);
+          this.playAnimation(this.IMAGES_ROTATING);
+          this.jump(40);
+          if (toTheLeft) {
+            this.moveLeft();
+          } else {
+            this.moveRight();
+          }
         } else {
-          this.moveRight();
+          this.bottleExplode();
         }
-      } else {
-        this.bottleExplode();
       }
     }, 1000 / 25);
   }
 
-  bottleExplode(){
+  bottleExplode() {
     this.height = 0.2 * this.worldCanvas.height;
-        this.width = 0.2 * this.worldCanvas.height;
-        this.y_landing = this.y;
-        this.playAnimation(this.IMAGES_SALSA);
-        if(this.img.src.includes('12.png')){
-          clearInterval(this.bottleInterval)
-          setTimeout(() => {
-            this.destroyed = true;
-          }, 100);
-        }
+    this.width = 0.2 * this.worldCanvas.height;
+    this.y_landing = this.y;
+    this.playAnimation(this.IMAGES_SALSA);
+    if (this.img.src.includes('12.png')) {
+      clearInterval(this.bottleInterval);
+      setTimeout(() => {
+        this.destroyed = true;
+      }, 100);
+    }
   }
 }

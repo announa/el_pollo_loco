@@ -80,7 +80,7 @@ class Endboss extends MovableObject {
 
   animate() {
     setInterval(() => {
-      if (this.nearCharacter()) {
+      if (this.nearCharacter() && !pause) {
         this.startAnimation();
       }
     }, 100);

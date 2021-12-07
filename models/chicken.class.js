@@ -31,11 +31,13 @@ class Chicken extends MovableObject {
   }
   animate() {
     setInterval(() => {
-      if (this.alive) {
-        this.playAnimation(this.IMAGES_WALKING);
-        this.moveLeft();
-      } else {
-        this.img = this.imageCache[this.IMAGE_DEAD[0]];
+      if (!pause) {
+        if (this.alive) {
+          this.playAnimation(this.IMAGES_WALKING);
+          this.moveLeft();
+        } else {
+          this.img = this.imageCache[this.IMAGE_DEAD[0]];
+        }
       }
     }, 100);
   }

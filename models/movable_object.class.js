@@ -42,13 +42,15 @@ class MovableObject extends GameComponents {
 
   applyGravity() {
     setInterval(() => {
-      this.gravAcceleration = this.worldCanvas.height / 200;
-      if (this.moveY != 0) {
-        this.moveY -= this.gravAcceleration;
-        this.y -= this.moveY;
-        if (this.y > this.y_landing) {
-          this.y = this.y_landing;
-          this.moveY = 0;
+      if (!pause) {
+        this.gravAcceleration = this.worldCanvas.height / 200;
+        if (this.moveY != 0) {
+          this.moveY -= this.gravAcceleration;
+          this.y -= this.moveY;
+          if (this.y > this.y_landing) {
+            this.y = this.y_landing;
+            this.moveY = 0;
+          }
         }
       }
     }, 1000 / 25);

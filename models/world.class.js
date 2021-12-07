@@ -26,12 +26,14 @@ class World {
   }
 
   draw() {
-    this.ctx.clearRect(0, 0, this.worldCanvas.width, this.worldCanvas.height);
-    this.initObjectRendering();
-    let self = this;
-    requestAnimationFrame(function () {
-      self.draw();
-    });
+    if (!pause) {
+      this.ctx.clearRect(0, 0, this.worldCanvas.width, this.worldCanvas.height);
+      this.initObjectRendering();
+      let self = this;
+      requestAnimationFrame(function () {
+        self.draw();
+      });
+    }
   }
 
   initObjectRendering() {
@@ -87,7 +89,8 @@ class World {
 
   isVisible(obj) {
     return !(
-      (!obj.changeDirection && (-this.camera_X > obj.x + obj.width || -this.camera_X + this.worldCanvas.width < obj.x)) ||
+      (!obj.changeDirection &&
+        (-this.camera_X > obj.x + obj.width || -this.camera_X + this.worldCanvas.width < obj.x)) ||
       (obj.changeDirection && (this.camera_X < obj.x - obj.width || this.camera_X - this.worldCanvas.width > obj.x))
     );
   }
@@ -128,9 +131,11 @@ class World {
 
   checkEvents() {
     setInterval(() => {
-      this.checkForThrownBottle();
-      this.checkForCollisions();
-      this.checkIfGameOver();
+      if (!pause) {
+        this.checkForThrownBottle();
+        this.checkForCollisions();
+        this.checkIfGameOver();
+      }
     }, 1000 / 25);
   }
 

@@ -121,8 +121,10 @@ class Character extends MovableObject {
    */
   animate() {
     this.movementsInterval = setInterval(() => {
-      this.animateMovements();
-      /* this.animateImages(); */
+      if (!pause) {
+        this.animateMovements();
+        /* this.animateImages(); */
+      }
     }, 1000 / 60);
   }
 
@@ -208,15 +210,15 @@ class Character extends MovableObject {
   setDyingImage() {}
 
   collectObject(collisionObject, index, arr) {
-      if (collisionObject instanceof BottleOnTheGround) {
-        this.collectedBottles += 1;
-        this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
-      } else if (collisionObject instanceof Coin) {
-        this.collectedCoins += 1;
-        this.coinBar.updateStatusBar(this.percentageCoinBar(), 'coins');
-      }
-      arr.splice(index, 1);
+    if (collisionObject instanceof BottleOnTheGround) {
+      this.collectedBottles += 1;
+      this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
+    } else if (collisionObject instanceof Coin) {
+      this.collectedCoins += 1;
+      this.coinBar.updateStatusBar(this.percentageCoinBar(), 'coins');
     }
+    arr.splice(index, 1);
+  }
 
   throwBottle() {
     if (this.collectedBottles > 0) {

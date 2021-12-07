@@ -1,3 +1,7 @@
+*{
+  font-family: 'Alegreya Sans', sans-serif;
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -13,6 +17,25 @@ body {
 
 .d-none {
   display: none;
+}
+
+.standard-font{
+  font-family: sans-serif;
+}
+
+h1{
+  text-align: center;
+  margin-top: 40px;
+}
+
+h2{
+  font-size: 1.7rem;
+}
+
+p{
+  font-size: 1.2rem;
+  margin: .6rem 0;
+  letter-spacing: .08rem;
 }
 
 #canvas-container {
@@ -56,7 +79,6 @@ button {
   padding: 0.5rem 1.2rem;
   border-radius: 10px;
   font-variant: small-caps;
-  font-family: 'Alegreya Sans', sans-serif;
   font-size: clamp(.8rem, 2vw, 1.5rem);
   color: #a0220a;
   border: none;
@@ -66,13 +88,60 @@ button {
 }
 
 button:hover {
-  background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.3)),
-    linear-gradient(#ffc322 10%, #ffd900 30%, #ffd900 70%, #ffc322 90%);
+  background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
+  linear-gradient(#ffc322 10%, #ffd900 30%, #ffd900 70%, #ffc322 90%);
   color: #a72e16;
+}
+
+button:disabled{
+  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+  linear-gradient(#ffc322 10%, #ffd900 30%, #ffd900 70%, #ffc322 90%);
+  color: #b86352;
+  box-shadow: 1px 1px 2px 2px #b86352;
+  cursor: default;
 }
 
 .btns--decent{
   background: rgba(0, 0, 0, 0.5);
+}
+
+/* -------------  HELP - MODAL  -------------- */
+
+#help-modal{
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #a72e16;
+  padding: 0 50px;
+  overflow-y: auto;
+}
+
+#close-help{
+  background: none;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 2px;
+}
+
+#close-help:hover{
+  background: rgba(0, 0, 0, 0.1);
+}
+
+#close-help img{
+  width: 100%;
+  object-fit: contain;
+}
+
+#keys-table td{
+  padding: 5px;
+  font-size: 1.2rem;
+  letter-spacing: .08rem;
 }
 
 
