@@ -1,9 +1,11 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let playing = false;
 
 function init() {
   setCanvasSize();
+  sizeButtonContainer();
   setLevel1();
   world = new World(canvas, keyboard);
 }
@@ -13,8 +15,28 @@ function setCanvasSize() {
   canvasContainer = document.getElementById('canvas-container');
   canvas.height = canvasContainer.clientHeight;
   canvas.width = canvasContainer.clientWidth;
-  console.log(canvasContainer.clientHeight);
-  console.log(canvas.height);
+}
+
+function sizeButtonContainer() {
+  console.log('sizing buttons');
+  console.log(document.getElementById('canvas-container').clientWidth);
+  document.getElementById('button-container').style.width =
+    document.getElementById('canvas-container').clientWidth + 'px';
+}
+
+function startGame() {
+  playing = true;
+  world.draw();
+  hideStartscreen();
+}
+
+function hideStartscreen() {
+  let startscreen = document.getElementById('startscreen');
+  startscreen.classList.add('hide-startscreen');
+  setTimeout(() => {
+    startscreen.classList.add('d-none');
+    startscreen.classList.remove('hide-startscreen');
+  }, 300);
 }
 
 window.addEventListener('keydown', (event) => checkKeyDown(event));

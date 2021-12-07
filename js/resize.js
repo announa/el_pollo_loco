@@ -2,9 +2,12 @@ let resizeTimer;
 let canvasSize;
 
 window.onresize = () => {
-  getCurrentCanvasSize();
-  getCurrentPositions();
-  resizeWorld();
+    sizeButtonContainer();
+  if(playing) {
+    getCurrentCanvasSize();
+    getCurrentPositions();
+    resizeWorld();
+  }
 };
 
 /**
@@ -50,17 +53,13 @@ function resizeWorld() {
 
 function setNewCanvasSize() {
   setCanvasSize();
+  sizeButtonContainer();
   resizeCanvasInObjects();
 }
 
 function resizeCanvasInObjects() {
   world.worldCanvas = canvas;
   resizeCanvasInNonArrayObjects();
-/*   world.character.setCanvas(canvas);
-  world.character.lifeBar.setCanvas(canvas);
-  world.character.bottleBar.setCanvas(canvas);
-  world.character.coinBar.setCanvas(canvas);
-  world.level.endboss.setCanvas(canvas); */
   world.level.enemies.forEach((chicken) => chicken.setCanvas(canvas));
   world.level.bottlesOnTheGround.forEach((bottle) => bottle.setCanvas(canvas));
   world.level.coins.forEach((coin) => coin.setCanvas(canvas));
@@ -68,11 +67,11 @@ function resizeCanvasInObjects() {
   world.level.clouds.forEach((cloud) => cloud.setCanvas(canvas));
 }
 
-function resizeCanvasInNonArrayObjects(){
+function resizeCanvasInNonArrayObjects() {
   let char = world.character;
-  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss].forEach(obj => {
-    obj.setCanvas(canvas)
-  })
+  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss].forEach((obj) => {
+    obj.setCanvas(canvas);
+  });
 }
 
 /**

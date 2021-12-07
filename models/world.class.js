@@ -21,7 +21,7 @@ class World {
     this.bottlesAmount = this.level.bottlesOnTheGround.length;
     this.coinsAmount = this.level.coins.length;
     this.ctx = canvas.getContext('2d');
-    this.draw();
+    /* this.draw(); */
     this.checkEvents();
   }
 
