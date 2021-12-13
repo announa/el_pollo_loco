@@ -31,6 +31,10 @@ function startGame() {
   world.draw();
   hideStartscreen();
   document.getElementById('pause-btn').disabled = false;
+  setRestartBtn();
+  if(!document.getElementById('help-modal').classList.contains('d-none')){
+    closeHelp();
+  }
 }
 
 function hideStartscreen() {
@@ -40,6 +44,12 @@ function hideStartscreen() {
     startscreen.classList.add('d-none');
     startscreen.classList.remove('hide-startscreen');
   }, 300);
+}
+
+function setRestartBtn(){
+  let button = document.getElementById('start-btn');
+  button.innerHTML = 'Restart Level';
+  button.setAttribute('onclick', 'restartLevel()')
 }
 
 function openHelp() {
@@ -69,6 +79,11 @@ function pauseGame() {
       world.draw();
     }
   }
+}
+
+function restartLevel(){
+init();
+startGame();
 }
 
 window.addEventListener('keydown', (event) => checkKeyDown(event));
