@@ -123,7 +123,6 @@ class Character extends MovableObject {
     this.movementsInterval = setInterval(() => {
       if (!pause) {
         this.animateMovements();
-        /* this.animateImages(); */
       }
     }, 1000 / 60);
   }

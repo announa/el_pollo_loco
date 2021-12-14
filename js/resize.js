@@ -1,13 +1,14 @@
-let resizeTimer;
+let resizeTimer1 = 0;
+let resizeTimer2;
 let canvasSize;
 
 window.onresize = () => {
-    sizeButtonContainer();
-  if(playing) {
+  if ((resizeTimer1 == 0)) {
     getCurrentCanvasSize();
     getCurrentPositions();
-    resizeWorld();
+    resizeTimer1 = Date.now();
   }
+  resizeWorld();
 };
 
 /**
@@ -42,18 +43,18 @@ function getArrayObjectPositions() {
  * Resizes the world with a timeout-function. Only executes the resizing after 300ms of not changing the window size.
  */
 function resizeWorld() {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
+  clearTimeout(resizeTimer2);
+  resizeTimer2 = setTimeout(() => {
     setNewCanvasSize();
     resizeObjects();
     restoreObjectPositions();
     world.level.level_end_x = (worldSize_l1 - 1) * world.worldCanvas.width + 0.06 * world.worldCanvas.width;
-  }, 300);
+    resizeTimer1 = 0;
+  }, 200);
 }
 
 function setNewCanvasSize() {
   setCanvasSize();
-  sizeButtonContainer();
   resizeCanvasInObjects();
 }
 

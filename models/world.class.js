@@ -26,7 +26,7 @@ class World {
   }
 
   draw() {
-    if (!pause) {
+    if(playing)
       this.ctx.clearRect(0, 0, this.worldCanvas.width, this.worldCanvas.height);
       this.initObjectRendering();
       let self = this;
@@ -129,6 +129,8 @@ class World {
     this.ctx.restore();
   }
 
+  /* ------------  EVENT CHECK  ------------ */
+
   checkEvents() {
     setInterval(() => {
       if (!pause) {
@@ -154,8 +156,9 @@ class World {
   }
 
   checkIfGameOver() {
-    if (this.character.isDead()) {
-      this.gameOver = true;
+    if (this.character.isDead() && !this.character.img.src.includes('Muerte')) {
+      this.gameOver = Date.now()
+      
     }
   }
 

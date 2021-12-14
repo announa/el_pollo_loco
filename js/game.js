@@ -6,9 +6,23 @@ let pause = true;
 
 function init() {
   setCanvasSize();
-  sizeButtonContainer();
   setLevel1();
   world = new World(canvas, keyboard);
+}
+
+function startGame() {
+  prepareCanvas();
+  playing = true;
+  pause = false;
+  world.draw();
+}
+
+function prepareCanvas(){
+  hideStartscreen();
+  setButtons();
+  if(!document.getElementById('help-modal').classList.contains('d-none')){
+    closeHelp();
+  }
 }
 
 function setCanvasSize() {
@@ -18,24 +32,6 @@ function setCanvasSize() {
   canvas.width = canvasContainer.clientWidth;
 }
 
-function sizeButtonContainer() {
-  console.log('sizing buttons');
-  console.log(document.getElementById('canvas-container').clientWidth);
-  document.getElementById('button-container').style.width =
-    document.getElementById('canvas-container').clientWidth + 'px';
-}
-
-function startGame() {
-  playing = true;
-  pause = false;
-  world.draw();
-  hideStartscreen();
-  document.getElementById('pause-btn').disabled = false;
-  setRestartBtn();
-  if(!document.getElementById('help-modal').classList.contains('d-none')){
-    closeHelp();
-  }
-}
 
 function hideStartscreen() {
   let startscreen = document.getElementById('startscreen');
@@ -43,13 +39,24 @@ function hideStartscreen() {
   setTimeout(() => {
     startscreen.classList.add('d-none');
     startscreen.classList.remove('hide-startscreen');
-  }, 300);
+  }, 500);
+}
+
+function setButtons(){
+  setRestartBtn();
+  setPauseBtn();
 }
 
 function setRestartBtn(){
-  let button = document.getElementById('start-btn');
-  button.innerHTML = 'Restart Level';
-  button.setAttribute('onclick', 'restartLevel()')
+  let restartBtn = document.getElementById('start-btn');
+  restartBtn.innerHTML = 'Restart Level';
+  restartBtn.setAttribute('onclick', 'restartLevel()')
+}
+
+function setPauseBtn(){
+  let pauseBtn = document.getElementById('pause-btn')
+  pauseBtn.disabled = false;
+  pauseBtn.innerHTML = 'Pause';
 }
 
 function openHelp() {

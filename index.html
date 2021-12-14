@@ -35,6 +35,12 @@
       <div id="startscreen" class="screen"></div>
       <canvas id="canvas"></canvas>
       <div id="endscreen" class="screen d-none"></div>
+      <div id="button-container">
+        <button id="start-btn" onclick="startGame()">Start Game</button>
+        <button id="restart-btn" class="d-none">Start New Game</button>
+        <button id="help-btn" onclick="openHelp()">Help</button>
+        <button id="pause-btn" onclick="pauseGame()" disabled>Pause</button>
+      </div>
       <div id="help-modal" class="container-size d-none">
         <div id="close-help" onclick="closeHelp()">
           <img src="./img/icon_close2.svg" alt="Close Help" />
@@ -73,12 +79,6 @@
           </tbody>
         </table>
       </div>
-    </div>
-    <div id="button-container">
-      <button id="start-btn" onclick="startGame()">Start Game</button>
-      <button id="restart-btn" class="d-none">Start New Game</button>
-      <button id="help-btn" onclick="openHelp()">Help</button>
-      <button id="pause-btn" onclick="pauseGame()" disabled>Pause</button>
     </div>
   </body>
 </html>
