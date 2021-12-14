@@ -1,6 +1,7 @@
 * {
   font-family: 'Alegreya Sans', sans-serif;
   margin: 0;
+  letter-spacing: 0.08rem;
 }
 
 body {
@@ -33,9 +34,8 @@ h2 {
 }
 
 p {
-  font-size: 1.3rem;
+    font-size: 1.3rem;
   margin: 0.6rem 0;
-  letter-spacing: 0.08rem;
 }
 
 #canvas-container {

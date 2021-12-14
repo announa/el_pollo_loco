@@ -26,7 +26,7 @@ class World {
   }
 
   draw() {
-    if(playing)
+    if(playing){
       this.ctx.clearRect(0, 0, this.worldCanvas.width, this.worldCanvas.height);
       this.initObjectRendering();
       let self = this;

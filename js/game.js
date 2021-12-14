@@ -68,9 +68,8 @@ function openHelp() {
 
 function closeHelp() {
   document.getElementById('help-modal').classList.add('d-none');
-  pause = false;
   if (playing && document.getElementById('pause-btn').innerHTML == 'Pause') {
-    world.draw();
+    pause = false;
   }
 }
 
@@ -83,7 +82,6 @@ function pauseGame() {
     } else {
       pause = false;
       pauseBtn.innerHTML = 'Pause';
-      world.draw();
     }
   }
 }
