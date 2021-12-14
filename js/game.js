@@ -3,8 +3,13 @@ let world;
 let keyboard = new Keyboard();
 let playing = false;
 let pause = true;
+let intervals = [];
 
 function init() {
+  world = null;
+  level1 = null;
+  console.log(level1);
+  console.log(world);
   setCanvasSize();
   setLevel1();
   world = new World(canvas, keyboard);
@@ -17,10 +22,10 @@ function startGame() {
   world.draw();
 }
 
-function prepareCanvas(){
-  hideStartscreen();
+function prepareCanvas() {
+  hideScreens();
   setButtons();
-  if(!document.getElementById('help-modal').classList.contains('d-none')){
+  if (!document.getElementById('help-modal').classList.contains('d-none')) {
     closeHelp();
   }
 }
@@ -32,29 +37,31 @@ function setCanvasSize() {
   canvas.width = canvasContainer.clientWidth;
 }
 
-
-function hideStartscreen() {
-  let startscreen = document.getElementById('startscreen');
-  startscreen.classList.add('hide-startscreen');
-  setTimeout(() => {
-    startscreen.classList.add('d-none');
-    startscreen.classList.remove('hide-startscreen');
-  }, 500);
+function hideScreens() {
+  let screens = Array.from(document.querySelectorAll('.screen'));
+  screens.forEach((screen) => {
+    screen.classList.add('hide-startscreen');
+    setTimeout(() => {
+      screen.classList.add('d-none');
+      screen.classList.remove('hide-startscreen');
+    }, 500);
+  });
 }
 
-function setButtons(){
+function setButtons() {
+  Array.from(document.querySelectorAll('button')).forEach((button) => button.classList.remove('button--foreground'));
   setRestartBtn();
   setPauseBtn();
 }
 
-function setRestartBtn(){
-  let restartBtn = document.getElementById('start-btn');
-  restartBtn.innerHTML = 'Restart Level';
-  restartBtn.setAttribute('onclick', 'restartLevel()')
+function setRestartBtn() {
+  let startBtn = document.getElementById('start-btn');
+  startBtn.innerHTML = 'Restart Level';
+  startBtn.setAttribute('onclick', 'restartLevel()');
 }
 
-function setPauseBtn(){
-  let pauseBtn = document.getElementById('pause-btn')
+function setPauseBtn() {
+  let pauseBtn = document.getElementById('pause-btn');
   pauseBtn.disabled = false;
   pauseBtn.innerHTML = 'Pause';
 }
@@ -86,9 +93,39 @@ function pauseGame() {
   }
 }
 
-function restartLevel(){
-init();
-startGame();
+async function restartLevel() {
+  playing = false;
+  pause = true;
+  await clearAllIntervals();
+  init();
+  startGame();
+}
+
+function clearAllIntervals() {
+  return new Promise((resolve, reject) => {
+    let length = intervals.length;
+    for (let i = 0; i < length; i++) {
+      clearInterval(intervals[0]);
+      intervals.shift();
+      console.log(intervals);
+    }
+    resolve();
+  });
+}
+
+function gameOver() {
+  playing = false;
+  pause = true;
+  if (world.gameOver == 'lost') {
+    document.getElementById('lostscreen').classList.remove('d-none');
+  } else {
+    document.getElementById('wonscreen').classList.remove('d-none');
+  }
+  resetButtons();
+}
+
+function resetButtons() {
+  Array.from(document.querySelectorAll('button')).forEach((button) => button.classList.add('button--foreground'));
 }
 
 window.addEventListener('keydown', (event) => checkKeyDown(event));

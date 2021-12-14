@@ -32,14 +32,14 @@
   </head>
   <body onload="init()">
     <div id="canvas-container" class="container-size">
-      <div id="startscreen" class="screen"></div>
       <canvas id="canvas"></canvas>
-      <div id="endscreen" class="screen d-none"></div>
+      <div id="startscreen" class="screen"></div>
+      <div id="lostscreen" class="screen d-none"></div>
+      <div id="wonscreen" class="screen d-none"></div>
       <div id="button-container">
-        <button id="start-btn" onclick="startGame()">Start Game</button>
-        <button id="restart-btn" class="d-none">Start New Game</button>
-        <button id="help-btn" onclick="openHelp()">Help</button>
-        <button id="pause-btn" onclick="pauseGame()" disabled>Pause</button>
+        <button type="button" id="start-btn" class="button--foreground" onclick="startGame()">Start Game</button>
+        <button type="button" id="help-btn" class="button--foreground" onclick="openHelp()">Help</button>
+        <button type="button" id="pause-btn" class="button--foreground" onclick="pauseGame()" disabled>Pause</button>
       </div>
       <div id="help-modal" class="container-size d-none">
         <div id="close-help" onclick="closeHelp()">

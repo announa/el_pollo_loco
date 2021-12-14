@@ -79,11 +79,13 @@ class Endboss extends MovableObject {
   }
 
   animate() {
-    setInterval(() => {
+    let endbossInterval = setInterval(() => {
       if (this.nearCharacter() && !pause) {
+        console.log(endbossInterval)
         this.startAnimation();
       }
     }, 100);
+    intervals.push(endbossInterval);
   }
 
   startAnimation() {
@@ -193,9 +195,10 @@ class Endboss extends MovableObject {
   }
 
   dyingAnimation() {
-    setInterval(() => {
+    let enbossInterval_2 = setInterval(() => {
       this.moveRight();
     }, 80);
+    intervals.push(enbossInterval_2)
     if (!this.img.src.includes('Muerte')) {
       this.currentImage = 0;
     }

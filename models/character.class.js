@@ -67,7 +67,7 @@ class Character extends MovableObject {
   thrownBottles = [];
   sound_walking = new Audio('./audio/walking.mp3');
   world;
-  movementsInterval;
+  deadTime;
 
   constructor(worldCanvas) {
     super(worldCanvas);
@@ -120,18 +120,27 @@ class Character extends MovableObject {
    * animates the character
    */
   animate() {
-    this.movementsInterval = setInterval(() => {
+    let characterInterval = setInterval(() => {
       if (!pause) {
+        console.log(characterInterval)
         this.animateMovements();
       }
     }, 1000 / 60);
+    intervals.push(characterInterval)
   }
 
   animateMovements() {
     this.sound_walking.pause();
     if (this.isDead()) {
       this.dyingAnimation();
-      this.stopAnimation(this.movementsInterval, 1500);
+    } else if (this.won) {
+      if (!this.isAboveGround(this.y_landing)) {
+        this.jump(20);
+      }
+      if (this.isAboveGround(this.y_landing)) {
+        this.walkRight();
+      }
+      this.jumpingAnimation();
     } else {
       this.playAnimation([this.IMAGES_IDLE[0]], 30);
       this.checkForIdle();
@@ -195,6 +204,7 @@ class Character extends MovableObject {
 
   dyingAnimation() {
     if (!this.img.src.includes('Muerte')) {
+      this.deadTime = Date.now();
       this.y_landing = this.worldCanvas.height;
       this.currentImage = 0;
       this.jump(20);

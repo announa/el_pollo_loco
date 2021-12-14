@@ -30,8 +30,9 @@ class Chicken extends MovableObject {
     this.moveX = this.worldCanvas.width / 1000 + Math.random() * (this.worldCanvas.width / 300);
   }
   animate() {
-    setInterval(() => {
+let chickenInterval = setInterval(() => {
       if (!pause) {
+        console.log(chickenInterval)
         if (this.alive) {
           this.playAnimation(this.IMAGES_WALKING);
           this.moveLeft();
@@ -40,5 +41,6 @@ class Chicken extends MovableObject {
         }
       }
     }, 100);
+    intervals.push(chickenInterval)
   }
 }

@@ -16,7 +16,6 @@ class ThrownBottle extends MovableObject {
   ];
   explode = false;
   destroyed = false;
-  bottleInterval = 0;
 
   constructor(worldCanvas, x, y, startspeed_x, toTheLeft) {
     super(worldCanvas).loadImage(this.IMAGES_ROTATING[0]);
@@ -49,8 +48,9 @@ class ThrownBottle extends MovableObject {
   }
 
   animate(toTheLeft) {
-    this.bottleInterval = setInterval(() => {
+    let bottleInterval = setInterval(() => {
       if (!pause) {
+
         if (!this.explode) {
           this.applyGravity(this.worldCanvas);
           this.playAnimation(this.IMAGES_ROTATING);
@@ -61,19 +61,19 @@ class ThrownBottle extends MovableObject {
             this.moveRight();
           }
         } else {
-          this.bottleExplode();
+          this.bottleExplode(bottleInterval);
         }
       }
     }, 1000 / 25);
   }
 
-  bottleExplode() {
+  bottleExplode(bottleInterval) {
     this.height = 0.2 * this.worldCanvas.height;
     this.width = 0.2 * this.worldCanvas.height;
     this.y_landing = this.y;
     this.playAnimation(this.IMAGES_SALSA);
     if (this.img.src.includes('12.png')) {
-      clearInterval(this.bottleInterval);
+      clearInterval(bottleInterval);
       setTimeout(() => {
         this.destroyed = true;
       }, 100);

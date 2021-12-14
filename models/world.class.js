@@ -26,7 +26,7 @@ class World {
   }
 
   draw() {
-    if(playing){
+    if (playing) {
       this.ctx.clearRect(0, 0, this.worldCanvas.width, this.worldCanvas.height);
       this.initObjectRendering();
       let self = this;
@@ -132,13 +132,15 @@ class World {
   /* ------------  EVENT CHECK  ------------ */
 
   checkEvents() {
-    setInterval(() => {
+    let worldInterval = setInterval(() => {
       if (!pause) {
+        console.log(worldInterval)
         this.checkForThrownBottle();
         this.checkForCollisions();
         this.checkIfGameOver();
       }
     }, 1000 / 25);
+    intervals.push(worldInterval)
   }
 
   checkForThrownBottle() {
@@ -156,9 +158,23 @@ class World {
   }
 
   checkIfGameOver() {
-    if (this.character.isDead() && !this.character.img.src.includes('Muerte')) {
-      this.gameOver = Date.now()
-      
+    this.checkIfLost();
+    this.checkIfWon();
+  }
+
+  checkIfLost() {
+    if (this.character.deadTime - Date.now() < -100 && this.character.y == this.character.y_landing) {
+      console.log('aaaaaaarrrgggggg');
+      this.gameOver = 'lost';
+      gameOver();
+    }
+  }
+
+  checkIfWon() {
+    if (this.level.endboss.isDead() && -this.camera_X + this.worldCanvas.width < this.level.endboss.x) {
+      this.gameOver = 'won';
+      console.log('yeeeeaaaaahhhh')
+      gameOver();
     }
   }
 
