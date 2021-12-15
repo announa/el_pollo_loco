@@ -64,10 +64,6 @@ class MovableObject extends GameComponents {
     this.moveY = this.worldCanvas.height / factor;
   }
 
-  jump(){
-    
-  }
-
   isAboveGround(y_landing) {
     return this.y < y_landing;
   }

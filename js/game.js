@@ -4,13 +4,23 @@ let keyboard = new Keyboard();
 let playing = false;
 let pause = true;
 let intervals = [];
+let currentLevel = 1;
+let level;
 
 function init() {
   world = null;
-  level1 = null;
+  level = null;
   setCanvasSize();
-  setLevel1();
-  world = new World(canvas, keyboard);
+  setLevel()
+  world = new World(canvas, keyboard, level);
+}
+
+function setLevel(){
+  if(currentLevel == 1){
+    setLevel1();
+  } else if(currentLevel == 2){
+    setLevel2();
+  }
 }
 
 function startGame() {
@@ -55,7 +65,7 @@ function setButtons() {
 function setRestartBtn() {
   let startBtn = document.getElementById('start-btn');
   startBtn.innerHTML = 'Restart Level';
-  startBtn.setAttribute('onclick', 'restartLevel()');
+  startBtn.setAttribute('onclick', 'restart()');
 }
 
 function setPauseBtn() {
@@ -91,7 +101,7 @@ function pauseGame() {
   }
 }
 
-async function restartLevel() {
+async function restart() {
   playing = false;
   pause = true;
   await clearAllIntervals();
@@ -112,20 +122,20 @@ function clearAllIntervals() {
 }
 
 function gameOver() {
-  let delay = 0;
-  if(world.gameOver == 'won'){
-    delay = 1000;
-  }
-  setTimeout(() => {
     playing = false;
     pause = true;
     document.getElementById(`${world.gameOver}screen`).classList.remove('d-none');
+    if(world.gameOver == 'won'){
+      currentLevel++;
+    }
     resetButtons();
-  }, delay);
 }
 
 function resetButtons() {
   Array.from(document.querySelectorAll('button')).forEach((button) => button.classList.add('button--foreground'));
+  if(world.gameOver == 'won'){
+    document.getElementById('start-btn').innerHTML = 'Next Level';
+  }
 }
 
 window.addEventListener('keydown', (event) => checkKeyDown(event));

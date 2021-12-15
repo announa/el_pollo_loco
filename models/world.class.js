@@ -5,15 +5,17 @@ class World {
   bottlesAmount;
   coinsAmount;
   lastThrownBottle = 0;
-  level = level1;
+  level;
   ctx;
   keyboard;
   camera_X = 0;
   play = false;
   gameOver = false;
+  gameOverTime = 0;
 
-  constructor(worldCanvas, keyboard) {
+  constructor(worldCanvas, keyboard, currentLevel) {
     this.worldCanvas = worldCanvas;
+    this.level = currentLevel;
     this.keyboard = keyboard;
     this.character = new Character(worldCanvas);
     this.character.world = this;
@@ -162,16 +164,14 @@ class World {
   }
 
   checkIfLost() {
-    if (this.character.deadTime - Date.now() < -100 && this.character.y == this.character.y_landing) {
+    if (this.character.gameOverTime - Date.now() < -1500 && this.gameOver == 'lost') {
       console.log('aaaaaaarrrgggggg');
-      this.gameOver = 'lost';
       gameOver();
     }
   }
 
   checkIfWon() {
-    if (this.level.endboss.isDead() && -this.camera_X + this.worldCanvas.width < this.level.endboss.x) {
-      this.gameOver = 'won';
+    if (this.character.gameOverTime - Date.now() < -2500 && this.gameOver == 'won') {
       console.log('yeeeeaaaaahhhh')
       gameOver();
     }

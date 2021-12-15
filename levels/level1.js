@@ -1,10 +1,9 @@
 /* const level1 = {[...],[...],[...}]} */
 
-let level1;
 let worldSize_l1 = 4;
 
 function setLevel1() {
-  level1 = new Level(
+  level = new Level(
     canvas,
     worldSize_l1,
     createEnemies(),

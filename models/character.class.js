@@ -67,7 +67,7 @@ class Character extends MovableObject {
   thrownBottles = [];
   sound_walking = new Audio('./audio/walking.mp3');
   world;
-  deadTime;
+  gameOverTime;
 
   constructor(worldCanvas) {
     super(worldCanvas);
@@ -132,7 +132,7 @@ class Character extends MovableObject {
     this.sound_walking.pause();
     if (this.isDead()) {
       this.dyingAnimation();
-    } else if (this.world.gameOver == 'won') {
+    } else if (this.world.gameOver == 'won' && this.x + 0.75* this.worldCanvas.width < this.world.level.endboss.x) {
       this.won();
     } else {
       this.playAnimation([this.IMAGES_IDLE[0]], 30);
@@ -217,7 +217,8 @@ class Character extends MovableObject {
 
   dyingAnimation() {
     if (!this.img.src.includes('Muerte')) {
-      this.deadTime = Date.now();
+      this.gameOverTime = Date.now();
+      this.world.gameOver = 'lost';
       this.y_landing = this.worldCanvas.height;
       this.currentImage = 0;
       this.moveUp(20);

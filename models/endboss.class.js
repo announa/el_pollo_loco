@@ -199,6 +199,8 @@ class Endboss extends MovableObject {
     }, 80);
     intervals.push(enbossInterval_2)
     if (!this.img.src.includes('Muerte')) {
+      this.gameCharacter.gameOverTime = Date.now()
+      this.gameCharacter.world.gameOver = 'won';
       this.currentImage = 0;
     }
     this.playAnimation(this.IMAGES_DEAD);
