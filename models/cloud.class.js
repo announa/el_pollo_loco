@@ -11,7 +11,6 @@ class Cloud extends BackgroundObject {
   animate() {
   let cloudInterval = setInterval(() => {
       if (!pause) {
-        console.log(cloudInterval)
         this.moveLeft(this.moveX);
       }
     }, 1000 / 60);

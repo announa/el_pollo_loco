@@ -134,7 +134,6 @@ class World {
   checkEvents() {
     let worldInterval = setInterval(() => {
       if (!pause) {
-        console.log(worldInterval)
         this.checkForThrownBottle();
         this.checkForCollisions();
         this.checkIfGameOver();
@@ -208,7 +207,7 @@ class World {
     ) {
       this.character.getHurt(2.5, 'life');
     } else if (characterIsColliding == 'beat enemy' && collisionObject instanceof Chicken) {
-      this.character.jump(20);
+      this.character.moveUp(20);
       this.enemyDies(collisionObject, index, arr);
     }
   }
@@ -251,6 +250,7 @@ class World {
   enemyDies(enemy, index, enemiesArray) {
     enemy.alive = false;
     setTimeout(() => {
+      clearInterval(enemy.chickenInterval)
       enemiesArray.splice(index, 1);
     }, 500);
   }

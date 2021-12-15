@@ -84,7 +84,7 @@ class Character extends MovableObject {
     this.coinBar = new StatusBar(worldCanvas, 'coins');
     this.sound_walking.volume = 0.5;
 
-    this.applyGravity();
+    this.applyGravity(200);
     this.animate();
   }
 
@@ -122,7 +122,6 @@ class Character extends MovableObject {
   animate() {
     let characterInterval = setInterval(() => {
       if (!pause) {
-        console.log(characterInterval)
         this.animateMovements();
       }
     }, 1000 / 60);
@@ -133,33 +132,47 @@ class Character extends MovableObject {
     this.sound_walking.pause();
     if (this.isDead()) {
       this.dyingAnimation();
-    } else if (this.won) {
+    } else if (this.world.gameOver == 'won') {
+      this.won();
+    } else {
+      this.playAnimation([this.IMAGES_IDLE[0]], 30);
+      this.checkForIdle();
+      this.checkIfWalking();
+      if (this.isHurt()) {
+        this.playAnimation(this.IMAGES_HURT, 6);
+      }
+      this.checkIfJumping();
+
+    }
+  }
+
+  won(){
+    console.log('won')
       if (!this.isAboveGround(this.y_landing)) {
-        this.jump(20);
+        this.moveUp(20);
       }
       if (this.isAboveGround(this.y_landing)) {
         this.walkRight();
       }
       this.jumpingAnimation();
-    } else {
-      this.playAnimation([this.IMAGES_IDLE[0]], 30);
-      this.checkForIdle();
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-        this.walkRight();
-      }
-      if (this.world.keyboard.LEFT && this.x > 0.2 * this.worldCanvas.width) {
-        this.walkLeft();
-      }
-      if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT, 6);
-      }
-      if (this.world.keyboard.UP && !this.isAboveGround(this.y_landing)) {
-        this.jump(20);
-        this.jumpingAnimation();
-      }
-      if (this.isAboveGround(this.y_landing)) {
-        this.jumpingAnimation();
-      }
+  }
+
+  checkIfWalking(){
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+      this.walkRight();
+    }
+    if (this.world.keyboard.LEFT && this.x > 0.2 * this.worldCanvas.width) {
+      this.walkLeft();
+    }
+  }
+
+  checkIfJumping(){
+    if (this.world.keyboard.UP && !this.isAboveGround(this.y_landing)) {
+      this.moveUp(20);
+      this.jumpingAnimation();
+    }
+    if (this.isAboveGround(this.y_landing)) {
+      this.jumpingAnimation();
     }
   }
 
@@ -207,7 +220,7 @@ class Character extends MovableObject {
       this.deadTime = Date.now();
       this.y_landing = this.worldCanvas.height;
       this.currentImage = 0;
-      this.jump(20);
+      this.moveUp(20);
     }
     if (this.currentImage > 5) {
       this.currentImage = 5;

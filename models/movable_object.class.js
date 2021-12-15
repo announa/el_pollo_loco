@@ -9,6 +9,7 @@ class MovableObject extends GameComponents {
   timeWhenHurt = 0;
   imageRepetitions = 1;
   beatEnemy = false;
+  gravityInterval;
 
   constructor(worldCanvas) {
     super(worldCanvas);
@@ -40,26 +41,31 @@ class MovableObject extends GameComponents {
     this.x += this.moveX;
   }
 
-  applyGravity() {
-    let gravityInterval = setInterval(() => {
+  applyGravity(gravityFactor) {
+    this.gravityInterval = setInterval(() => {
       if (!pause) {
-        console.log(gravityInterval)
-        this.gravAcceleration = this.worldCanvas.height / 200;
-        if (this.moveY != 0) {
+        this.gravAcceleration = this.worldCanvas.height / gravityFactor;
+        if(this instanceof ThrownBottle){
+        }
+        /* if (this.moveY != 0 || this.isAboveGround()) { */
           this.moveY -= this.gravAcceleration;
           this.y -= this.moveY;
           if (this.y > this.y_landing) {
             this.y = this.y_landing;
             this.moveY = 0;
-          }
+          /* } */
         }
       }
     }, 1000 / 25);
-    intervals.push(gravityInterval)
+    intervals.push(this.gravityInterval)
   }
 
-  jump(factor) {
+  moveUp(factor) {
     this.moveY = this.worldCanvas.height / factor;
+  }
+
+  jump(){
+    
   }
 
   isAboveGround(y_landing) {

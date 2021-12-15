@@ -50,7 +50,7 @@ class Endboss extends MovableObject {
     this.images = this.IMAGES_WALKING;
     this.sound_walking.volume = 0.5;
 
-    this.applyGravity();
+    this.applyGravity(200);
     this.animate();
   }
 
@@ -81,7 +81,6 @@ class Endboss extends MovableObject {
   animate() {
     let endbossInterval = setInterval(() => {
       if (this.nearCharacter() && !pause) {
-        console.log(endbossInterval)
         this.startAnimation();
       }
     }, 100);
@@ -112,7 +111,7 @@ class Endboss extends MovableObject {
       this.walkRight();
     }
     if (this.img.src.includes('G15')) {
-      this.jump(30);
+      this.moveUp(30);
     }
     if (this.nextToCharacter()) {
       this.attack();

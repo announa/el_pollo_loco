@@ -22,8 +22,8 @@ class ThrownBottle extends MovableObject {
     super.loadAllImages(this.IMAGES_ROTATING);
     super.loadAllImages(this.IMAGES_SALSA);
     this.setDimensions(x, y, startspeed_x);
-    /* this.applyGravity(this.worldCanvas); */
     this.animate(toTheLeft);
+    this.applyGravity(100);
   }
 
   setDimensions(x, y, startspeed_x) {
@@ -31,8 +31,8 @@ class ThrownBottle extends MovableObject {
     this.y = y;
     this.height = 0.1 * this.worldCanvas.height;
     this.width = 0.1 * this.worldCanvas.height;
-    this.moveX = this.worldCanvas.width / 40 + startspeed_x;
-    this.y_landing = 1 * this.worldCanvas.height;
+    this.moveX = this.worldCanvas.width / 50 + startspeed_x;
+    this.y_landing = this.worldCanvas.height;
   }
 
   getCollisionCoordinates() {
@@ -48,13 +48,14 @@ class ThrownBottle extends MovableObject {
   }
 
   animate(toTheLeft) {
+    this.moveUp(13);
     let bottleInterval = setInterval(() => {
       if (!pause) {
-
         if (!this.explode) {
-          this.applyGravity(this.worldCanvas);
           this.playAnimation(this.IMAGES_ROTATING);
-          this.jump(40);
+          if(this.y == this.y_landing){
+            this.clearBottleIntervals(bottleInterval);
+          }
           if (toTheLeft) {
             this.moveLeft();
           } else {
@@ -73,10 +74,14 @@ class ThrownBottle extends MovableObject {
     this.y_landing = this.y;
     this.playAnimation(this.IMAGES_SALSA);
     if (this.img.src.includes('12.png')) {
-      clearInterval(bottleInterval);
-      setTimeout(() => {
-        this.destroyed = true;
-      }, 100);
+      this.clearBottleIntervals(bottleInterval);
     }
+  }
+
+  clearBottleIntervals(bottleInterval){
+    [bottleInterval, this.gravityInterval].forEach(i => clearInterval(i));
+    setTimeout(() => {
+      this.destroyed = true;
+    }, 100);
   }
 }

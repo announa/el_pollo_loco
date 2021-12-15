@@ -8,8 +8,6 @@ let intervals = [];
 function init() {
   world = null;
   level1 = null;
-  console.log(level1);
-  console.log(world);
   setCanvasSize();
   setLevel1();
   world = new World(canvas, keyboard);
@@ -114,14 +112,16 @@ function clearAllIntervals() {
 }
 
 function gameOver() {
-  playing = false;
-  pause = true;
-  if (world.gameOver == 'lost') {
-    document.getElementById('lostscreen').classList.remove('d-none');
-  } else {
-    document.getElementById('wonscreen').classList.remove('d-none');
+  let delay = 0;
+  if(world.gameOver == 'won'){
+    delay = 1000;
   }
-  resetButtons();
+  setTimeout(() => {
+    playing = false;
+    pause = true;
+    document.getElementById(`${world.gameOver}screen`).classList.remove('d-none');
+    resetButtons();
+  }, delay);
 }
 
 function resetButtons() {

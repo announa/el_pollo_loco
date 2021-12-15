@@ -7,6 +7,7 @@ class Chicken extends MovableObject {
   ];
   IMAGE_DEAD = ['./img/3.Secuencias_Enemy_basico/Version_Gallinita/4.G_muerte.png'];
   alive = true;
+  chickenInterval;
 
   constructor(worldCanvas, worldSize) {
     super(worldCanvas);
@@ -30,9 +31,8 @@ class Chicken extends MovableObject {
     this.moveX = this.worldCanvas.width / 1000 + Math.random() * (this.worldCanvas.width / 300);
   }
   animate() {
-let chickenInterval = setInterval(() => {
+this.chickenInterval = setInterval(() => {
       if (!pause) {
-        console.log(chickenInterval)
         if (this.alive) {
           this.playAnimation(this.IMAGES_WALKING);
           this.moveLeft();
@@ -41,6 +41,6 @@ let chickenInterval = setInterval(() => {
         }
       }
     }, 100);
-    intervals.push(chickenInterval)
+    intervals.push(this.chickenInterval)
   }
 }
