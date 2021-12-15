@@ -1,5 +1,6 @@
 let canvas;
 let world;
+let worldSize;
 let keyboard = new Keyboard();
 let playing = false;
 let pause = true;
@@ -8,19 +9,9 @@ let currentLevel = 1;
 let level;
 
 function init() {
-  world = null;
-  level = null;
   setCanvasSize();
-  setLevel()
+  setLevel(currentLevel);
   world = new World(canvas, keyboard, level);
-}
-
-function setLevel(){
-  if(currentLevel == 1){
-    setLevel1();
-  } else if(currentLevel == 2){
-    setLevel2();  // level 2 not yet implemented
-  }
 }
 
 function startGame() {
@@ -111,8 +102,8 @@ async function restart() {
 
 function clearAllIntervals() {
   return new Promise((resolve, reject) => {
-    let length = intervals.length;
-    for (let i = 0; i < length; i++) {
+    let intervalAmount = intervals.length;
+    for (let i = 0; i < intervalAmount; i++) {
       clearInterval(intervals[0]);
       intervals.shift();
       console.log(intervals);

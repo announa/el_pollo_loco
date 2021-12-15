@@ -48,7 +48,7 @@ function resizeWorld() {
     setNewCanvasSize();
     resizeObjects();
     restoreObjectPositions();
-    world.level.level_end_x = (worldSize_l1 - 1) * world.worldCanvas.width + 0.06 * world.worldCanvas.width;
+    world.level.level_end_x = worldSize * canvas.width - 0.2 * canvas.width;
     resizeTimer1 = 0;
   }, 200);
 }
@@ -83,7 +83,7 @@ function resizeObjects() {
   world.character.lifeBar.setDimensions();
   world.character.bottleBar.setDimensions('bottles');
   world.character.coinBar.setDimensions('coins');
-  world.level.endboss.setDimensions(worldSize_l1);
+  world.level.endboss.setDimensions(worldSize);
   world.level.enemies.forEach((chicken) => chicken.setDimensions());
   world.level.bottlesOnTheGround.forEach((bottle) => bottle.setDimensions());
   world.level.coins.forEach((coin) => coin.setDimensions());

@@ -31,6 +31,7 @@ class World {
     if (playing) {
       this.ctx.clearRect(0, 0, this.worldCanvas.width, this.worldCanvas.height);
       this.initObjectRendering();
+      this.drawInformation();
       let self = this;
       requestAnimationFrame(function () {
         self.draw();
@@ -77,7 +78,7 @@ class World {
       this.flipImage(object);
     }
     this.drawImage(object);
-    /*     this.drawBorder(object); */
+        /* this.drawBorder(object); */
     if (object.changeDirection) {
       this.flipImageBack(object);
     }
@@ -89,6 +90,18 @@ class World {
     }
   }
 
+  drawInformation(){
+    let fontSize = this.worldCanvas.height / 250;
+    this.ctx.font =`${fontSize}rem Alegreya Sans`;
+    this.ctx.fillStyle = '#a0220a';
+    let lifeBar = this.character.lifeBar
+    let bottleBar = this.character.bottleBar
+    let coinBar = this.character.coinBar
+    this.ctx.fillText(this.character.energy, lifeBar.x + 1.05 * lifeBar.width, 1.4 * lifeBar.height)
+    this.ctx.fillText(this.character.collectedBottles, bottleBar.x + 1.05 * bottleBar.width, 1.4 * bottleBar.height)
+    this.ctx.fillText(this.character.collectedCoins, coinBar.x + 1.05 * coinBar.width, 1.4 * coinBar.height)
+  }
+
   isVisible(obj) {
     return !(
       (!obj.changeDirection &&
@@ -97,13 +110,13 @@ class World {
     );
   }
 
-  /*   drawBorder(obj) {
+/*     drawBorder(obj) {
     if (obj instanceof MovableObject || obj instanceof BottleOnTheGround || obj instanceof Coin) {
       this.ctx.beginPath();
       this.ctx.lineWidth = '2px';
       this.ctx.strokeStyle = 'blue';
-      if (obj instanceof Chicken) {
-        this.ctx.rect(obj.x, obj.y, obj.width, obj.height);
+      if (obj instanceof Chick) {
+        this.ctx.rect(obj.x + 0.1 * obj.width, obj.y + 0.1 * obj.height, 0.8 * obj.width, 0.8 * obj.height);
       } else if (obj instanceof Endboss) {
         this.ctx.rect(obj.x + 0.05 * obj.width, obj.y + 0.2 * obj.height, 0.85 * obj.width, 0.7 * obj.height);
       } else if (obj instanceof Character) {

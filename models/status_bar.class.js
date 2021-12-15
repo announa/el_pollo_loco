@@ -53,10 +53,10 @@ class StatusBar extends GameComponents {
       this.y = 0.05 * this.worldCanvas.height;
     }
     if (barType == 'bottles') {
-      this.x = 0.4 * this.worldCanvas.width;
+      this.x = 0.375 * this.worldCanvas.width;
     }
     if(barType == 'coins'){
-      this.x = 0.75 * this.worldCanvas.width;
+      this.x = 0.7 * this.worldCanvas.width;
     }
     this.width = 0.2 * this.worldCanvas.width;
     this.height = 0.05 * this.worldCanvas.width;
