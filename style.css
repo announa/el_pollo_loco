@@ -75,22 +75,6 @@ canvas {
 .hide-startscreen {
   transform: scale(0);
   opacity: 0;
-  /* transform: scale(130%);
-  animation: hide-startstcreen 2000ms ease-in-out forwards;*/
-}
-
-@keyframes hide-startstcreen {
-  0%{
-    transform: scale(100%);
-    opacity: 1;
-  }
-  30%{
-    transform: scale(130%);
-  }
-  100%{
-    transform: scale(0);
-    opacity: 0;
-  }
 }
 
 /* ----------  BUTTONS  ----------- */
@@ -139,6 +123,11 @@ button:disabled {
   color: #b86352;
   box-shadow: 1px 1px 2px 2px #b86352;
   cursor: default;
+}
+
+button:disabled:hover {
+  background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3));
+  color: #b86352;
 }
 
 /* -------------  HELP - MODAL  -------------- */

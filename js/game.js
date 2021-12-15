@@ -19,7 +19,7 @@ function setLevel(){
   if(currentLevel == 1){
     setLevel1();
   } else if(currentLevel == 2){
-    setLevel2();
+    setLevel2();  // level 2 not yet implemented
   }
 }
 
