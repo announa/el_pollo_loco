@@ -17,7 +17,6 @@ class Character extends MovableObject {
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-37.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-38.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-39.png',
-    './img/2.Secuencias_Personaje-Pepe-correccion/3.Secuencia_salto/J-40.png',
   ];
 
   IMAGES_HURT = [
@@ -135,7 +134,6 @@ class Character extends MovableObject {
     } else if (this.world.gameOver == 'won' && this.x + 0.75* this.worldCanvas.width < this.world.level.endboss.x) {
       this.won();
     } else {
-      this.playAnimation([this.IMAGES_IDLE[0]], 30);
       this.checkForIdle();
       this.checkIfWalking();
       if (this.isHurt()) {
@@ -147,7 +145,6 @@ class Character extends MovableObject {
   }
 
   won(){
-    console.log('won')
       if (!this.isAboveGround(this.y_landing)) {
         this.moveUp(20);
       }
@@ -155,6 +152,17 @@ class Character extends MovableObject {
         this.walkRight();
       }
       this.jumpingAnimation();
+  }
+
+
+  checkForIdle() {
+    this.playAnimation([this.IMAGES_IDLE[0]], 30);
+    if (Date.now() - this.world.lastKeyEvent > 1000) {
+      this.playAnimation(this.IMAGES_IDLE, 30);
+    }
+    if (!this.world.lastKeyEvent || Date.now() - this.world.lastKeyEvent > 5000) {
+      this.playAnimation(this.IMAGES_LONG_IDLE, 30);
+    }
   }
 
   checkIfWalking(){
@@ -173,15 +181,6 @@ class Character extends MovableObject {
     }
     if (this.isAboveGround(this.y_landing)) {
       this.jumpingAnimation();
-    }
-  }
-
-  checkForIdle() {
-    if (Date.now() - this.world.lastKeyEvent > 1000) {
-      this.playAnimation(this.IMAGES_IDLE, 30);
-    }
-    if (!this.world.lastKeyEvent || Date.now() - this.world.lastKeyEvent > 4000) {
-      this.playAnimation(this.IMAGES_LONG_IDLE, 30);
     }
   }
 
@@ -229,8 +228,6 @@ class Character extends MovableObject {
     this.moveRight();
     this.playAnimation(this.IMAGES_DEAD, 5);
   }
-
-  setDyingImage() {}
 
   collectObject(collisionObject, index, arr) {
     if (collisionObject instanceof BottleOnTheGround) {
