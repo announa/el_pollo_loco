@@ -99,9 +99,9 @@ class MovableObject extends GameComponents {
     }
   }
 
-  getHurt(percentage, statusType) {
+  getHurt(percentage) {
     this.looseEnergy(percentage);
-    this.lifeBar.updateStatusBar(this.energy, statusType);
+    this.lifeBar.updateStatusBar(this.energy);
   }
 
   isHurt() {

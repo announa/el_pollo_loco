@@ -46,7 +46,7 @@ class Endboss extends MovableObject {
     super.loadAllImages(this.IMAGES_ATTACK);
     super.loadAllImages(this.IMAGES_DEAD);
     this.setDimensions(bgImgAmount);
-    this.lifeBar = new StatusBar(this.worldCanvas, 'life', this);
+    this.lifeBar = new LifeBar(this.worldCanvas, this);
     this.images = this.IMAGES_WALKING;
     this.sound_walking.volume = 0.5;
 

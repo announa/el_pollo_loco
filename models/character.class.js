@@ -78,9 +78,12 @@ class Character extends MovableObject {
     super.loadAllImages(this.IMAGES_HURT);
     super.loadAllImages(this.IMAGES_IDLE);
     super.loadAllImages(this.IMAGES_LONG_IDLE);
-    this.lifeBar = new StatusBar(worldCanvas, 'life');
+    this.lifeBar = new LifeBar(worldCanvas);
+    this.bottleBar = new BottleBar(worldCanvas);
+    this.coinBar = new CoinBar(worldCanvas);
+    /*     this.lifeBar = new StatusBar(worldCanvas, 'life');
     this.bottleBar = new StatusBar(worldCanvas, 'bottles');
-    this.coinBar = new StatusBar(worldCanvas, 'coins');
+    this.coinBar = new StatusBar(worldCanvas, 'coins'); */
     this.sound_walking.volume = 0.5;
 
     this.applyGravity(200);
@@ -124,14 +127,14 @@ class Character extends MovableObject {
         this.animateMovements();
       }
     }, 1000 / 60);
-    intervals.push(characterInterval)
+    intervals.push(characterInterval);
   }
 
   animateMovements() {
     this.sound_walking.pause();
     if (this.isDead()) {
       this.dyingAnimation();
-    } else if (this.world.gameOver == 'won' && this.x + 0.75* this.worldCanvas.width < this.world.level.endboss.x) {
+    } else if (this.world.gameOver == 'won' && this.x + 0.75 * this.worldCanvas.width < this.world.level.endboss.x) {
       this.won();
     } else {
       this.checkForIdle();
@@ -140,20 +143,23 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_HURT, 6);
       }
       this.checkIfJumping();
-
+      /* this.checkIf10Coins(); */
     }
   }
 
-  won(){
-      if (!this.isAboveGround(this.y_landing)) {
-        this.moveUp(20);
-      }
-      if (this.isAboveGround(this.y_landing)) {
+  won() {
+    if (!this.isAboveGround(this.y_landing)) {
+      this.moveUp(20);
+    }
+    if (this.isAboveGround(this.y_landing)) {
+      if (this.changeDirection) {
+        this.walkLeft();
+      } else {
         this.walkRight();
       }
-      this.jumpingAnimation();
+    }
+    this.jumpingAnimation();
   }
-
 
   checkForIdle() {
     this.playAnimation([this.IMAGES_IDLE[0]], 30);
@@ -165,7 +171,7 @@ class Character extends MovableObject {
     }
   }
 
-  checkIfWalking(){
+  checkIfWalking() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.walkRight();
     }
@@ -174,7 +180,7 @@ class Character extends MovableObject {
     }
   }
 
-  checkIfJumping(){
+  checkIfJumping() {
     if (this.world.keyboard.UP && !this.isAboveGround(this.y_landing)) {
       this.moveUp(20);
       this.jumpingAnimation();
@@ -232,10 +238,11 @@ class Character extends MovableObject {
   collectObject(collisionObject, index, arr) {
     if (collisionObject instanceof BottleOnTheGround) {
       this.collectedBottles += 1;
-      this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
+      this.bottleBar.updateStatusBar(this.percentageBottleBar());
     } else if (collisionObject instanceof Coin) {
       this.collectedCoins += 1;
-      this.coinBar.updateStatusBar(this.percentageCoinBar(), 'coins');
+      this.coinBar.updateStatusBar(this.percentageCoinBar());
+      clearInterval(collisionObject.coinInterval);
     }
     arr.splice(index, 1);
   }
@@ -244,7 +251,7 @@ class Character extends MovableObject {
     if (this.collectedBottles > 0) {
       this.thrownBottles.push(this.createThrownBottle());
       this.collectedBottles -= 1;
-      this.bottleBar.updateStatusBar(this.percentageBottleBar(), 'bottles');
+      this.bottleBar.updateStatusBar(this.percentageBottleBar());
     }
   }
 
@@ -274,5 +281,14 @@ class Character extends MovableObject {
     } else {
       return 0;
     }
+  }
+
+  has10Coins() {
+    this.energy += 20;
+    this.collectedCoins = 0;
+    this.lifeBar.highlightStatusBar(this.energy, 'life');
+    this.coinBar.highlightStatusBar(this.percentageCoinBar(), 'coin');
+    /*     this.lifeBar.updateStatusBar(this.energy);
+    this.coinBar.updateStatusBar(this.percentageCoinBar()); */
   }
 }

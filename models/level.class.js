@@ -1,4 +1,5 @@
 class Level {
+  levelNo;
   enemies;
   bottlesOnTheGround;
   coins;
@@ -7,7 +8,8 @@ class Level {
   endboss;
   level_end_x;
 
-  constructor(worldCanvas, worldSize, enemies, bottlesOnTheGround, coins, clouds, backgroundObjects, endboss) {
+  constructor(currentLevel, worldCanvas, worldSize, enemies, bottlesOnTheGround, coins, clouds, backgroundObjects, endboss) {
+    this.levelNo = currentLevel;
     this.enemies = enemies;
     this.bottlesOnTheGround = bottlesOnTheGround;
     this.coins = coins;

@@ -12,18 +12,20 @@ class World {
   play = false;
   gameOver = false;
   gameOverTime = 0;
+  coin_10;
 
-  constructor(worldCanvas, keyboard, currentLevel) {
+  constructor(worldCanvas, keyboard, createdLevel, worldSize) {
     this.worldCanvas = worldCanvas;
-    this.level = currentLevel;
-    this.keyboard = keyboard;
     this.character = new Character(worldCanvas);
+    this.level = createdLevel;
+    this.keyboard = keyboard;
     this.character.world = this;
     this.level.endboss.gameCharacter = this.character;
     this.bottlesAmount = this.level.bottlesOnTheGround.length;
     this.coinsAmount = this.level.coins.length;
+    this.coin_10 = new Coin(worldCanvas, worldSize);
+    this.coin_10.y = 0.5 * worldCanvas.height;
     this.ctx = canvas.getContext('2d');
-    /* this.draw(); */
     this.checkEvents();
   }
 
@@ -61,6 +63,9 @@ class World {
     if (!this.level.endboss.isDead()) {
       this.renderObjects(this.level.endboss.lifeBar);
     }
+    if (this.character.collectedCoins == 10) {
+      this.renderObjects(this.coin_10);
+    }
   }
 
   renderStaticObjects() {
@@ -78,7 +83,7 @@ class World {
       this.flipImage(object);
     }
     this.drawImage(object);
-        /* this.drawBorder(object); */
+    /* this.drawBorder(object); */
     if (object.changeDirection) {
       this.flipImageBack(object);
     }
@@ -90,16 +95,16 @@ class World {
     }
   }
 
-  drawInformation(){
+  drawInformation() {
     let fontSize = this.worldCanvas.height / 250;
-    this.ctx.font =`${fontSize}rem Alegreya Sans`;
+    this.ctx.font = `${fontSize}rem Alegreya Sans`;
     this.ctx.fillStyle = '#a0220a';
-    let lifeBar = this.character.lifeBar
-    let bottleBar = this.character.bottleBar
-    let coinBar = this.character.coinBar
-    this.ctx.fillText(this.character.energy, lifeBar.x + 1.05 * lifeBar.width, 1.4 * lifeBar.height)
-    this.ctx.fillText(this.character.collectedBottles, bottleBar.x + 1.05 * bottleBar.width, 1.4 * bottleBar.height)
-    this.ctx.fillText(this.character.collectedCoins, coinBar.x + 1.05 * coinBar.width, 1.4 * coinBar.height)
+    let lifeBar = this.character.lifeBar;
+    let bottleBar = this.character.bottleBar;
+    let coinBar = this.character.coinBar;
+    this.ctx.fillText(this.character.energy, lifeBar.x + 1.05 * lifeBar.width, 1.4 * lifeBar.height);
+    this.ctx.fillText(this.character.collectedBottles, bottleBar.x + 1.05 * bottleBar.width, 1.4 * bottleBar.height);
+    this.ctx.fillText(this.character.collectedCoins, coinBar.x + 1.05 * coinBar.width, 1.4 * coinBar.height);
   }
 
   isVisible(obj) {
@@ -110,7 +115,7 @@ class World {
     );
   }
 
-/*     drawBorder(obj) {
+  /*     drawBorder(obj) {
     if (obj instanceof MovableObject || obj instanceof BottleOnTheGround || obj instanceof Coin) {
       this.ctx.beginPath();
       this.ctx.lineWidth = '2px';
@@ -151,10 +156,11 @@ class World {
       if (!pause) {
         this.checkForThrownBottle();
         this.checkForCollisions();
+        this.checkIf10Coins();
         this.checkIfGameOver();
       }
     }, 1000 / 25);
-    intervals.push(worldInterval)
+    intervals.push(worldInterval);
   }
 
   checkForThrownBottle() {
@@ -172,20 +178,7 @@ class World {
   }
 
   checkIfGameOver() {
-    this.checkIfLost();
-    this.checkIfWon();
-  }
-
-  checkIfLost() {
-    if (this.character.gameOverTime - Date.now() < -1500 && this.gameOver == 'lost') {
-      console.log('aaaaaaarrrgggggg');
-      gameOver();
-    }
-  }
-
-  checkIfWon() {
-    if (this.character.gameOverTime - Date.now() < -2500 && this.gameOver == 'won') {
-      console.log('yeeeeaaaaahhhh')
+    if (this.character.gameOverTime - Date.now() < -1500 && !world.character.isAboveGround(world.character.y_landing)) {
       gameOver();
     }
   }
@@ -193,7 +186,7 @@ class World {
   /* COLLISION CHECKS */
 
   checkForCollisions() {
-    if (!this.character.isDead()) {
+    if (!this.gameOver) {
       this.checkChickenCollisions();
       this.characterCollidesWith(this.level.endboss);
       this.checkThrownBottleCollision(this.level.endboss);
@@ -214,11 +207,13 @@ class World {
 
     if (characterIsColliding && (collisionObject instanceof BottleOnTheGround || collisionObject instanceof Coin)) {
       this.character.collectObject(collisionObject, index, arr);
+    } else if (characterIsColliding == 'hurt' && collisionObject instanceof Chick) {
+      this.character.getHurt(1);
     } else if (
       (characterIsColliding == 'hurt' && collisionObject instanceof Chicken) ||
       (characterIsColliding == 'hurt' && collisionObject instanceof Endboss)
     ) {
-      this.character.getHurt(2.5, 'life');
+      this.character.getHurt(3);
     } else if (characterIsColliding == 'beat enemy' && collisionObject instanceof Chicken) {
       this.character.moveUp(20);
       this.enemyDies(collisionObject, index, arr);
@@ -232,7 +227,7 @@ class World {
           if (enemy instanceof Chicken) {
             this.enemyDies(enemy, index, arr);
           } else {
-            this.level.endboss.getHurt(20, 'life');
+            this.level.endboss.getHurt(20 - 5 * (this.level.levelNo - 1));
           }
           bottle.explode = true;
         }
@@ -252,6 +247,22 @@ class World {
     });
   }
 
+  checkIf10Coins() {
+    if (this.character.collectedCoins == 10) {
+      console.log('coin anmation');
+      this.showCoinAnimation();
+      if (this.coin_10.y + this.coin_10.height < 0) {
+        this.character.has10Coins();
+        this.coin_10.y = 0.5 * this.worldCanvas.height;
+      }
+    }
+  }
+
+  showCoinAnimation() {
+    this.coin_10.x = this.character.x;
+    this.coin_10.y -= 0.03 * this.worldCanvas.height;
+  }
+
   /* DELETE OBJECTS */
 
   deleteThrownBottles() {
@@ -263,7 +274,7 @@ class World {
   enemyDies(enemy, index, enemiesArray) {
     enemy.alive = false;
     setTimeout(() => {
-      clearInterval(enemy.chickenInterval)
+      clearInterval(enemy.chickenInterval);
       enemiesArray.splice(index, 1);
     }, 500);
   }

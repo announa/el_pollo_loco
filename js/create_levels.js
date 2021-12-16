@@ -1,7 +1,8 @@
-function setLevel(currentLevel) {
-  let amount = getObjectAmount(currentLevel);
+function setLevel() {
+  let amount = getObjectAmount();
   worldSize = amount[0];
   level = new Level(
+    currentLevel,
     canvas,
     worldSize,
     createEnemies(amount[1], amount[2]),
@@ -13,13 +14,16 @@ function setLevel(currentLevel) {
   );
 }
 
-function getObjectAmount(currentLevel) {
+function getObjectAmount() {
   let amount = [];
   if(currentLevel == 1){
     amount = [4, 6, 0, 10, 10]
   }
   if(currentLevel == 2){
-    amount = [5, 5, 4, 10, 10]
+    amount = [4, 6, 6, 10, 7]
+  }
+  if(currentLevel == 3){
+    amount = [5, 10, 6, 15, 10]
   }
   return amount;
 }

@@ -11,7 +11,7 @@ let level;
 function init() {
   setCanvasSize();
   setLevel(currentLevel);
-  world = new World(canvas, keyboard, level);
+  world = new World(canvas, keyboard, level, worldSize);
 }
 
 function startGame() {

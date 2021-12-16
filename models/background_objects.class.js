@@ -6,9 +6,6 @@ class BackgroundObject extends MovableObject {
   constructor(path, worldCanvas, position) {
     super(worldCanvas).loadImage(path);
     this.setDimensions(position);
-/*     if(position > 0){
-      this.x = (this.worldCanvas.width) * position - 1;
-    } */
   }
 
   setDimensions(position){
