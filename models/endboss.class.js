@@ -169,7 +169,7 @@ class Endboss extends MovableObject {
   } */
 
   moveEndbossBar() {
-    this.lifeBar.setDimensions('life', this);
+    this.lifeBar.setDimensions(this);
   }
 
   nearCharacter() {
