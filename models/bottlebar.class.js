@@ -23,10 +23,4 @@ class BottleBar extends StatusBar {
     this.width = 0.2 * this.worldCanvas.width;
     this.height = 0.05 * this.worldCanvas.width;
   }
-
-/*   updateStatusBar(percentage) {
-    this.percentage = percentage;
-    let path = this.images[this.imageIndex()];
-    this.img = this.imageCache[path];
-  } */
 }

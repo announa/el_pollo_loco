@@ -36,24 +36,4 @@ class LifeBar extends StatusBar {
     this.width = 0.2 * this.worldCanvas.width;
     this.height = 0.05 * this.worldCanvas.width;
   }
-
-  /*   updateStatusBar(percentage) {
-    this.percentage = percentage;
-    let path = this.images[this.imageIndex()];
-    this.img = this.imageCache[path];
-  }
-
-/*   highlightStatusBar(value, statusType) {
-    console.log('highlight lifebar');
-    this.images = this.IMAGES_BLUE;
-    console.log(this.images);
-    this.updateStatusBar(value);
-    console.log(this.img);
-    setTimeout(() => {
-      this.images = this.IMAGES;
-      console.log(this.images);
-      this.updateStatusBar(value);
-      console.log(this.img);
-    }, 1000);
-  } */
 }

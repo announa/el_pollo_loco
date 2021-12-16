@@ -1,6 +1,8 @@
 class StatusBar extends GameComponents {
   images;
   percentage;
+  statusbarInterval;
+  hide = false;
 
   constructor(worldCanvas) {
     super(worldCanvas);
@@ -17,34 +19,23 @@ class StatusBar extends GameComponents {
   }
 
   highlightStatusBar(value) {
-    console.log('highlight bar');
     this.images = this.IMAGES_BLUE;
     this.updateStatusBar(value);
+    this.toggleStatusBar();
     setTimeout(() => {
       this.images = this.IMAGES;
       this.updateStatusBar(value);
-    }, 1000);
+      clearInterval(this.statusbarInterval);
+    }, 1500);
   }
-  /*     if (statusType == 'life') {
-      console.log('highlight lifebar')
-      this.images = this.IMAGES_LIFE_BAR_BLUE;
-      console.log(this.images)
-      this.updateStatusBar(value);
-      console.log(this.img)
+
+  toggleStatusBar(){
+    this.statusbarInterval = setInterval(() => {
+      this.hide = true;
       setTimeout(() => {
-        this.images = this.IMAGES_LIFE_BAR;
-        console.log(this.images)
-        this.updateStatusBar(value);
-        console.log(this.img)
-      }, 1000);
-    }
-    if (statusType == 'coin') {
-      console.log('highlight coinbar')
-      this.images = this.IMAGES_COIN_BAR_BLUE;
-      this.updateStatusBar(value);
-      setTimeout(() => {
-        this.images = this.IMAGES_COIN_BAR;
-        this.updateStatusBar(value);
-      }, 1000);
-    } */
+        this.hide = false;
+      }, 100);
+    }, 200);
+    intervals.push(this.statusbarInterval);
+  }
 }

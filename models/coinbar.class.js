@@ -32,20 +32,4 @@ class CoinBar extends StatusBar {
     this.width = 0.2 * this.worldCanvas.width;
     this.height = 0.05 * this.worldCanvas.width;
   }
-
-/*   updateStatusBar(percentage) {
-    this.percentage = percentage;
-    let path = this.images[this.imageIndex()];
-    this.img = this.imageCache[path];
-  } */
-
-/*   highlightStatusBar(value) {
-    console.log('highlight coinbar');
-    this.images = this.IMAGES_BLUE;
-    this.updateStatusBar(value);
-    setTimeout(() => {
-      this.images = this.IMAGES;
-      this.updateStatusBar(value);
-    }, 1000);
-  } */
 }

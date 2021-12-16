@@ -23,8 +23,7 @@ class World {
     this.level.endboss.gameCharacter = this.character;
     this.bottlesAmount = this.level.bottlesOnTheGround.length;
     this.coinsAmount = this.level.coins.length;
-    this.coin_10 = new Coin(worldCanvas, worldSize);
-    this.coin_10.y = 0.5 * worldCanvas.height;
+    this.coin_10 = new Coin(worldCanvas, worldSize, true);
     this.ctx = canvas.getContext('2d');
     this.checkEvents();
   }
@@ -90,7 +89,7 @@ class World {
   }
 
   drawImage(obj) {
-    if ((!obj.destroyed && this.isVisible(obj)) || obj instanceof StatusBar) {
+    if ((!obj.destroyed && this.isVisible(obj)) || obj instanceof StatusBar && !obj.hide) {
       this.ctx.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
     }
   }
@@ -249,7 +248,6 @@ class World {
 
   checkIf10Coins() {
     if (this.character.collectedCoins == 10) {
-      console.log('coin anmation');
       this.showCoinAnimation();
       if (this.coin_10.y + this.coin_10.height < 0) {
         this.character.has10Coins();

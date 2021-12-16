@@ -3,18 +3,23 @@ class Coin extends MovableObject {
   IMAGES = ['./img/8.Coin/Moneda1.png', './img/8.Coin/Moneda2.png'];
   coinInterval;
 
-  constructor(worldCanvas, worldSize) {
+  constructor(worldCanvas, worldSize, big) {
     super(worldCanvas).loadImage(this.IMAGES[0]);
     super.loadAllImages(this.IMAGES);
-    this.setDimensions(worldSize);
+    this.setDimensions(worldSize, big);
     this.animate();
   }
 
-  setDimensions(worldSize) {
+  setDimensions(worldSize, big) {
     this.x = 0.3 * this.worldCanvas.width + Math.random() * this.worldCanvas.width * (worldSize - 1.25);
     this.y = 0.22 * this.worldCanvas.height + Math.random() * 0.1 * this.worldCanvas.height;
     this.height = 0.25 * this.worldCanvas.height;
     this.width = 0.25 * this.worldCanvas.height;
+    if(big){
+      this.y = 0.5 * this.worldCanvas.height;
+      this.width = 0.3 * this.worldCanvas.height;
+      this.height= 0.3 * this.worldCanvas.height;
+    }
   }
 
   animate(){
