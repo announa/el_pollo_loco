@@ -14,9 +14,9 @@ class World {
   gameOverTime = 0;
   coin_10;
 
-  constructor(worldCanvas, keyboard, createdLevel, worldSize) {
+  constructor(worldCanvas, keyboard, createdLevel, worldSize, IMAGES) {
     this.worldCanvas = worldCanvas;
-    this.character = new Character(worldCanvas);
+    this.character = new Character(worldCanvas, IMAGES.CHARACTER);
     this.level = createdLevel;
     this.keyboard = keyboard;
     this.character.world = this;

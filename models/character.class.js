@@ -1,6 +1,6 @@
 class Character extends MovableObject {
   name = 'Pepe Peligroso';
-  IMAGES_WALKING = [
+/*   IMAGES_WALKING = [
     'img/2.Secuencias_Personaje-Pepe-correccion/2.Secuencia_caminata/W-21.png',
     'img/2.Secuencias_Personaje-Pepe-correccion/2.Secuencia_caminata/W-22.png',
     'img/2.Secuencias_Personaje-Pepe-correccion/2.Secuencia_caminata/W-23.png',
@@ -57,7 +57,8 @@ class Character extends MovableObject {
     './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-18.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-19.png',
     './img/2.Secuencias_Personaje-Pepe-correccion/1.IDLE/LONG_IDLE/I-20.png',
-  ];
+  ]; */
+  IMAGES;
   lifeBar;
   bottleBar;
   coinBar;
@@ -68,22 +69,23 @@ class Character extends MovableObject {
   world;
   gameOverTime;
 
-  constructor(worldCanvas) {
+  constructor(worldCanvas, IMAGES) {
     super(worldCanvas);
     this.setDimensions();
-    super.loadImage(this.IMAGES_IDLE[0]);
-    super.loadAllImages(this.IMAGES_WALKING);
-    super.loadAllImages(this.IMAGES_JUMPING);
-    super.loadAllImages(this.IMAGES_DEAD);
-    super.loadAllImages(this.IMAGES_HURT);
-    super.loadAllImages(this.IMAGES_IDLE);
-    super.loadAllImages(this.IMAGES_LONG_IDLE);
+    this.IMAGES = IMAGES;
+    super.loadImage(this.IMAGES.IDLE[0]);
+    for(const key in this.IMAGES){
+      super.loadAllImages(this.IMAGES[key])
+    }
+    /* super.loadAllImages(this.IMAGES.WALKING);
+    super.loadAllImages(this.IMAGES.JUMPING);
+    super.loadAllImages(this.IMAGES.DEAD);
+    super.loadAllImages(this.IMAGES.HURT);
+    super.loadAllImages(this.IMAGES.IDLE);
+    super.loadAllImages(this.IMAGES.LONG_IDLE); */
     this.lifeBar = new LifeBar(worldCanvas);
     this.bottleBar = new BottleBar(worldCanvas);
     this.coinBar = new CoinBar(worldCanvas);
-    /*     this.lifeBar = new StatusBar(worldCanvas, 'life');
-    this.bottleBar = new StatusBar(worldCanvas, 'bottles');
-    this.coinBar = new StatusBar(worldCanvas, 'coins'); */
     this.sound_walking.volume = 0.5;
 
     this.applyGravity(200);
@@ -95,7 +97,6 @@ class Character extends MovableObject {
    */
   setDimensions() {
     this.x = 0.2 * this.worldCanvas.width;
-    /* this.y = -0.1 * this.worldCanvas.height; */
     this.y = 0.31 * this.worldCanvas.height;
     this.height = 0.6 * this.worldCanvas.height;
     this.width = 0.3 * this.worldCanvas.height;
@@ -140,7 +141,7 @@ class Character extends MovableObject {
       this.checkForIdle();
       this.checkIfWalking();
       if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT, 6);
+        this.playAnimation(this.IMAGES.HURT, 6);
       }
       this.checkIfJumping();
       /* this.checkIf10Coins(); */
@@ -162,12 +163,12 @@ class Character extends MovableObject {
   }
 
   checkForIdle() {
-    this.playAnimation([this.IMAGES_IDLE[0]], 30);
+    this.playAnimation([this.IMAGES.IDLE[0]], 30);
     if (Date.now() - this.world.lastKeyEvent > 1000) {
-      this.playAnimation(this.IMAGES_IDLE, 30);
+      this.playAnimation(this.IMAGES.IDLE, 30);
     }
     if (!this.world.lastKeyEvent || Date.now() - this.world.lastKeyEvent > 5000) {
-      this.playAnimation(this.IMAGES_LONG_IDLE, 30);
+      this.playAnimation(this.IMAGES.LONG_IDLE, 30);
     }
   }
 
@@ -194,7 +195,7 @@ class Character extends MovableObject {
     this.changeDirection = false;
     this.moveRight();
     if (!this.isAboveGround(this.y_landing)) {
-      this.playAnimation(this.IMAGES_WALKING, 3);
+      this.playAnimation(this.IMAGES.WALKING, 3);
       this.sound_walking.play();
     }
   }
@@ -203,7 +204,7 @@ class Character extends MovableObject {
     this.changeDirection = true;
     this.moveLeft();
     if (!this.isAboveGround(this.y_landing)) {
-      this.playAnimation(this.IMAGES_WALKING, 3);
+      this.playAnimation(this.IMAGES.WALKING, 3);
       this.sound_walking.play();
     }
   }
@@ -216,7 +217,7 @@ class Character extends MovableObject {
       if (this.currentImage > 7) {
         this.currentImage = 7;
       }
-      this.playAnimation(this.IMAGES_JUMPING, 11);
+      this.playAnimation(this.IMAGES.JUMPING, 11);
     }
   }
 
@@ -232,7 +233,7 @@ class Character extends MovableObject {
       this.currentImage = 5;
     }
     this.moveRight();
-    this.playAnimation(this.IMAGES_DEAD, 5);
+    this.playAnimation(this.IMAGES.DEAD, 5);
   }
 
   collectObject(collisionObject, index, arr) {
