@@ -1,27 +1,13 @@
 class CoinBar extends StatusBar {
-  IMAGES = [
-    './img/7.Marcadores/Barra/Marcador moneda/Naranja/0_.png',
-    './img/7.Marcadores/Barra/Marcador moneda/Naranja/20_.png',
-    './img/7.Marcadores/Barra/Marcador moneda/Naranja/40_.png',
-    './img/7.Marcadores/Barra/Marcador moneda/Verde/60_.png',
-    './img/7.Marcadores/Barra/Marcador moneda/Verde/80_.png',
-    './img/7.Marcadores/Barra/Marcador moneda/Verde/100_.png',
-  ];
-  IMAGES_BLUE = [
-    './img/7.Marcadores/Barra/Marcador moneda/azul/0_.png',
-    './img/7.Marcadores/Barra/Marcador moneda/azul/20_.png',
-    './img/7.Marcadores/Barra/Marcador moneda/azul/40_.png',
-    './img/7.Marcadores/Barra/Marcador moneda/azul/60_.png',
-    './img/7.Marcadores/Barra/Marcador moneda/azul/80_.png',
-    './img/7.Marcadores/Barra/Marcador moneda/azul/100_.png',
-  ];
 
-  constructor(worldCanvas) {
+  constructor(worldCanvas, IMAGES) {
     super(worldCanvas);
+    this.IMAGES = IMAGES;
+    for (let key in this.IMAGES){
+      super.loadAllImages(this.IMAGES[key]);
+    }
+    this.images = this.IMAGES.BAR;
     this.percentage = 0;
-    this.images = this.IMAGES;
-    super.loadAllImages(this.IMAGES);
-    super.loadAllImages(this.IMAGES_BLUE);
     super.updateStatusBar(this.percentage);
     this.setDimensions();
   }

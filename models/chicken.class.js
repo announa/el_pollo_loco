@@ -1,23 +1,21 @@
 class Chicken extends MovableObject {
   name = 'Pollo Loco';
-  IMAGES_WALKING = [
-    './img/3.Secuencias_Enemy_basico/Version_Gallinita/1.Ga_paso_derecho.png',
-    './img/3.Secuencias_Enemy_basico/Version_Gallinita/2-Ga_centro.png',
-    './img/3.Secuencias_Enemy_basico/Version_Gallinita/3.Ga_paso izquierdo.png',
-  ];
-  IMAGE_DEAD = ['./img/3.Secuencias_Enemy_basico/Version_Gallinita/4.G_muerte.png'];
   levelNo;
   alive = true;
   turnAroundTimeout;
   chickenInterval;
 
-  constructor(worldCanvas, worldSize, currentLevel) {
+  constructor(worldCanvas, worldSize, currentLevel, IMAGES) {
     super(worldCanvas);
+    this.IMAGES = IMAGES;
     this.levelNo = currentLevel;
     this.setDimensions(worldSize);
     super.loadImage('./img/3.Secuencias_Enemy_basico/Version_Gallinita/1.Ga_paso_derecho.png');
-    super.loadAllImages(this.IMAGES_WALKING);
-    super.loadAllImages(this.IMAGE_DEAD);
+    for(const key in IMAGES){
+      super.loadAllImages(this.IMAGES[key]);      
+    }
+    /* super.loadAllImages(this.IMAGES.WALKING);
+    super.loadAllImages(this.IMAGE.DEAD); */
     this.turnedAround = Date.now();
     this.setTurnArounTimer();
     this.animate();
@@ -43,11 +41,11 @@ class Chicken extends MovableObject {
     this.chickenInterval = setInterval(() => {
       if (!pause) {
         if (this.alive) {
-          this.playAnimation(this.IMAGES_WALKING);
+          this.playAnimation(this.IMAGES.WALKING);
           this.walk();
           this.turnAround();
         } else {
-          this.img = this.imageCache[this.IMAGE_DEAD[0]];
+          this.img = this.imageCache[this.IMAGES.DEAD[0]];
         }
       }
     }, 100);

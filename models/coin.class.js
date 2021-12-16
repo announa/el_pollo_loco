@@ -1,10 +1,11 @@
 class Coin extends MovableObject {
   name = 'coin';
-  IMAGES = ['./img/8.Coin/Moneda1.png', './img/8.Coin/Moneda2.png'];
   coinInterval;
 
-  constructor(worldCanvas, worldSize, big) {
-    super(worldCanvas).loadImage(this.IMAGES[0]);
+  constructor(worldCanvas, worldSize, IMAGES, big) {
+    super(worldCanvas);
+    this.IMAGES = IMAGES;
+    super.loadImage(this.IMAGES[0]);
     super.loadAllImages(this.IMAGES);
     this.setDimensions(worldSize, big);
     this.animate();
@@ -23,13 +24,13 @@ class Coin extends MovableObject {
   }
 
   animate(){
-    setTimeout(() => {
+    let coinTimeout = setTimeout(() => {
       let imgRepetition = Math.random() * 3;
       this.coinInterval = setInterval(() => {
         this.playAnimation(this.IMAGES, imgRepetition)
       }, 500);
+      intervals.push(this.coinInterval);
     }, Math.random() * 3);
-    intervals.push(this.coinInterval);
   }
 
   getCollisionCoordinates() {

@@ -1,26 +1,15 @@
 class ThrownBottle extends MovableObject {
   name = 'thrown bottle';
-  IMAGES_ROTATING = [
-    './img/6.botella/Rotacion/Mesa de trabajo 1 copia 3.png',
-    './img/6.botella/Rotacion/Mesa de trabajo 1 copia 4.png',
-    './img/6.botella/Rotacion/Mesa de trabajo 1 copia 5.png',
-    './img/6.botella/Rotacion/Mesa de trabajo 1 copia 6.png',
-  ];
-  IMAGES_SALSA = [
-    './img/6.botella/Rotacion/Splash de salsa/Mesa de trabajo 1 copia 7.png',
-    './img/6.botella/Rotacion/Splash de salsa/Mesa de trabajo 1 copia 8.png',
-    './img/6.botella/Rotacion/Splash de salsa/Mesa de trabajo 1 copia 9.png',
-    './img/6.botella/Rotacion/Splash de salsa/Mesa de trabajo 1 copia 10.png',
-    './img/6.botella/Rotacion/Splash de salsa/Mesa de trabajo 1 copia 11.png',
-    './img/6.botella/Rotacion/Splash de salsa/Mesa de trabajo 1 copia 12.png',
-  ];
   explode = false;
   destroyed = false;
 
-  constructor(worldCanvas, x, y, startspeed_x, toTheLeft) {
-    super(worldCanvas).loadImage(this.IMAGES_ROTATING[0]);
-    super.loadAllImages(this.IMAGES_ROTATING);
-    super.loadAllImages(this.IMAGES_SALSA);
+  constructor(worldCanvas, x, y, startspeed_x, toTheLeft, IMAGES) {
+    super(worldCanvas)
+    this.IMAGES = IMAGES;
+    super.loadImage(this.IMAGES.ROTATING[0]);
+    for(let key in this.IMAGES){
+      super.loadAllImages(this.IMAGES[key]);
+    }
     this.setDimensions(x, y, startspeed_x);
     this.animate(toTheLeft);
     this.applyGravity(100);
@@ -52,7 +41,7 @@ class ThrownBottle extends MovableObject {
     let bottleInterval = setInterval(() => {
       if (!pause) {
         if (!this.explode) {
-          this.playAnimation(this.IMAGES_ROTATING);
+          this.playAnimation(this.IMAGES.ROTATING);
           if(this.y == this.y_landing){
             this.clearBottleIntervals(bottleInterval);
           }
@@ -72,7 +61,7 @@ class ThrownBottle extends MovableObject {
     this.height = 0.2 * this.worldCanvas.height;
     this.width = 0.2 * this.worldCanvas.height;
     this.y_landing = this.y;
-    this.playAnimation(this.IMAGES_SALSA);
+    this.playAnimation(this.IMAGES.SALSA);
     if (this.img.src.includes('12.png')) {
       this.clearBottleIntervals(bottleInterval);
     }

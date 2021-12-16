@@ -14,6 +14,7 @@ class GameComponents {
     y_1: 0,
     y_2: 0
   }
+  IMAGES;
 
   constructor(worldCanvas){
   this.setCanvas(worldCanvas)

@@ -11,7 +11,7 @@ let level;
 function init() {
   setCanvasSize();
   setLevel(currentLevel);
-  world = new World(canvas, keyboard, level, worldSize, IMAGES);
+  world = new World(canvas, keyboard, level, worldSize, IMAGES, IMAGES.COINS);
 }
 
 function startGame() {
@@ -19,6 +19,7 @@ function startGame() {
   playing = true;
   pause = false;
   world.draw();
+  console.log(intervals)
 }
 
 function prepareCanvas() {
@@ -106,7 +107,7 @@ function clearAllIntervals() {
     for (let i = 0; i < intervalAmount; i++) {
       clearInterval(intervals[0]);
       intervals.shift();
-      console.log(intervals);
+      console.log(intervals)
     }
     resolve();
   });

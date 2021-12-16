@@ -4,7 +4,7 @@ class World {
   character;
   bottlesAmount;
   coinsAmount;
-  lastThrownBottle = 0;
+  lastThrownBottle;
   level;
   ctx;
   keyboard;
@@ -14,16 +14,16 @@ class World {
   gameOverTime = 0;
   coin_10;
 
-  constructor(worldCanvas, keyboard, createdLevel, worldSize, IMAGES) {
+  constructor(worldCanvas, keyboard, createdLevel, worldSize, IMAGES, IMAGES2) {
     this.worldCanvas = worldCanvas;
-    this.character = new Character(worldCanvas, IMAGES.CHARACTER);
+    this.character = new Character(worldCanvas, IMAGES);
     this.level = createdLevel;
     this.keyboard = keyboard;
     this.character.world = this;
     this.level.endboss.gameCharacter = this.character;
     this.bottlesAmount = this.level.bottlesOnTheGround.length;
     this.coinsAmount = this.level.coins.length;
-    this.coin_10 = new Coin(worldCanvas, worldSize, true);
+    this.coin_10 = new Coin(worldCanvas, worldSize, IMAGES2, true);
     this.ctx = canvas.getContext('2d');
     this.checkEvents();
   }
@@ -164,7 +164,7 @@ class World {
 
   checkForThrownBottle() {
     if (this.keyboard.D) {
-      if (this.timeSinceLastThrownBottle() > 200 && this.character.collectedBottles > 0) {
+      if ((!this.lastThrownBottle || this.timeSinceLastThrownBottle() > 200) && this.character.collectedBottles > 0) {
         this.lastThrownBottle = new Date().getTime();
         this.character.throwBottle();
         this.deleteThrownBottles();

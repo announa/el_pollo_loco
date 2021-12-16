@@ -1,18 +1,11 @@
 class BottleBar extends StatusBar {
-  IMAGES = [
-    './img/7.Marcadores/Barra/Marcador_botella/Naranja/0_.png',
-    './img/7.Marcadores/Barra/Marcador_botella/Naranja/20_.png',
-    './img/7.Marcadores/Barra/Marcador_botella/Naranja/40_.png',
-    './img/7.Marcadores/Barra/Marcador_botella/Verde/60_.png',
-    './img/7.Marcadores/Barra/Marcador_botella/Verde/80_.png',
-    './img/7.Marcadores/Barra/Marcador_botella/Verde/100_.png',
-  ];
 
-  constructor(worldCanvas) {
+  constructor(worldCanvas, IMAGES) {
     super(worldCanvas);
-    this.percentage = 0;
-    this.images = this.IMAGES;
+    this.IMAGES = IMAGES.BAR;
     super.loadAllImages(this.IMAGES);
+    this.images = this.IMAGES;
+    this.percentage = 0;
     super.updateStatusBar(this.percentage);
     this.setDimensions();
   }

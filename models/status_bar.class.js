@@ -19,11 +19,11 @@ class StatusBar extends GameComponents {
   }
 
   highlightStatusBar(value) {
-    this.images = this.IMAGES_BLUE;
+    this.images = this.IMAGES.BAR_BLUE;
     this.updateStatusBar(value);
     this.toggleStatusBar();
     setTimeout(() => {
-      this.images = this.IMAGES;
+      this.images = this.IMAGES.BAR;
       this.updateStatusBar(value);
       clearInterval(this.statusbarInterval);
     }, 1500);

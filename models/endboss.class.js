@@ -1,37 +1,5 @@
 class Endboss extends MovableObject {
   name = 'Senora Gallina';
-
-  IMAGES_WALKING = [
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/1.Caminata/G1.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/1.Caminata/G2.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/1.Caminata/G3.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/1.Caminata/G4.png',
-  ];
-  IMAGES_ATTENTION = [
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/1.Alerta/G5.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/1.Alerta/G6.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/1.Alerta/G7.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/1.Alerta/G8.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/1.Alerta/G9.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/1.Alerta/G10.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/1.Alerta/G11.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/1.Alerta/G12.png',
-  ];
-  IMAGES_ATTACK = [
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/2.Ataque/G13.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/2.Ataque/G14.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/2.Ataque/G15.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/2.Ataque/G16.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/2.Ataque/G17.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/2.Ataque/G18.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/2.Ataque/G19.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/2.Atecion-ataque/2.Ataque/G20.png',
-  ];
-  IMAGES_DEAD = [
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/4.Muerte/G24.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/4.Muerte/G25.png',
-    './img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/4.Muerte/G26.png',
-  ];
   images;
   sound_walking = new Audio('./audio/walking.mp3');
   startedWalking = 0;
@@ -39,15 +7,16 @@ class Endboss extends MovableObject {
   gameCharacter;
   animationInterval;
 
-  constructor(worldCanvas, bgImgAmount) {
-    super(worldCanvas).loadImage('./img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/1.Caminata/G1.png');
-    super.loadAllImages(this.IMAGES_WALKING);
-    super.loadAllImages(this.IMAGES_ATTENTION);
-    super.loadAllImages(this.IMAGES_ATTACK);
-    super.loadAllImages(this.IMAGES_DEAD);
+  constructor(worldCanvas, bgImgAmount, IMAGES) {
+    super(worldCanvas)
+    this.IMAGES = IMAGES.ENDBOSS;
+    super.loadImage('./img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/1.Caminata/G1.png');
+    for(let key in this.IMAGES){
+      super.loadAllImages(this.IMAGES[key]);
+    }
     this.setDimensions(bgImgAmount);
-    this.lifeBar = new LifeBar(this.worldCanvas, this);
-    this.images = this.IMAGES_WALKING;
+    this.lifeBar = new LifeBar(this.worldCanvas, IMAGES.STATUSBARS.LIFEBAR, this);
+    this.images = this.IMAGES.WALKING;
     this.sound_walking.volume = 0.5;
 
     this.applyGravity(200);
@@ -104,10 +73,10 @@ class Endboss extends MovableObject {
   }
 
   checkEndbossEvents() {
-    if ((this.images == this.IMAGES_WALKING || this.isAboveGround(this.y_landing)) && !this.changeDirection) {
+    if ((this.images == this.IMAGES.WALKING || this.isAboveGround(this.y_landing)) && !this.changeDirection) {
       this.walkLeft();
     }
-    if ((this.images == this.IMAGES_WALKING || this.isAboveGround(this.y_landing)) && this.changeDirection) {
+    if ((this.images == this.IMAGES.WALKING || this.isAboveGround(this.y_landing)) && this.changeDirection) {
       this.walkRight();
     }
     if (this.img.src.includes('G15')) {
@@ -116,8 +85,8 @@ class Endboss extends MovableObject {
     if (this.nextToCharacter()) {
       this.attack();
     } else {
-      if (this.images == this.IMAGES_ATTACK) {
-        this.images = this.IMAGES_WALKING;
+      if (this.images == this.IMAGES.ATTACK) {
+        this.images = this.IMAGES.WALKING;
       }
     }
   }
@@ -132,14 +101,14 @@ class Endboss extends MovableObject {
   }
 
   switchAnimations() {
-    if (this.images == this.IMAGES_WALKING && new Date().getTime() - this.startedWalking > 1500) {
+    if (this.images == this.IMAGES.WALKING && new Date().getTime() - this.startedWalking > 1500) {
       this.currentImage = 0;
-      this.images = this.IMAGES_ATTENTION;
+      this.images = this.IMAGES.ATTENTION;
     }
     if (this.img.src.includes('G12') && this.imageRepetitions == 2) {
       this.currentImage = 0;
       this.startedWalking = new Date().getTime();
-      this.images = this.IMAGES_WALKING;
+      this.images = this.IMAGES.WALKING;
     }
   }
 
@@ -164,7 +133,7 @@ class Endboss extends MovableObject {
     return (
       ((this.x < 0.25 * this.worldCanvas.width && !this.changeDirection) ||
         (this.x + this.width > this.worldCanvas.width && this.changeDirection)) &&
-      (this.images == this.IMAGES_WALKING || /G12|G20/.test(this.img.src))
+      (this.images == this.IMAGES.WALKING || /G12|G20/.test(this.img.src))
     );
   } */
 
@@ -187,10 +156,10 @@ class Endboss extends MovableObject {
   }
 
   attack() {
-    if (this.images != this.IMAGES_ATTACK) {
+    if (this.images != this.IMAGES.ATTACK) {
       this.currentImage = 0;
     }
-    this.images = this.IMAGES_ATTACK;
+    this.images = this.IMAGES.ATTACK;
   }
 
   dyingAnimation() {
@@ -203,7 +172,7 @@ class Endboss extends MovableObject {
       this.gameCharacter.world.gameOver = 'won';
       this.currentImage = 0;
     }
-    this.playAnimation(this.IMAGES_DEAD);
+    this.playAnimation(this.IMAGES.DEAD);
     if (this.currentImage > 2) {
       this.currentImage = 2;
     }
