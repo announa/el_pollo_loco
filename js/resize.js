@@ -94,8 +94,8 @@ function resizeObjects() {
 
 function resizeNonArrayObjects(){
   let char = world.character;
-  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss.lifeBar].forEach(obj => obj.setDimensions());
-  world.level.endboss.setDimensions(worldSize);
+  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss].forEach(obj => obj.setDimensions());
+  world.level.endboss.lifeBar.setDimensions(world.level.endboss);
 }
 
 function resizeArrayObjects(){

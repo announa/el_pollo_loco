@@ -25,6 +25,7 @@ class World {
     this.bottlesAmount = this.level.bottlesOnTheGround.length;
     this.coinsAmount = this.level.coins.length;
     this.coin_10 = new Coin(worldCanvas, worldSize, IMAGES2, true);
+    this.coin_10.hide = true;
     this.ctx = canvas.getContext('2d');
     this.checkEvents();
   }
@@ -60,17 +61,17 @@ class World {
     this.renderStaticObjects();
   }
 
+  /**
+   * Renders the moving objects in the necessary order.
+   */
   renderFlexibleObjects() {
     [this.level.backgroundObjects, this.level.clouds].forEach((e) => this.addObjectToWorld(e));
-    [this.character, this.level.endboss].forEach((e) => this.renderObjects(e));
+    [this.level.endboss, this.coin_10, this.character].forEach((e) => this.renderObjects(e));
     [this.level.enemies, this.level.bottlesOnTheGround, this.level.coins, this.character.thrownBottles].forEach((e) =>
       this.addObjectToWorld(e)
     );
     if (!this.level.endboss.isDead()) {
       this.renderObjects(this.level.endboss.lifeBar);
-    }
-    if (this.character.collectedCoins == 10) {
-      this.renderObjects(this.coin_10);
     }
   }
 
@@ -104,7 +105,7 @@ class World {
    * @param {object} obj - The current object that will be drawn.
    */
   drawImage(obj) {
-    if ((!obj.destroyed && this.isVisible(obj)) || obj instanceof StatusBar && !obj.hide) {
+    if (!obj.hide && ((!obj.destroyed && this.isVisible(obj)) || obj instanceof StatusBar)) {
       this.ctx.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
     }
   }
@@ -301,10 +302,12 @@ class World {
    * Checks if the character has collected 10 coins. If so, runs the coin animation and initiates the recalculation of the life- and coinbar in the character-object.
    */
   checkIf10Coins() {
-    if (this.character.collectedCoins == 10 && !this.character.lifeBar.images[0].includes('azul')) {
+    if (this.character.collectedCoins == 10) {
+      this.coin_10.hide = false;
       this.showCoinAnimation();
+      this.character.has10Coins();
       if (this.coin_10.y + this.coin_10.height < 0) {
-        this.character.has10Coins();
+        this.coin_10.hide = true;
         this.coin_10.y = 0.5 * this.worldCanvas.height;
       }
     }

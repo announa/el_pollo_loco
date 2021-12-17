@@ -17,6 +17,7 @@ class GameComponents {
   };
   IMAGES;
   images;
+  hide = false;
 
   constructor(worldCanvas) {
     this.setCanvas(worldCanvas);

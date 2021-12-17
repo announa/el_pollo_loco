@@ -5,7 +5,7 @@ let keyboard = new Keyboard();
 let playing = false;
 let pause = true;
 let intervals = [];
-let currentLevel = 3;
+let currentLevel = 1;
 let level;
 
 /**
