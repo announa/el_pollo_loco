@@ -8,10 +8,23 @@ let intervals = [];
 let currentLevel = 1;
 let level;
 
+/**
+ * Loads the world objects.
+ */
 function init() {
   setCanvasSize();
   setLevel(currentLevel);
   world = new World(canvas, keyboard, level, worldSize, IMAGES, IMAGES.COINS);
+}
+
+/**
+ * Sets the canvas pixel size dependint on the canvas-container-size.
+ */
+function setCanvasSize() {
+  canvas = document.getElementById('canvas');
+  canvasContainer = document.getElementById('canvas-container');
+  canvas.height = canvasContainer.clientHeight;
+  canvas.width = canvasContainer.clientWidth;
 }
 
 function startGame() {
@@ -22,19 +35,15 @@ function startGame() {
   console.log(intervals)
 }
 
+/**
+ * Hides the startscreen or endscreen and changes the appearence of the buttons. If help is open, it will be closed.
+ */
 function prepareCanvas() {
   hideScreens();
   setButtons();
   if (!document.getElementById('help-modal').classList.contains('d-none')) {
     closeHelp();
   }
-}
-
-function setCanvasSize() {
-  canvas = document.getElementById('canvas');
-  canvasContainer = document.getElementById('canvas-container');
-  canvas.height = canvasContainer.clientHeight;
-  canvas.width = canvasContainer.clientWidth;
 }
 
 function hideScreens() {
@@ -93,6 +102,9 @@ function pauseGame() {
   }
 }
 
+/**
+ * Restarts the level.
+ */
 async function restart() {
   playing = false;
   pause = true;
@@ -101,6 +113,10 @@ async function restart() {
   startGame();
 }
 
+
+/**
+ * Clears all the intervals that hav been set in the world objects.
+ */
 function clearAllIntervals() {
   return new Promise((resolve, reject) => {
     let intervalAmount = intervals.length;
@@ -123,6 +139,9 @@ function gameOver() {
     resetButtons();
 }
 
+/**
+ * Resets the buttons after game over.
+ */
 function resetButtons() {
   Array.from(document.querySelectorAll('button')).forEach((button) => button.classList.add('button--foreground'));
   if(world.gameOver == 'won'){

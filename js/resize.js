@@ -2,6 +2,9 @@ let resizeTimer1 = 0;
 let resizeTimer2;
 let canvasSize;
 
+/**
+ * Initiants the resizing of the canvas. Only executes the calculation at the beginning of the resizing process with a throtteling of 200ms.
+ */
 window.onresize = () => {
   if (resizeTimer1 == 0) {
     getCurrentCanvasSize();
@@ -9,18 +12,17 @@ window.onresize = () => {
     resizeTimer1 = Date.now();
   }
   resizeWorld();
-  resizeEndbossBar();
 };
 
 /**
- * Gets the current canvas-size for later calculations for restoring the worlds objects-positions.
+ * Gets the current canvas-size for later recalculation of the worlds objects-positions.
  */
 function getCurrentCanvasSize() {
   canvasSize = { x: canvas.width, y: canvas.height };
 }
 
 /**
- * Gets the current object positions for later calculation for restoring the positions.
+ * Gets the current object positions for later recalculation of the positions.
  */
 function getCurrentPositions() {
   getNonArrayObjectPositions();
@@ -30,6 +32,7 @@ function getCurrentPositions() {
 function getNonArrayObjectPositions() {
   world.character.resizePosition = { x: world.character.x, y: world.character.y };
   world.level.endboss.resizePosition = { x: world.level.endboss.x, y: world.level.endboss.y };
+  world.level.endboss.lifeBar.resizePosition = { x: world.level.endboss.lifeBar.x, y: world.level.endboss.lifeBar.y };
 }
 
 function getArrayObjectPositions() {
@@ -41,7 +44,7 @@ function getArrayObjectPositions() {
 }
 
 /**
- * Resizes the world with a timeout-function. Only executes the resizing after 300ms of not changing the window size.
+ * Resizes the world with a delay of 200ms after ending of changing the window size.
  */
 function resizeWorld() {
   clearTimeout(resizeTimer2);
@@ -54,6 +57,9 @@ function resizeWorld() {
   }, 200);
 }
 
+/**
+ * Sets the new canvas size and passes it to the world objects.
+ */
 function setNewCanvasSize() {
   setCanvasSize();
   resizeCanvasInObjects();
@@ -79,7 +85,7 @@ function resizeCanvasInNonArrayObjects() {
 }
 
 /**
- * Sets the new canvas and object-dimensions.
+ * Sets the new object-dimensions - width, height, y_landing, moveX.
  */
 function resizeObjects() {
   resizeNonArrayObjects();
@@ -88,7 +94,7 @@ function resizeObjects() {
 
 function resizeNonArrayObjects(){
   let char = world.character;
-  [char, char.lifeBar, char.bottleBar, char.coinBar].forEach(obj => obj.setDimensions());
+  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss.lifeBar].forEach(obj => obj.setDimensions());
   world.level.endboss.setDimensions(worldSize);
 }
 
@@ -109,7 +115,7 @@ function restoreObjectPositions() {
 }
 
 function restoreNonArrayObjects() {
-  [world.character, world.level.endboss].forEach((object) => {
+  [world.character, world.level.endboss, world.level.endboss.lifeBar].forEach((object) => {
     object.y = (object.resizePosition.y / canvasSize.y) * canvas.height;
     object.x = (object.resizePosition.x / canvasSize.x) * canvas.width;
   });
@@ -122,8 +128,4 @@ function restoreArrayObjects() {
       array[i].y = (array[i].resizePosition.y / canvasSize.y) * canvas.height;
     }
   });
-}
-
-function resizeEndbossBar() {
-  world.level.endboss.lifeBar.setDimensions(world.level.endboss);
 }
