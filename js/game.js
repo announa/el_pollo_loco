@@ -5,7 +5,7 @@ let keyboard = new Keyboard();
 let playing = false;
 let pause = true;
 let intervals = [];
-let currentLevel = 1;
+let currentLevel = 3;
 let level;
 
 /**
@@ -64,13 +64,17 @@ function setButtons() {
   document.getElementById('next-btn').classList.add('d-none');
   document.getElementById('pause-btn').classList.remove('d-none');
   document.getElementById('pause-btn').disabled = false;
-  setRestartBtn();
+  setRestartBtn('level');
 }
 
-function setRestartBtn() {
+function setRestartBtn(type) {
   let startBtn = document.getElementById('start-btn');
-  startBtn.innerHTML = 'Restart Level';
   startBtn.setAttribute('onclick', 'restart()');
+  if (type == 'level') {
+    startBtn.innerHTML = 'Restart Level';
+  } else {
+    startBtn.innerHTML = 'Restart Game';
+  }
 }
 
 function openHelp() {
@@ -119,6 +123,11 @@ function gameOver() {
   pause = true;
   document.getElementById(`${world.gameOver}screen`).classList.remove('d-none');
   resetButtons();
+  if (currentLevel == 3) {
+    showEndScreen();
+    setRestartBtn('game');
+    currentLevel = 1;
+  }
 }
 
 /**
@@ -127,12 +136,18 @@ function gameOver() {
 function resetButtons() {
   Array.from(document.querySelectorAll('button')).forEach((button) => button.classList.add('button--foreground'));
   document.getElementById('pause-btn').disabled = true;
-  if (world.gameOver == 'won') {
+  if (world.gameOver == 'won' && currentLevel < 3) {
     document.getElementById('next-btn').classList.remove('d-none');
     document.getElementById('pause-btn').classList.add('d-none');
   }
 }
 
+function showEndScreen() {
+  setTimeout(() => {
+    document.getElementById('gameover-screen').classList.remove('d-none');
+    document.getElementById('wonscreen').classList.add('d-none');
+  }, 1500);
+}
 
 function nextLevel() {
   currentLevel++;
@@ -142,7 +157,7 @@ function nextLevel() {
 /**
  * Restarts the game.
  */
- async function restart() {
+async function restart() {
   playing = false;
   pause = true;
   window.cancelAnimationFrame(world.animationFrame);
@@ -150,5 +165,3 @@ function nextLevel() {
   init();
   startGame();
 }
-
-

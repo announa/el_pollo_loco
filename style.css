@@ -72,6 +72,9 @@ canvas {
 #wonscreen{
   background-image: url('./img/9.Intro _ Outro Image/_Game over_ screen/you won.png');
 }
+#gameover-screen{
+  background-image: url('./img/9.Intro _ Outro Image/_Game over_ screen/3.Game over.png');
+}
 
 .hide-startscreen {
   transform: scale(0);
