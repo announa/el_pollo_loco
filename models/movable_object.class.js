@@ -15,6 +15,11 @@ class MovableObject extends GameComponents {
     super(worldCanvas);
   }
 
+  /**
+   * Sets the current image that has to be shown from the current image array. Repeats the same image depending on the repetitions-parameter for showing slower and faster animations in the same objects-interval.
+   * @param {Array} images - The current image-array that has to be played.
+   * @param {Number} repetitions - The amount of repetitions of the same image.
+   */
   playAnimation(images, repetitions) {
     if (!repetitions) {
       repetitions = 1;
@@ -24,7 +29,14 @@ class MovableObject extends GameComponents {
     let path = images[mod];
     this.img = this.imageCache[path];
 
-    //repeats the same image several times until repetitions is reched, then increases currentImage --> for slower animations like character idle
+    this.checkIfNextImage(repetitions);
+  }
+  
+  /**
+   * Checks if repetitions is reached, then increases currentImage.
+   * @param {Number} repetitions - The amount of repetitions of the same image.
+   */
+  checkIfNextImage(repetitions){
     if (this.imageRepetitions < repetitions) {
       this.imageRepetitions++;
     } else {
@@ -41,6 +53,10 @@ class MovableObject extends GameComponents {
     this.x += this.moveX;
   }
 
+  /**
+   * Recalculates the y-coordinate of the MovableObject-intance by subtracting the gravAcceleration from moveY and subtracting moveY from y when the game is not paused and the y-coordinate of the intance is lower than the instances landing y-coordinate.
+   * @param {Number} gravityFactor - The factor used to calculate the gravAcceleration for the MovableObject-intance.
+   */
   applyGravity(gravityFactor) {
     this.gravityInterval = setInterval(() => {
       if (!pause) {
@@ -60,14 +76,19 @@ class MovableObject extends GameComponents {
     this.moveY = this.worldCanvas.height / factor;
   }
 
+  /**
+   * Checks if the MovableObject-instances y-position is above the landing-position.
+   * @param {Number} y_landing - The landing y-coordinate of the MovableObject-instance.
+   * @returns {Boolean}
+   */
   isAboveGround(y_landing) {
     return this.y < y_landing;
   }
 
   /**
-   * Checks if the character collides with an object (bottle or enemy)
-   * @param {object} object - The object for which to check if the character is colliding with it.
-   * @returns string || boolean
+   * Checks if the MovableObject-instance (Character || ThrwonBottle )collides with another object.
+   * @param {Chicken||Chick||Endboss||BottleOnTheGround||Coin} object - The collision-object of the character or the thrown bottle.
+   * @returns {String||Boolean}
    */
   isColliding(object) {
     this.getCollisionCoordinates();
@@ -85,6 +106,7 @@ class MovableObject extends GameComponents {
       return false;
     }
   }
+
 
   looseEnergy(energyLoss) {
     this.energy -= energyLoss;

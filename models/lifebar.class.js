@@ -8,6 +8,10 @@ class LifeBar extends StatusBar {
     this.setDimensions(referenceObject);
   }
 
+  /**
+   * Sets the lifebars dimensions which depend on the canvas size and on the object the lifbar refers to.
+   * @param {Endboss} referenceObject - the endboss --> Parameter only existent if endboss-lifebar.
+   */
   setDimensions(referenceObject) {
     this.x = 0.05 * this.worldCanvas.width;
     this.y = 0.05 * this.worldCanvas.height;

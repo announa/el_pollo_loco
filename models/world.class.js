@@ -13,6 +13,7 @@ class World {
   gameOver = false;
   gameOverTime = 0;
   coin_10;
+  animationFrame;
 
   constructor(worldCanvas, keyboard, createdLevel, worldSize, IMAGES, IMAGES2) {
     this.worldCanvas = worldCanvas;
@@ -28,18 +29,24 @@ class World {
     this.checkEvents();
   }
 
+  /**
+   * Initiates the drawing of the canvas-objects. First clears the canvas before drawing.
+   */
   draw() {
     if (playing) {
       this.ctx.clearRect(0, 0, this.worldCanvas.width, this.worldCanvas.height);
       this.initObjectRendering();
       this.drawInformation();
       let self = this;
-      requestAnimationFrame(function () {
+      this.animationFrame = requestAnimationFrame(function () {
         self.draw();
       });
     }
   }
 
+  /**
+   * Renders the world objects which will be drawn to the canvas. Sets the drawing-translation by means of the camera_X variable which depends on the character-position.
+   */
   initObjectRendering() {
     if (!this.gameOver) {
       this.camera_X = -this.character.x + 0.07 * this.worldCanvas.width;
@@ -77,6 +84,10 @@ class World {
     });
   }
 
+  /**
+   * Checks the object direction and initiates the drawing of the object.
+   * @param {object} object - The object to be painted to the canvas
+   */
   renderObjects(object) {
     if (object.changeDirection) {
       this.flipImage(object);
@@ -88,12 +99,19 @@ class World {
     }
   }
 
+  /**
+   * Draws the current object to the canvas. Checks if the object is visible and not destroyed.
+   * @param {object} obj - The current object that will be drawn.
+   */
   drawImage(obj) {
     if ((!obj.destroyed && this.isVisible(obj)) || obj instanceof StatusBar && !obj.hide) {
       this.ctx.drawImage(obj.img, obj.x, obj.y, obj.width, obj.height);
     }
   }
 
+  /**
+   * Draws the life-, bottle- and coin numbers next to the corresponding bar.
+   */
   drawInformation() {
     let fontSize = this.worldCanvas.height / 250;
     this.ctx.font = `${fontSize}rem Alegreya Sans`;
@@ -106,6 +124,11 @@ class World {
     this.ctx.fillText(this.character.collectedCoins, coinBar.x + 1.05 * coinBar.width, 1.4 * coinBar.height);
   }
 
+  /**
+   * Checks if the current object coordinates are within the visible section.
+   * @param {object} obj - The current object that shall be rendered.
+   * @returns {boolean}
+   */
   isVisible(obj) {
     return !(
       (!obj.changeDirection &&
@@ -136,6 +159,10 @@ class World {
     }
   } */
 
+  /**
+   * Flips the image --> when objects change their direction.
+   * @param {object} obj - The current object that shall be rendered.
+   */
   flipImage(obj) {
     this.ctx.save();
     this.ctx.translate(obj.width, 0);
@@ -162,6 +189,9 @@ class World {
     intervals.push(worldInterval);
   }
 
+  /**
+   * Checks if the character throws a bottle (on user keypress D) and initiates throwing if the timespan since the last thrown bottle amount to at least 200ms. If so, creates a new ThrownBottle instance and initiates the deletion of the same instance.
+   */
   checkForThrownBottle() {
     if (this.keyboard.D) {
       if ((!this.lastThrownBottle || this.timeSinceLastThrownBottle() > 200) && this.character.collectedBottles > 0) {
@@ -194,6 +224,9 @@ class World {
     }
   }
 
+  /**
+   * Initiates the check of collisions of chicken or chicks with the character or a thrown bottle.
+   */
   checkChickenCollisions() {
     this.level.enemies.forEach((enemy, index, arr) => {
       this.characterCollidesWith(enemy, index, arr);
@@ -201,6 +234,12 @@ class World {
     });
   }
 
+  /**
+   * Checks all the possible collisions of the character with other world objects.
+   * @param {object} collisionObject - The current object that has to be checked for a collision with the character.
+   * @param {number} index - The collisionObject index in its array.
+   * @param {array} arr - The array that contains the collisionObject
+   */
   characterCollidesWith(collisionObject, index, arr) {
     let characterIsColliding = this.character.isColliding(collisionObject);
 
@@ -219,6 +258,12 @@ class World {
     }
   }
 
+  /**
+   * Checks if a thrown bottle collides with an enemy (Chicken||Chick||Endboss)
+   * @param {Chicken||Chick||Endboss} enemy - The enemy-object that has to be checked for a collision with a thrown bottle.
+   * @param {number} index - The enemys index in its array.
+   * @param {array} arr - The array that contains the enemy-object.
+   */
   checkThrownBottleCollision(enemy, index, arr) {
     this.character.thrownBottles.forEach((bottle) => {
       if (!bottle.explode) {
@@ -234,18 +279,27 @@ class World {
     });
   }
 
+  /**
+   * Initiates the check for the collision between the character an a bottle on the ground.
+   */
   checkBottleOnTheGroundCollisions() {
     this.level.bottlesOnTheGround.forEach((bottle, index, arr) => {
       this.characterCollidesWith(bottle, index, arr);
     });
   }
 
+    /**
+   * Initiates the check for the collision between the character an a coin.
+   */
   checkCoinCollisions() {
     this.level.coins.forEach((coin, index, arr) => {
       this.characterCollidesWith(coin, index, arr);
     });
   }
 
+  /**
+   * Checks if the character has collected 10 coins. If so, runs the coin animation and initiates the recalculation of the life- and coinbar in the character-object.
+   */
   checkIf10Coins() {
     if (this.character.collectedCoins == 10) {
       this.showCoinAnimation();
@@ -256,6 +310,9 @@ class World {
     }
   }
 
+  /**
+   * Shows an animation of a moving coin.
+   */
   showCoinAnimation() {
     this.coin_10.x = this.character.x;
     this.coin_10.y -= 0.03 * this.worldCanvas.height;
@@ -263,12 +320,21 @@ class World {
 
   /* DELETE OBJECTS */
 
+  /**
+   * Removes the thrown bottles a after 2s from the thrown bottle-array.
+   */
   deleteThrownBottles() {
     setTimeout(() => {
       this.character.thrownBottles.splice(0, 1);
     }, 2000);
   }
 
+  /**
+   * Removes a beaten enemy-object from its array and clears its animation-interval.
+   * @param {Chicken||Chick} enemy - The enemy object that has been beaten by the character.
+   * @param {number} index - The enemys index in its array.
+   * @param {array} arr - The array that contains the enemy-object.
+   */
   enemyDies(enemy, index, enemiesArray) {
     enemy.alive = false;
     setTimeout(() => {

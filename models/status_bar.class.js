@@ -13,10 +13,18 @@ class StatusBar extends GameComponents {
     this.img = this.imageCache[path];
   }
 
+  /**
+   * Calculates the index of the current image depending on the current percentage that is represented by the statusbar.
+   * @returns {Number}
+   */
   imageIndex() {
     return Math.floor(this.percentage / 20);
   }
 
+  /**
+   * Shows the highlightin-animation of the statusbar. Sets IMAGES_BLUE as the current shown images with a timeout of 1,5s and updates the statusbar. Calls toggleStatusbar()
+   * @param {Number} value - The value represented by the statusbar
+   */
   highlightStatusBar(value) {
     this.images = this.IMAGES.BAR_BLUE;
     this.updateStatusBar(value);
@@ -28,7 +36,10 @@ class StatusBar extends GameComponents {
     }, 1500);
   }
 
-  toggleStatusBar(){
+  /**
+   * Shows and hides the statusbar with an interval 0f 200ms.
+   */
+  toggleStatusBar() {
     this.statusbarInterval = setInterval(() => {
       this.hide = true;
       setTimeout(() => {

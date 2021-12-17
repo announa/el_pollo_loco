@@ -12,7 +12,7 @@ class Character extends MovableObject {
 
   constructor(worldCanvas, IMAGES) {
     super(worldCanvas);
-    super.setImages(IMAGES.CHARACTER)
+    super.setImages(IMAGES.CHARACTER);
     super.loadImage(this.IMAGES.IDLE[0]);
     this.setDimensions();
     this.lifeBar = new LifeBar(worldCanvas, IMAGES.STATUSBARS.LIFEBAR);
@@ -25,7 +25,7 @@ class Character extends MovableObject {
   }
 
   /**
-   * Sets the characters dimensions which depend in the canvas size.
+   * Sets the characters dimensions which depend on the canvas size.
    */
   setDimensions() {
     this.x = 0.2 * this.worldCanvas.width;
@@ -37,7 +37,7 @@ class Character extends MovableObject {
   }
 
   /**
-   * Hands the parameters for calculating the collision coordinates of the character to setCollisionCoordinates().
+   * Hands the parameters for calculating the characters collision coordinates to setCollisionCoordinates().
    */
   getCollisionCoordinates() {
     this.setCollisionCoordinates(
@@ -52,18 +52,21 @@ class Character extends MovableObject {
   }
 
   /**
-   * animates the character
+   * Initiates the character animation when the game is not paused and pushes the animation-interval to the intervals-array.
    */
   animate() {
     let characterInterval = setInterval(() => {
       if (!pause) {
-        this.animateMovements();
+        this.startAnimation();
       }
     }, 1000 / 60);
     intervals.push(characterInterval);
   }
 
-  animateMovements() {
+  /**
+   * checks the different character events and changes the animation depending on them.
+   */
+  startAnimation() {
     this.sound_walking.pause();
     if (this.isDead()) {
       this.dyingAnimation();
@@ -79,6 +82,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Checks if the character won the game and shows the winning-animation.
+   */
   won() {
     if (!this.isAboveGround(this.y_landing)) {
       this.moveUp(20);
@@ -93,6 +99,9 @@ class Character extends MovableObject {
     this.jumpingAnimation();
   }
 
+  /**
+   * Checks if for at leat 1s (idle )or 5s (long idle) there has been no user input and changes the animation.
+   */
   checkForIdle() {
     this.playAnimation([this.IMAGES.IDLE[0]], 30);
     if (Date.now() - this.world.lastKeyEvent > 1000) {
@@ -103,6 +112,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Checks if the character is walking and in which direction and if the character is within its movment limits.
+   */
   checkIfWalking() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.walkRight();
@@ -112,6 +124,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Checks if the character shall jump (on keypress arrow up) and shows the jumping-animation.
+   */
   checkIfJumping() {
     if (this.world.keyboard.UP && !this.isAboveGround(this.y_landing)) {
       this.moveUp(20);
@@ -121,7 +136,6 @@ class Character extends MovableObject {
       this.jumpingAnimation();
     }
   }
-
   walkRight() {
     this.changeDirection = false;
     this.moveRight();
@@ -167,6 +181,12 @@ class Character extends MovableObject {
     this.playAnimation(this.IMAGES.DEAD, 5);
   }
 
+  /**
+   * Checks if the collision object is a Coin or a BottleOnTheGround, reduces its amount and removes it from its array.Updates the corresponding characters statusbar.
+   * @param {Coin||BottleOnTheGround} collisionObject - The current object the character collects
+   * @param {number} index - The objects index in its array.
+   * @param {array} arr - The array that contains the object.
+   */
   collectObject(collisionObject, index, arr) {
     if (collisionObject instanceof BottleOnTheGround) {
       this.collectedBottles += 1;
@@ -179,12 +199,34 @@ class Character extends MovableObject {
     arr.splice(index, 1);
   }
 
+  /**
+   * Initiates the creation of a new ThrownBottle-instance, reduces the amount of collected bottles and updates the characters bottlebar.
+   */
   throwBottle() {
     if (this.collectedBottles > 0) {
       this.thrownBottles.push(this.createThrownBottle());
       this.collectedBottles -= 1;
       this.bottleBar.updateStatusBar(this.percentageBottleBar());
     }
+  }
+
+  /**
+   * Creates a new ThrownBottle-instance and returns it.
+   * @returns {ThrownBottle}
+   */
+  createThrownBottle() {
+    let bottle_x = this.x + 0.4 * this.width;
+    let bottle_y = this.y + 0.5 * this.height;
+    let bottle_startspeed_x = this.detectCharacterSpeed();
+    let bottle = new ThrownBottle(
+      this.worldCanvas,
+      bottle_x,
+      bottle_y,
+      bottle_startspeed_x,
+      this.changeDirection,
+      IMAGES.BOTTLES.THROWN
+    );
+    return bottle;
   }
 
   percentageBottleBar() {
@@ -195,16 +237,8 @@ class Character extends MovableObject {
     return (this.collectedCoins / this.world.coinsAmount) * 100;
   }
 
-  createThrownBottle() {
-    let bottle_x = this.x + 0.4 * this.width;
-    let bottle_y = this.y + 0.5 * this.height;
-    let bottle_startspeed_x = this.detectCharacterSpeed();
-    let bottle = new ThrownBottle(this.worldCanvas, bottle_x, bottle_y, bottle_startspeed_x, this.changeDirection, IMAGES.BOTTLES.THROWN);
-    return bottle;
-  }
-
   /**
-   * Checks if character is moving and if so, returns his speed for adding it to the speed of the bottle.
+   * Checks if character is moving and if so, returns his speed for adding it to the speed of the ThrownBottle.
    * @returns number - The actual speed of character.
    */
   detectCharacterSpeed() {
@@ -215,10 +249,13 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Is called when the character collects 10 coins. Adds 20% to the characters nergy and sets his collectedCoins to 0. Calls the highlighting-animation of lifebar and coinbar.
+   */
   has10Coins() {
     this.energy += 20;
     this.collectedCoins = 0;
-    this.lifeBar.highlightStatusBar(this.energy, 'life');
-    this.coinBar.highlightStatusBar(this.percentageCoinBar(), 'coin');
+    this.lifeBar.highlightStatusBar(this.energy);
+    this.coinBar.highlightStatusBar(this.percentageCoinBar());
   }
 }

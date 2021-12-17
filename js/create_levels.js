@@ -1,3 +1,6 @@
+/**
+ * Sets the current level. Creates the objects which change depending on the level.
+ */
 function setLevel() {
   let amount = getObjectAmount();
   worldSize = amount[0];
@@ -14,6 +17,10 @@ function setLevel() {
   );
 }
 
+/**
+ * Sets the amount of the respective objects depednind on the current level.
+ * @returns {Array}
+ */
 function getObjectAmount() {
   let amount = [];
   if (currentLevel == 1) {

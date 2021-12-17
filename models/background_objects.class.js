@@ -8,6 +8,10 @@ class BackgroundObject extends MovableObject {
     this.setDimensions(position);
   }
 
+  /**
+   * Sets the BackgrounObjects dimensions which depend on the canvas size and its position.
+   * @param {Number} position - The position of the current BackgroundObject-instance.
+   */
   setDimensions(position){
     this.position = position;
     this.width = this.worldCanvas.width;

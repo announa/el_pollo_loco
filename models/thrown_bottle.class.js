@@ -13,6 +13,12 @@ class ThrownBottle extends MovableObject {
     this.applyGravity(100);
   }
 
+    /**
+   * Sets the ThrownBottles dimensions which depend on the canvassize, and the characters x- and y-position and its speed.
+   * @param {Number} x - The characters x-coordinate
+   * @param {Number} y - The characters y-coordinate
+   * @param {Number} startspeed_x - The characters speed (moveX)
+   */
   setDimensions(x, y, startspeed_x) {
     this.x = x;
     this.y = y;
@@ -22,6 +28,9 @@ class ThrownBottle extends MovableObject {
     this.y_landing = this.worldCanvas.height;
   }
 
+   /**
+   * Hands the parameters for calculating the chickens collision coordinates to setCollisionCoordinates().
+   */
   getCollisionCoordinates() {
     this.setCollisionCoordinates(
       0.2 * this.width,
@@ -34,6 +43,9 @@ class ThrownBottle extends MovableObject {
     );
   }
 
+    /**
+   * Initiates the thrown bottle animation when the game is not paused and pushes the animation-interval to the intervals-array.
+   */
   animate() {
     this.moveUp(13);
     let bottleInterval = setInterval(() => {
@@ -59,6 +71,10 @@ class ThrownBottle extends MovableObject {
     }
   }
 
+  /**
+   * Shows the exploding-bottle-animation and clears the interval of the current bottle.
+   * @param {Number} bottleInterval - The ID of the bottle-interval
+   */
   bottleExplode(bottleInterval) {
     this.height = 0.2 * this.worldCanvas.height;
     this.width = 0.2 * this.worldCanvas.height;

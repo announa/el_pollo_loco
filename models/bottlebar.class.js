@@ -8,6 +8,9 @@ class BottleBar extends StatusBar {
     this.setDimensions();
   }
 
+   /**
+   * Sets the bottlebars dimensions which depend on the canvas size.
+   */
   setDimensions() {
     this.x = 0.375 * this.worldCanvas.width;
     this.y = 0.05 * this.worldCanvas.height;

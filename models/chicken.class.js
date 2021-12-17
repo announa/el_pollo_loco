@@ -17,6 +17,10 @@ class Chicken extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Sets the chickens dimensions which depend on the canvas- and worldsize.
+   * @param {Object} worldSize
+   */
   setDimensions(worldSize) {
     this.x = 0.5 * this.worldCanvas.width + Math.random() * this.worldCanvas.width * (worldSize - 1);
     this.y = 0.74 * this.worldCanvas.height;
@@ -25,24 +29,35 @@ class Chicken extends MovableObject {
     this.moveX = this.worldCanvas.width / 1000 + Math.random() * (this.worldCanvas.width / 300);
   }
 
+  /**
+   * Sets the start-walking direction ob the Chicken-instance. From level 3 on.
+   */
   setDirection() {
     if (this.levelNo > 2) {
       let random = Math.round(Math.random());
-      console.log(random);
       if (random == 1) {
         this.changeDirection = true;
       }
     }
   }
 
+  /**
+   * Sets a random timeout for the Chicken-instance for changing its direction.
+   */
   setTurnArounTimer() {
     this.turnAroundTimeout = Math.floor(5000 + Math.random() * 10000 + Date.now());
   }
 
+  /**
+   * Hands the parameters for calculating the chickens collision coordinates to setCollisionCoordinates().
+   */
   getCollisionCoordinates() {
     this.setCollisionCoordinates(0, this.width, 0, this.width, 0, this.height, this.changeDirection);
   }
 
+  /**
+   * Initiates the chickens animation when the game is not paused and pushes the animation-interval to the intervals-array.
+   */
   animate() {
     this.chickenInterval = setInterval(() => {
       if (!pause) {
@@ -66,6 +81,9 @@ class Chicken extends MovableObject {
     }
   }
 
+  /**
+   * Changes the chickens walking direction after turnAroundTimeout has elapsed.
+   */
   turnAround() {
     if (this.levelNo > 2 && this.turnAroundTimeout < Date.now()) {
       if (this.changeDirection) {

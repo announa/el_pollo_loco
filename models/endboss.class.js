@@ -7,7 +7,7 @@ class Endboss extends MovableObject {
   animationInterval;
 
   constructor(worldCanvas, bgImgAmount, IMAGES) {
-    super(worldCanvas)
+    super(worldCanvas);
     super.setImages(IMAGES.ENDBOSS);
     super.loadImage(this.IMAGES.WALKING[0]);
     this.setDimensions(bgImgAmount);
@@ -19,6 +19,9 @@ class Endboss extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Sets the endbosses dimensions which depend on the canvas size.
+   */
   setDimensions(bgImgAmount) {
     this.height = 0.8 * this.worldCanvas.height;
     this.width = 0.85 * 0.8 * this.worldCanvas.height;
@@ -29,7 +32,7 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Hands the parameters for calculating the collision coordinates of the character to setCollisionCoordinates().
+   * Hands the parameters for calculating the endbosses collision coordinates to setCollisionCoordinates().
    */
   getCollisionCoordinates() {
     this.setCollisionCoordinates(
@@ -43,6 +46,9 @@ class Endboss extends MovableObject {
     );
   }
 
+  /**
+   * Initiates the endboss animation when the game is not paused and when the character is close to the endboss. Pushes the animation-interval to the intervals-array.
+   */
   animate() {
     let endbossInterval = setInterval(() => {
       if (this.nearCharacter() && !pause) {
@@ -52,6 +58,9 @@ class Endboss extends MovableObject {
     intervals.push(endbossInterval);
   }
 
+  /**
+   * checks the different endboss events and changes the animation depending on them.
+   */
   startAnimation() {
     this.sound_walking.pause();
     if (this.isDead()) {
@@ -60,7 +69,7 @@ class Endboss extends MovableObject {
       if (this.startedWalking == 0) {
         this.startedWalking = new Date().getTime();
       }
-      this.checkEndbossEvents();
+      this.checkEndbossMovements();
       this.switchAnimations();
       this.turnAround();
       this.moveEndbossBar();
@@ -68,7 +77,10 @@ class Endboss extends MovableObject {
     }
   }
 
-  checkEndbossEvents() {
+  /**
+   * Checks if the endboss has to move to the right, to the left, move up or attack the character.
+   */
+  checkEndbossMovements() {
     if ((this.images == this.IMAGES.WALKING || this.isAboveGround(this.y_landing)) && !this.changeDirection) {
       this.walkLeft();
     }
@@ -91,11 +103,15 @@ class Endboss extends MovableObject {
     this.moveLeft();
     this.sound_walking.play();
   }
+
   walkRight() {
     this.moveRight();
     this.sound_walking.play();
   }
 
+  /**
+   * Switches between the walking and the flying animation of the endboss.
+   */
   switchAnimations() {
     if (this.images == this.IMAGES.WALKING && new Date().getTime() - this.startedWalking > 1500) {
       this.currentImage = 0;
@@ -108,6 +124,9 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Turns the endboss around so that it is always watching the character.
+   */
   turnAround() {
     if (this.notWatchingCharacter()) {
       if (this.changeDirection) {
@@ -118,6 +137,10 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Checks if the endboss is not watching the character.
+   * @returns {Boolean}
+   */
   notWatchingCharacter() {
     return (
       (this.x + 0.5 * this.width < this.gameCharacter.x && !this.changeDirection) ||
@@ -125,10 +148,17 @@ class Endboss extends MovableObject {
     );
   }
 
+  /**
+   * Moves the enbosses lifebar depending on the endbosses position.
+   */
   moveEndbossBar() {
     this.lifeBar.setDimensions(this);
   }
 
+  /**
+   * Checks if the character is close to the endboss.
+   * @returns {Boolean}
+   */
   nearCharacter() {
     return (
       this.gameCharacter.x + this.gameCharacter.width > this.x - this.worldCanvas.width &&
@@ -136,6 +166,10 @@ class Endboss extends MovableObject {
     );
   }
 
+  /**
+   * Checks if the character ist next to the endboss.
+   * @returns {Boolean}
+   */
   nextToCharacter() {
     return (
       this.x - (this.gameCharacter.x + this.gameCharacter.width) < 0.2 * this.worldCanvas.width &&
@@ -154,9 +188,9 @@ class Endboss extends MovableObject {
     let enbossInterval_2 = setInterval(() => {
       this.moveRight();
     }, 80);
-    intervals.push(enbossInterval_2)
+    intervals.push(enbossInterval_2);
     if (!this.img.src.includes('Muerte')) {
-      this.gameCharacter.gameOverTime = Date.now()
+      this.gameCharacter.gameOverTime = Date.now();
       this.gameCharacter.world.gameOver = 'won';
       this.currentImage = 0;
     }

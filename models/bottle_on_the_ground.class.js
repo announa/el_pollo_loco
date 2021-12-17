@@ -2,12 +2,16 @@ class BottleOnTheGround extends GameComponents {
   name = 'bottle on the ground';
 
   constructor(worldCanvas, worldSize, IMAGES) {
-    super(worldCanvas)
+    super(worldCanvas);
     this.IMAGES = IMAGES;
     super.loadImage(this.IMAGES[Math.round(Math.random())]);
     this.setDimensions(worldSize);
   }
 
+  /**
+   * Sets the chickens dimensions which depend on the canvas- and worldsize.
+   * @param {Object} worldSize
+   */
   setDimensions(worldSize) {
     this.x = 0.3 * this.worldCanvas.width + Math.random() * this.worldCanvas.width * (worldSize - 1.25);
     this.y = 0.8 * this.worldCanvas.height;
@@ -15,11 +19,10 @@ class BottleOnTheGround extends GameComponents {
     this.width = 0.13 * this.worldCanvas.height;
   }
 
+  /**
+   * Hands the parameters for calculating the bottles collision coordinates to setCollisionCoordinates().
+   */
   getCollisionCoordinates() {
-    let directionLeft = false;
-    if (this.img.src.includes(this.IMAGES[1].substring(3))) {
-      directionLeft = true;
-    }
     this.setCollisionCoordinates(
       0.3 * this.width,
       0.7 * this.width,
@@ -27,7 +30,19 @@ class BottleOnTheGround extends GameComponents {
       0.8 * this.width,
       0.2 * this.height,
       0.9 * this.height,
-      directionLeft
+      this.directionLeft()
     );
+  }
+
+  /**
+   * Checks if the current bottle is orientated to the left.
+   * @returns {Boolean}
+   */
+  directionLeft() {
+    let directionLeft = false;
+    if (this.img.src.includes(this.IMAGES[1].substring(3))) {
+      directionLeft = true;
+    }
+    return directionLeft;
   }
 }

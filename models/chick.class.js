@@ -6,6 +6,9 @@ class Chick extends Chicken {
     super.loadImage(this.IMAGES.WALKING[0]);
   }
 
+    /**
+   * Hands the parameters for calculating the chicks collision coordinates to setCollisionCoordinates().
+   */
   getCollisionCoordinates() {
     this.setCollisionCoordinates(
       0.1 * this.width,

@@ -8,6 +8,9 @@ class CoinBar extends StatusBar {
     this.setDimensions();
   }
 
+   /**
+   * Sets the coinbars dimensions which depend on the canvas size.
+   */
   setDimensions() {
     this.x = 0.7 * this.worldCanvas.width;
     this.y = 0.05 * this.worldCanvas.height;

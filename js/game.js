@@ -32,7 +32,6 @@ function startGame() {
   playing = true;
   pause = false;
   world.draw();
-  console.log(intervals)
 }
 
 /**
@@ -46,6 +45,9 @@ function prepareCanvas() {
   }
 }
 
+/**
+ * Hides the startscreen and the game over-screens.
+ */
 function hideScreens() {
   let screens = Array.from(document.querySelectorAll('.screen'));
   screens.forEach((screen) => {
@@ -108,11 +110,11 @@ function pauseGame() {
 async function restart() {
   playing = false;
   pause = true;
+  window.cancelAnimationFrame(world.animationFrame);
   await clearAllIntervals();
   init();
   startGame();
 }
-
 
 /**
  * Clears all the intervals that hav been set in the world objects.
@@ -123,20 +125,19 @@ function clearAllIntervals() {
     for (let i = 0; i < intervalAmount; i++) {
       clearInterval(intervals[0]);
       intervals.shift();
-      console.log(intervals)
     }
     resolve();
   });
 }
 
 function gameOver() {
-    playing = false;
-    pause = true;
-    document.getElementById(`${world.gameOver}screen`).classList.remove('d-none');
-    if(world.gameOver == 'won'){
-      currentLevel++;
-    }
-    resetButtons();
+  playing = false;
+  pause = true;
+  document.getElementById(`${world.gameOver}screen`).classList.remove('d-none');
+  if (world.gameOver == 'won') {
+    currentLevel++;
+  }
+  resetButtons();
 }
 
 /**
@@ -144,7 +145,7 @@ function gameOver() {
  */
 function resetButtons() {
   Array.from(document.querySelectorAll('button')).forEach((button) => button.classList.add('button--foreground'));
-  if(world.gameOver == 'won'){
+  if (world.gameOver == 'won') {
     document.getElementById('start-btn').innerHTML = 'Next Level';
   }
 }
