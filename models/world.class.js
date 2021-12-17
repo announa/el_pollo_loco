@@ -301,7 +301,7 @@ class World {
    * Checks if the character has collected 10 coins. If so, runs the coin animation and initiates the recalculation of the life- and coinbar in the character-object.
    */
   checkIf10Coins() {
-    if (this.character.collectedCoins == 10) {
+    if (this.character.collectedCoins == 10 && !this.character.lifeBar.images[0].includes('azul')) {
       this.showCoinAnimation();
       if (this.coin_10.y + this.coin_10.height < 0) {
         this.character.has10Coins();

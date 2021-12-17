@@ -3,8 +3,27 @@ class StatusBar extends GameComponents {
   statusbarInterval;
   hide = false;
 
-  constructor(worldCanvas) {
+  constructor(worldCanvas, IMAGES, percentage, x, referenceObject) {
     super(worldCanvas);
+    super.setImages(IMAGES, IMAGES.BAR);
+    this.percentage = percentage;
+    this.updateStatusBar(this.percentage);
+    this.setDimensions(x, referenceObject);
+  }
+
+  /**
+   * Sets the statusbars dimensions which depend on the referenceobject, x and y.
+   */
+  setDimensions(x, referenceObject) {
+    if (referenceObject) {
+      this.x = referenceObject.x + 0.15 * referenceObject.width;
+      this.y = referenceObject.y;
+    } else {
+      this.x = x * this.worldCanvas.width;
+      this.y = 0.05 * this.worldCanvas.height;
+    }
+    this.width = 0.2 * this.worldCanvas.width;
+    this.height = 0.05 * this.worldCanvas.width;
   }
 
   updateStatusBar(percentage) {
@@ -19,8 +38,8 @@ class StatusBar extends GameComponents {
    */
   imageIndex() {
     let percentage = this.percentage;
-    if(percentage > 100){
-      percentage = 100
+    if (percentage > 100) {
+      percentage = 100;
     }
     return Math.floor(percentage / 20);
   }

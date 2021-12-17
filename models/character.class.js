@@ -15,9 +15,12 @@ class Character extends MovableObject {
     super.setImages(IMAGES.CHARACTER);
     super.loadImage(this.IMAGES.IDLE[0]);
     this.setDimensions();
-    this.lifeBar = new LifeBar(worldCanvas, IMAGES.STATUSBARS.LIFEBAR);
+    this.lifeBar = new StatusBar(worldCanvas, IMAGES.STATUSBARS.LIFEBAR, 100, 0.05);
+    this.bottleBar = new StatusBar(worldCanvas, IMAGES.STATUSBARS.BOTTLEBAR, 0, 0.375);
+    this.coinBar = new StatusBar(worldCanvas, IMAGES.STATUSBARS.COINBAR, 0, 0.7);
+    /* this.lifeBar = new LifeBar(worldCanvas, IMAGES.STATUSBARS.LIFEBAR);
     this.bottleBar = new BottleBar(worldCanvas, IMAGES.STATUSBARS.BOTTLEBAR);
-    this.coinBar = new CoinBar(worldCanvas, IMAGES.STATUSBARS.COINBAR);
+    this.coinBar = new CoinBar(worldCanvas, IMAGES.STATUSBARS.COINBAR); */
     this.sound_walking.volume = 0.5;
 
     this.applyGravity(200);
@@ -253,9 +256,13 @@ class Character extends MovableObject {
    * Is called when the character collects 10 coins. Adds 20% to the characters nergy and sets his collectedCoins to 0. Calls the highlighting-animation of lifebar and coinbar.
    */
   has10Coins() {
-    this.energy += 20;
-    this.collectedCoins = 0;
     this.lifeBar.highlightStatusBar(this.energy);
     this.coinBar.highlightStatusBar(this.percentageCoinBar());
+    setTimeout(() => {
+      this.energy += 20;
+      this.collectedCoins = 0;
+      this.lifeBar.updateStatusBar(this.energy);
+      this.coinBar.updateStatusBar(this.collectedCoins);
+    }, 1500);
   }
 }
