@@ -12,12 +12,9 @@ class Character extends MovableObject {
 
   constructor(worldCanvas, IMAGES) {
     super(worldCanvas);
-    this.setDimensions();
-    this.IMAGES = IMAGES.CHARACTER;
+    super.setImages(IMAGES.CHARACTER)
     super.loadImage(this.IMAGES.IDLE[0]);
-    for(const key in this.IMAGES){
-      super.loadAllImages(this.IMAGES[key])
-    }
+    this.setDimensions();
     this.lifeBar = new LifeBar(worldCanvas, IMAGES.STATUSBARS.LIFEBAR);
     this.bottleBar = new BottleBar(worldCanvas, IMAGES.STATUSBARS.BOTTLEBAR);
     this.coinBar = new CoinBar(worldCanvas, IMAGES.STATUSBARS.COINBAR);
@@ -79,7 +76,6 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES.HURT, 6);
       }
       this.checkIfJumping();
-      /* this.checkIf10Coins(); */
     }
   }
 

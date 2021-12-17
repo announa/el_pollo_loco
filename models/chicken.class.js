@@ -7,15 +7,11 @@ class Chicken extends MovableObject {
 
   constructor(worldCanvas, worldSize, currentLevel, IMAGES) {
     super(worldCanvas);
-    this.IMAGES = IMAGES;
+    super.setImages(IMAGES);
+    super.loadImage(this.IMAGES.WALKING[0]);
     this.levelNo = currentLevel;
     this.setDimensions(worldSize);
-    super.loadImage('./img/3.Secuencias_Enemy_basico/Version_Gallinita/1.Ga_paso_derecho.png');
-    for(const key in IMAGES){
-      super.loadAllImages(this.IMAGES[key]);      
-    }
-    /* super.loadAllImages(this.IMAGES.WALKING);
-    super.loadAllImages(this.IMAGE.DEAD); */
+    this.setDirection();
     this.turnedAround = Date.now();
     this.setTurnArounTimer();
     this.animate();
@@ -27,6 +23,16 @@ class Chicken extends MovableObject {
     this.height = 0.15 * this.worldCanvas.height;
     this.width = 0.15 * this.worldCanvas.height;
     this.moveX = this.worldCanvas.width / 1000 + Math.random() * (this.worldCanvas.width / 300);
+  }
+
+  setDirection() {
+    if (this.levelNo > 2) {
+      let random = Math.round(Math.random());
+      console.log(random);
+      if (random == 1) {
+        this.changeDirection = true;
+      }
+    }
   }
 
   setTurnArounTimer() {

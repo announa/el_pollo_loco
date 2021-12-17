@@ -10,24 +10,23 @@ function setLevel() {
     createCoins(amount[4]),
     createClouds(),
     createBgObjects(),
-    new Endboss(canvas, worldSize, IMAGES),
+    new Endboss(canvas, worldSize, IMAGES)
   );
 }
 
 function getObjectAmount() {
   let amount = [];
-  if(currentLevel == 1){
-    amount = [4, 6, 0, 10, 10]
+  if (currentLevel == 1) {
+    amount = [4, 6, 0, 10, 10];
   }
-  if(currentLevel == 2){
-    amount = [4, 6, 6, 10, 7]
+  if (currentLevel == 2) {
+    amount = [4, 6, 6, 10, 7];
   }
-  if(currentLevel == 3){
-    amount = [5, 10, 6, 15, 10]
+  if (currentLevel == 3) {
+    amount = [5, 10, 6, 15, 10];
   }
   return amount;
 }
-
 
 function createEnemies(amount1, amount2) {
   let enemies = [];
@@ -51,9 +50,9 @@ function createBottlesOnTheGround(amount) {
   return bottles;
 }
 
-function createCoins(amount){
+function createCoins(amount) {
   let coins = [];
-  for(let i = 0; i < amount; i++){
+  for (let i = 0; i < amount; i++) {
     let coin = new Coin(canvas, worldSize, IMAGES.COINS);
     coins.push(coin);
   }
@@ -63,21 +62,20 @@ function createCoins(amount){
 function createClouds() {
   let clouds = [];
   for (let i = 0; i < worldSize; i++) {
-    i % 2 == 0 ? (j = 1) : (j = 2);
-    clouds.push(new Cloud(`./img/5.Fondo/Capas/4.nubes/${j}.png`, canvas, i));
+    i % 2 == 0 ? (j = 0) : (j = 1);
+    clouds.push(new Cloud(IMAGES.BACKGROUND.CLOUDS[j], canvas, i));
+    return clouds;
   }
-  return clouds;
 }
 
 function createBgObjects() {
   let backgroundObjects = [];
   for (let i = 0; i < worldSize; i++) {
-    i % 2 == 0 ? (j = 1) : (j = 2);
-    backgroundObjects.push(
-      new BackgroundObject(`./img/5.Fondo/Capas/3.Fondo3/${j}.png`, canvas, i),
-      new BackgroundObject(`./img/5.Fondo/Capas/2.Fondo2/${j}.png`, canvas, i),
-      new BackgroundObject(`./img/5.Fondo/Capas/1.suelo-fondo1/${j}.png`, canvas, i)
-    );
+    for (let j = 0; j < 3; j++) {
+      let k;
+      i % 2 == 0 ? (k = 1) : (k = 2);
+      backgroundObjects.push(new BackgroundObject(IMAGES.BACKGROUND.GROUND[`G_${k}`][j], canvas, i));
+    }
   }
   return backgroundObjects;
 }

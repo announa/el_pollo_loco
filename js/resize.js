@@ -3,12 +3,13 @@ let resizeTimer2;
 let canvasSize;
 
 window.onresize = () => {
-  if ((resizeTimer1 == 0)) {
+  if (resizeTimer1 == 0) {
     getCurrentCanvasSize();
     getCurrentPositions();
     resizeTimer1 = Date.now();
   }
   resizeWorld();
+  resizeEndbossBar();
 };
 
 /**
@@ -70,20 +71,28 @@ function resizeCanvasInObjects() {
 
 function resizeCanvasInNonArrayObjects() {
   let char = world.character;
-  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss].forEach((obj) => {
-    obj.setCanvas(canvas);
-  });
+  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss, world.level.endboss.lifeBar].forEach(
+    (obj) => {
+      obj.setCanvas(canvas);
+    }
+  );
 }
 
 /**
  * Sets the new canvas and object-dimensions.
  */
 function resizeObjects() {
-  world.character.setDimensions();
-  world.character.lifeBar.setDimensions();
-  world.character.bottleBar.setDimensions('bottles');
-  world.character.coinBar.setDimensions('coins');
+  resizeNonArrayObjects();
+  resizeArrayObjects();
+}
+
+function resizeNonArrayObjects(){
+  let char = world.character;
+  [char, char.lifeBar, char.bottleBar, char.coinBar].forEach(obj => obj.setDimensions());
   world.level.endboss.setDimensions(worldSize);
+}
+
+function resizeArrayObjects(){
   world.level.enemies.forEach((chicken) => chicken.setDimensions());
   world.level.bottlesOnTheGround.forEach((bottle) => bottle.setDimensions());
   world.level.coins.forEach((coin) => coin.setDimensions());
@@ -113,4 +122,8 @@ function restoreArrayObjects() {
       array[i].y = (array[i].resizePosition.y / canvasSize.y) * canvas.height;
     }
   });
+}
+
+function resizeEndbossBar() {
+  world.level.endboss.lifeBar.setDimensions(world.level.endboss);
 }

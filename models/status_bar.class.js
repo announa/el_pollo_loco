@@ -1,5 +1,4 @@
 class StatusBar extends GameComponents {
-  images;
   percentage;
   statusbarInterval;
   hide = false;

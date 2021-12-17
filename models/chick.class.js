@@ -1,15 +1,9 @@
 class Chick extends Chicken {
   name = 'Pollito';
 
-  constructor(worldCanvas, worldSize, IMAGES) {
-    super(worldCanvas, worldSize);
-    this.IMAGES = IMAGES;
-    for(const key in IMAGES){
-      super.loadAllImages(this.IMAGES[key]);      
-    }
-    super.loadImage('./img/3.Secuencias_Enemy_basico/Version_pollito/1.Paso_derecho.png');
-/*     super.loadAllImages(this.IMAGES_WALKING);
-    super.loadAllImages(this.IMAGE_DEAD); */
+  constructor(worldCanvas, worldSize, currentLevel, IMAGES) {
+    super(worldCanvas, worldSize, currentLevel, IMAGES);
+    super.loadImage(this.IMAGES.WALKING[0]);
   }
 
   getCollisionCoordinates() {

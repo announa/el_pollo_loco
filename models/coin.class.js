@@ -4,9 +4,8 @@ class Coin extends MovableObject {
 
   constructor(worldCanvas, worldSize, IMAGES, big) {
     super(worldCanvas);
-    this.IMAGES = IMAGES;
+    super.setImages(IMAGES)
     super.loadImage(this.IMAGES[0]);
-    super.loadAllImages(this.IMAGES);
     this.setDimensions(worldSize, big);
     this.animate();
   }

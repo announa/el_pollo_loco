@@ -176,4 +176,19 @@ const IMAGES = {
       ],
     },
   },
+  BACKGROUND: {
+    GROUND: {
+      G_1: [
+        './img/5.Fondo/Capas/3.Fondo3/1.png',
+        './img/5.Fondo/Capas/2.Fondo2/1.png',
+        './img/5.Fondo/Capas/1.suelo-fondo1/1.png',
+      ],
+      G_2: [
+        './img/5.Fondo/Capas/3.Fondo3/2.png',
+        './img/5.Fondo/Capas/2.Fondo2/2.png',
+        './img/5.Fondo/Capas/1.suelo-fondo1/2.png',
+      ]
+    },
+    CLOUDS: ['./img/5.Fondo/Capas/4.nubes/1.png', './img/5.Fondo/Capas/4.nubes/2.png']
+  }
 };

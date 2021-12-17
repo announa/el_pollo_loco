@@ -1,6 +1,5 @@
 class Endboss extends MovableObject {
   name = 'Senora Gallina';
-  images;
   sound_walking = new Audio('./audio/walking.mp3');
   startedWalking = 0;
   lifeBar;
@@ -9,11 +8,8 @@ class Endboss extends MovableObject {
 
   constructor(worldCanvas, bgImgAmount, IMAGES) {
     super(worldCanvas)
-    this.IMAGES = IMAGES.ENDBOSS;
-    super.loadImage('./img/4.Secuencias_Enemy_giganton-Dona_Gallinota-/1.Caminata/G1.png');
-    for(let key in this.IMAGES){
-      super.loadAllImages(this.IMAGES[key]);
-    }
+    super.setImages(IMAGES.ENDBOSS);
+    super.loadImage(this.IMAGES.WALKING[0]);
     this.setDimensions(bgImgAmount);
     this.lifeBar = new LifeBar(this.worldCanvas, IMAGES.STATUSBARS.LIFEBAR, this);
     this.images = this.IMAGES.WALKING;
@@ -128,14 +124,6 @@ class Endboss extends MovableObject {
       (this.x + 0.5 * this.width > this.gameCharacter.x + this.gameCharacter.width && this.changeDirection)
     );
   }
-
-  /*  nearCanvasLimits() {
-    return (
-      ((this.x < 0.25 * this.worldCanvas.width && !this.changeDirection) ||
-        (this.x + this.width > this.worldCanvas.width && this.changeDirection)) &&
-      (this.images == this.IMAGES.WALKING || /G12|G20/.test(this.img.src))
-    );
-  } */
 
   moveEndbossBar() {
     this.lifeBar.setDimensions(this);

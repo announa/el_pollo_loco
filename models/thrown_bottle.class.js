@@ -4,14 +4,12 @@ class ThrownBottle extends MovableObject {
   destroyed = false;
 
   constructor(worldCanvas, x, y, startspeed_x, toTheLeft, IMAGES) {
-    super(worldCanvas)
-    this.IMAGES = IMAGES;
+    super(worldCanvas);
+    super.setImages(IMAGES);
     super.loadImage(this.IMAGES.ROTATING[0]);
-    for(let key in this.IMAGES){
-      super.loadAllImages(this.IMAGES[key]);
-    }
     this.setDimensions(x, y, startspeed_x);
-    this.animate(toTheLeft);
+    this.changeDirection = toTheLeft;
+    this.animate();
     this.applyGravity(100);
   }
 
@@ -36,25 +34,29 @@ class ThrownBottle extends MovableObject {
     );
   }
 
-  animate(toTheLeft) {
+  animate() {
     this.moveUp(13);
     let bottleInterval = setInterval(() => {
       if (!pause) {
         if (!this.explode) {
           this.playAnimation(this.IMAGES.ROTATING);
-          if(this.y == this.y_landing){
+          this.getBottleDirection();
+          if (this.y == this.y_landing) {
             this.clearBottleIntervals(bottleInterval);
-          }
-          if (toTheLeft) {
-            this.moveLeft();
-          } else {
-            this.moveRight();
           }
         } else {
           this.bottleExplode(bottleInterval);
         }
       }
     }, 1000 / 25);
+  }
+
+  getBottleDirection() {
+    if (this.changeDirection) {
+      this.moveLeft();
+    } else {
+      this.moveRight();
+    }
   }
 
   bottleExplode(bottleInterval) {
@@ -67,8 +69,8 @@ class ThrownBottle extends MovableObject {
     }
   }
 
-  clearBottleIntervals(bottleInterval){
-    [bottleInterval, this.gravityInterval].forEach(i => clearInterval(i));
+  clearBottleIntervals(bottleInterval) {
+    [bottleInterval, this.gravityInterval].forEach((i) => clearInterval(i));
     setTimeout(() => {
       this.destroyed = true;
     }, 100);

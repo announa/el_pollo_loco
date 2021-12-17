@@ -2,9 +2,7 @@ class BottleBar extends StatusBar {
 
   constructor(worldCanvas, IMAGES) {
     super(worldCanvas);
-    this.IMAGES = IMAGES.BAR;
-    super.loadAllImages(this.IMAGES);
-    this.images = this.IMAGES;
+    super.setImages(IMAGES.BAR, IMAGES.BAR)
     this.percentage = 0;
     super.updateStatusBar(this.percentage);
     this.setDimensions();

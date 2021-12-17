@@ -45,19 +45,15 @@ class MovableObject extends GameComponents {
     this.gravityInterval = setInterval(() => {
       if (!pause) {
         this.gravAcceleration = this.worldCanvas.height / gravityFactor;
-        if(this instanceof ThrownBottle){
-        }
-        /* if (this.moveY != 0 || this.isAboveGround()) { */
-          this.moveY -= this.gravAcceleration;
-          this.y -= this.moveY;
-          if (this.y > this.y_landing) {
-            this.y = this.y_landing;
-            this.moveY = 0;
-          /* } */
+        this.moveY -= this.gravAcceleration;
+        this.y -= this.moveY;
+        if (this.y > this.y_landing) {
+          this.y = this.y_landing;
+          this.moveY = 0;
         }
       }
     }, 1000 / 25);
-    intervals.push(this.gravityInterval)
+    intervals.push(this.gravityInterval);
   }
 
   moveUp(factor) {
