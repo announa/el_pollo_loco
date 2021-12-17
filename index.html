@@ -32,6 +32,8 @@
     <script src="./js/images.js"></script>
     <script src="./js/create_levels.js"></script>
     <script src="./js/game.js"></script>
+    <script src="./js/keyevents.js"></script>
+    <script src="./js/touchevents.js"></script>
     <script src="./js/resize.js"></script>
     <title>El Pollo Loco</title>
   </head>
@@ -45,6 +47,7 @@
         <button type="button" id="start-btn" class="button--foreground" onclick="startGame()">Start Game</button>
         <button type="button" id="help-btn" class="button--foreground" onclick="openHelp()">Help</button>
         <button type="button" id="pause-btn" class="button--foreground" onclick="pauseGame()" disabled>Pause</button>
+        <button type="button" id="next-btn" class="button--foreground animated-btn d-none" onclick="nextLevel()">Next Level</button>
       </div>
       <div id="help-modal" class="container-size d-none">
         <div id="close-help" onclick="closeHelp()">

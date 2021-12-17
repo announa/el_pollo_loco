@@ -18,7 +18,11 @@ class StatusBar extends GameComponents {
    * @returns {Number}
    */
   imageIndex() {
-    return Math.floor(this.percentage / 20);
+    let percentage = this.percentage;
+    if(percentage > 100){
+      percentage = 100
+    }
+    return Math.floor(percentage / 20);
   }
 
   /**

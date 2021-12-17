@@ -61,20 +61,16 @@ function hideScreens() {
 
 function setButtons() {
   Array.from(document.querySelectorAll('button')).forEach((button) => button.classList.remove('button--foreground'));
+  document.getElementById('next-btn').classList.add('d-none');
+  document.getElementById('pause-btn').classList.remove('d-none');
+  document.getElementById('pause-btn').disabled = false;
   setRestartBtn();
-  setPauseBtn();
 }
 
 function setRestartBtn() {
   let startBtn = document.getElementById('start-btn');
   startBtn.innerHTML = 'Restart Level';
   startBtn.setAttribute('onclick', 'restart()');
-}
-
-function setPauseBtn() {
-  let pauseBtn = document.getElementById('pause-btn');
-  pauseBtn.disabled = false;
-  pauseBtn.innerHTML = 'Pause';
 }
 
 function openHelp() {
@@ -105,18 +101,6 @@ function pauseGame() {
 }
 
 /**
- * Restarts the level.
- */
-async function restart() {
-  playing = false;
-  pause = true;
-  window.cancelAnimationFrame(world.animationFrame);
-  await clearAllIntervals();
-  init();
-  startGame();
-}
-
-/**
  * Clears all the intervals that hav been set in the world objects.
  */
 function clearAllIntervals() {
@@ -134,72 +118,37 @@ function gameOver() {
   playing = false;
   pause = true;
   document.getElementById(`${world.gameOver}screen`).classList.remove('d-none');
-  if (world.gameOver == 'won') {
-    currentLevel++;
-  }
   resetButtons();
 }
 
 /**
- * Resets the buttons after game over.
+ * Resets the buttons after game over. Shows Next Level-Button if character won.
  */
 function resetButtons() {
   Array.from(document.querySelectorAll('button')).forEach((button) => button.classList.add('button--foreground'));
+  document.getElementById('pause-btn').disabled = true;
   if (world.gameOver == 'won') {
-    document.getElementById('start-btn').innerHTML = 'Next Level';
+    document.getElementById('next-btn').classList.remove('d-none');
+    document.getElementById('pause-btn').classList.add('d-none');
   }
 }
 
-window.addEventListener('keydown', (event) => checkKeyDown(event));
-window.addEventListener('keyup', (event) => checkKeyUp(event));
 
-function checkKeyDown(event) {
-  if (event.key === ' ') {
-    keyboard.SPACE = true;
-  }
-  if (event.key === 'ArrowLeft') {
-    keyboard.LEFT = true;
-    world.lastKeyEvent = Date.now();
-  }
-  if (event.key === 'ArrowUp') {
-    keyboard.UP = true;
-    world.lastKeyEvent = Date.now();
-  }
-  if (event.key === 'ArrowRight') {
-    keyboard.RIGHT = true;
-    world.lastKeyEvent = Date.now();
-  }
-  if (event.key === 'ArrowDown') {
-    keyboard.DOWN = true;
-  }
-  if (event.key === 'd') {
-    keyboard.D = true;
-    world.lastKeyEvent = Date.now();
-  }
+function nextLevel() {
+  currentLevel++;
+  restart();
 }
-function checkKeyUp(event) {
-  if (event.key === ' ') {
-    keyboard.SPACE = false;
-    /* world.lastKeyEvent = Date.now(); */
-  }
-  if (event.key === 'ArrowLeft') {
-    keyboard.LEFT = false;
-    world.lastKeyEvent = Date.now();
-  }
-  if (event.key === 'ArrowUp') {
-    keyboard.UP = false;
-    world.lastKeyEvent = Date.now();
-  }
-  if (event.key === 'ArrowRight') {
-    keyboard.RIGHT = false;
-    world.lastKeyEvent = Date.now();
-  }
-  if (event.key === 'ArrowDown') {
-    keyboard.DOWN = false;
-    /* world.lastKeyEvent = Date.now(); */
-  }
-  if (event.key === 'd') {
-    keyboard.D = false;
-    world.lastKeyEvent = Date.now();
-  }
+
+/**
+ * Restarts the game.
+ */
+ async function restart() {
+  playing = false;
+  pause = true;
+  window.cancelAnimationFrame(world.animationFrame);
+  await clearAllIntervals();
+  init();
+  startGame();
 }
+
+
