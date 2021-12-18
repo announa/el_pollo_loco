@@ -4,11 +4,15 @@ class Chicken extends MovableObject {
   alive = true;
   turnAroundTimeout;
   chickenInterval;
+  sound_talking;
+  sound_talking_short;
+  sound_cry;
 
-  constructor(worldCanvas, worldSize, currentLevel, IMAGES) {
+  constructor(worldCanvas, worldSize, currentLevel, IMAGES, AUDIOS) {
     super(worldCanvas);
     super.setImages(IMAGES);
     super.loadImage(this.IMAGES.WALKING[0]);
+    this.setSounds(AUDIOS);
     this.levelNo = currentLevel;
     this.setDimensions(worldSize);
     this.setDirection();
@@ -55,6 +59,16 @@ class Chicken extends MovableObject {
     this.setCollisionCoordinates(0, this.width, 0, this.width, 0, this.height, this.changeDirection);
   }
 
+  setSounds(AUDIOS){
+    this.SOUNDS = AUDIOS;
+    this.sound_talking = new Audio(this.SOUNDS.TALKING.AUDIO);
+    this.sound_talking.volume = this.SOUNDS.TALKING.VOLUME;
+    this.sound_talking_short = new Audio(this.SOUNDS.TALKING_SHORT.AUDIO);
+    this.sound_talking_short.volume = this.SOUNDS.TALKING_SHORT.VOLUME;
+    this.sound_cry = new Audio(this.SOUNDS.CRY.AUDIO);
+    this.sound_cry.volume = this.SOUNDS.CRY.VOLUME;
+  }
+
   /**
    * Initiates the chickens animation when the game is not paused and pushes the animation-interval to the intervals-array.
    */
@@ -93,5 +107,16 @@ class Chicken extends MovableObject {
       }
       this.setTurnArounTimer();
     }
+  }
+
+  playTalkingSound(){
+    this.sound_talking.play();
+  }
+
+  playTalkingShortSound(){
+    this.sound_talking.play();
+  }
+  playCryingShortSound(){
+    this.sound_cry.play();
   }
 }

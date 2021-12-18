@@ -16,15 +16,19 @@ const AUDIOS = {
    },
     TALKING: {
       AUDIO: './audio/Chicken_talk.mp3',
-      VOLUME: 0,
+      VOLUME: 0.5,
     },
     TALKING_SHORT: {
       AUDIO: 'audio/Chicken_talk_short.mp3',
-      VOLUME: 0,
+      VOLUME: 0.5,
     },
     ANGRY: {
       AUDIO: './audio/chicken_sound.mp3',
       VOLUME: 0,
+    },
+    CRY: {
+      AUDIO: './audio/chicken_cry.mp3',
+      VOLUME: 0.3,
     },
   },
   BOTTLE: {

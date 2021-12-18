@@ -38,7 +38,7 @@ function getObjectAmount() {
 function createEnemies(amount1, amount2) {
   let enemies = [];
   for (let i = 0; i < amount1; i++) {
-    let chicken = new Chicken(canvas, worldSize, currentLevel, IMAGES.CHICKEN);
+    let chicken = new Chicken(canvas, worldSize, currentLevel, IMAGES.CHICKEN, AUDIOS.CHICKEN);
     enemies.push(chicken);
   }
   for (let i = 0; i < amount2; i++) {

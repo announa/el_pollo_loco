@@ -341,6 +341,7 @@ class World {
    */
   enemyDies(enemy, index, enemiesArray) {
     enemy.alive = false;
+    enemy.playCryingShortSound();
     setTimeout(() => {
       clearInterval(enemy.chickenInterval);
       enemiesArray.splice(index, 1);
