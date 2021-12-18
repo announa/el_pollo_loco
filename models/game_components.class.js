@@ -16,6 +16,7 @@ class GameComponents {
     y_2: 0,
   };
   IMAGES;
+  SOUNDS;
   images;
   hide = false;
 

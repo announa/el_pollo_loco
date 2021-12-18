@@ -14,7 +14,7 @@ let level;
 function init() {
   setCanvasSize();
   setLevel(currentLevel);
-  world = new World(canvas, keyboard, level, worldSize, IMAGES, IMAGES.COINS);
+  world = new World(canvas, keyboard, level, worldSize, IMAGES, IMAGES.COINS, AUDIOS);
 }
 
 /**

@@ -15,9 +15,9 @@ class World {
   coin_10;
   animationFrame;
 
-  constructor(worldCanvas, keyboard, createdLevel, worldSize, IMAGES, IMAGES2) {
+  constructor(worldCanvas, keyboard, createdLevel, worldSize, IMAGES, IMAGES2, AUDIOS) {
     this.worldCanvas = worldCanvas;
-    this.character = new Character(worldCanvas, IMAGES);
+    this.character = new Character(worldCanvas, IMAGES, AUDIOS.CHARACTER);
     this.level = createdLevel;
     this.keyboard = keyboard;
     this.character.world = this;

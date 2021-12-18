@@ -6,19 +6,21 @@ class Character extends MovableObject {
   collectedBottles = 0;
   collectedCoins = 0;
   thrownBottles = [];
-  sound_walking = new Audio('./audio/walking.mp3');
+  sound_walking;
+  sound_jumping;
   world;
   gameOverTime;
 
-  constructor(worldCanvas, IMAGES) {
+  constructor(worldCanvas, IMAGES, AUDIOS) {
     super(worldCanvas);
     super.setImages(IMAGES.CHARACTER);
     super.loadImage(this.IMAGES.IDLE[0]);
+    this.setSounds(AUDIOS)
+    /* this.sound_walking.volume = 0.5; */
     this.setDimensions();
     this.lifeBar = new StatusBar(worldCanvas, IMAGES.STATUSBARS.LIFEBAR, 100, 0.05);
     this.bottleBar = new StatusBar(worldCanvas, IMAGES.STATUSBARS.BOTTLEBAR, 0, 0.375);
     this.coinBar = new StatusBar(worldCanvas, IMAGES.STATUSBARS.COINBAR, 0, 0.7);
-    this.sound_walking.volume = 0.5;
 
     this.applyGravity(200);
     this.animate();
@@ -50,6 +52,14 @@ class Character extends MovableObject {
       this.changeDirection
     );
   }
+
+setSounds(AUDIOS){
+  this.SOUNDS = AUDIOS;
+  this.sound_walking = new Audio(this.SOUNDS.WALKING.AUDIO);
+  this.sound_walking.volume = this.SOUNDS.WALKING.VOLUME;
+  this.sound_jumping = new Audio(this.SOUNDS.JUMPING.AUDIO);
+  this.sound_jumping.volume = this.SOUNDS.JUMPING.VOLUME;
+}
 
   /**
    * Initiates the character animation when the game is not paused and pushes the animation-interval to the intervals-array.
