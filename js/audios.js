@@ -6,7 +6,7 @@ const AUDIOS = {
     },
     JUMPING: {
      AUDIO: './audio/character_jump.mp3',
-     VOLUME: 1,
+     VOLUME: 0.5,
     },
    },
    CHICKEN: {
@@ -30,7 +30,7 @@ const AUDIOS = {
   BOTTLE: {
     PLOPP: {
       AUDIO: './audio/plopp.mp3',
-      VOLUME: 0,
+      VOLUME: 0.3,
     },
     THROW: {
       AUDIO: './audio/throw_bottle.mp3',
@@ -44,11 +44,11 @@ const AUDIOS = {
   COINS: {
     COIN: {
       AUDIO: './audio/coin.mp3',
-      VOLUME: 0,
+      VOLUME: 1,
     },
     BLING: {
       AUDIO: './audio/bling.mp3',
-      VOLUME: 0,
+      VOLUME: 0.5,
     },
   },
 };

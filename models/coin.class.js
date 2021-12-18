@@ -1,12 +1,15 @@
 class Coin extends MovableObject {
   name = 'coin';
   coinInterval;
+  sound_coin;
+  sound_bling;
 
-  constructor(worldCanvas, worldSize, IMAGES, big) {
+  constructor(worldCanvas, worldSize, IMAGES, AUDIOS, big) {
     super(worldCanvas);
     super.setImages(IMAGES)
     super.loadImage(this.IMAGES[0]);
     this.setDimensions(worldSize, big);
+    this.setSounds(AUDIOS);
     this.animate();
   }
 
@@ -22,16 +25,6 @@ class Coin extends MovableObject {
     }
   }
 
-  animate(){
-    let coinTimeout = setTimeout(() => {
-      let imgRepetition = Math.random() * 3;
-      this.coinInterval = setInterval(() => {
-        this.playAnimation(this.IMAGES, imgRepetition)
-      }, 500);
-      intervals.push(this.coinInterval);
-    }, Math.random() * 3);
-  }
-
   getCollisionCoordinates() {
     this.setCollisionCoordinates(
       0.35 * this.width,
@@ -42,5 +35,30 @@ class Coin extends MovableObject {
       0.65 * this.height,
       false
     );
+    }
+
+  setSounds(AUDIOS){
+    this.SOUNDS = AUDIOS;
+    this.sound_coin = new Audio(this.SOUNDS.COIN.AUDIO);
+    this.sound_coin.volume = this.SOUNDS.COIN.VOLUME;
+    this.sound_bling = new Audio(this.SOUNDS.BLING.AUDIO);
+    this.sound_bling.volume = this.SOUNDS.BLING.VOLUME;
+  }
+
+  animate(){
+    let coinTimeout = setTimeout(() => {
+      let imgRepetition = Math.random() * 3;
+      this.coinInterval = setInterval(() => {
+        this.playAnimation(this.IMAGES, imgRepetition)
+      }, 500);
+      intervals.push(this.coinInterval);
+    }, Math.random() * 3);
+  }
+
+  playcollidingSound(){
+    this.sound_coin.play();
+  }
+  play10CoinsSound(){
+    this.sound_bling.play();
   }
 }

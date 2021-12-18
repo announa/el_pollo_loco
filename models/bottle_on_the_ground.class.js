@@ -1,10 +1,12 @@
 class BottleOnTheGround extends GameComponents {
   name = 'bottle on the ground';
+  plopp_sound;
 
-  constructor(worldCanvas, worldSize, IMAGES) {
+  constructor(worldCanvas, worldSize, IMAGES, AUDIOS) {
     super(worldCanvas);
     this.IMAGES = IMAGES;
     super.loadImage(this.IMAGES[Math.round(Math.random())]);
+    this.setAudios(AUDIOS);
     this.setDimensions(worldSize);
   }
 
@@ -34,6 +36,11 @@ class BottleOnTheGround extends GameComponents {
     );
   }
 
+  setAudios(AUDIOS){
+    this.SOUNDS = AUDIOS;
+    this.plopp_sound = new Audio(this.SOUNDS.AUDIO);
+    this.plopp_sound.volume = this.SOUNDS.VOLUME;
+  }
   /**
    * Checks if the current bottle is orientated to the left.
    * @returns {Boolean}
@@ -44,5 +51,9 @@ class BottleOnTheGround extends GameComponents {
       directionLeft = true;
     }
     return directionLeft;
+  }
+
+  playcollidingSound(){
+    this.plopp_sound.play();
   }
 }

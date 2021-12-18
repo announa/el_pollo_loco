@@ -141,6 +141,7 @@ setSounds(AUDIOS){
     if (this.world.keyboard.UP && !this.isAboveGround(this.y_landing)) {
       this.moveUp(20);
       this.jumpingAnimation();
+      this.sound_jumping.play();
     }
     if (this.isAboveGround(this.y_landing)) {
       this.jumpingAnimation();
@@ -206,6 +207,7 @@ setSounds(AUDIOS){
       this.coinBar.updateStatusBar(this.percentageCoinBar());
       clearInterval(collisionObject.coinInterval);
     }
+    collisionObject.playcollidingSound();
     arr.splice(index, 1);
   }
 

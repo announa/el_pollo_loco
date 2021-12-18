@@ -24,7 +24,7 @@ class World {
     this.level.endboss.gameCharacter = this.character;
     this.bottlesAmount = this.level.bottlesOnTheGround.length;
     this.coinsAmount = this.level.coins.length;
-    this.coin_10 = new Coin(worldCanvas, worldSize, IMAGES2, true);
+    this.coin_10 = new Coin(worldCanvas, worldSize, IMAGES2, AUDIOS.COINS, true);
     this.coin_10.hide = true;
     this.ctx = canvas.getContext('2d');
     this.checkEvents();
@@ -304,6 +304,7 @@ class World {
   checkIf10Coins() {
     if (this.character.collectedCoins == 10) {
       this.coin_10.hide = false;
+      this.coin_10.play10CoinsSound();
       this.showCoinAnimation();
       this.character.has10Coins();
       if (this.coin_10.y + this.coin_10.height < 0) {

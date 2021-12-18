@@ -51,7 +51,7 @@ function createEnemies(amount1, amount2) {
 function createBottlesOnTheGround(amount) {
   let bottles = [];
   for (let i = 0; i < amount; i++) {
-    let bottle = new BottleOnTheGround(canvas, worldSize, IMAGES.BOTTLES.GROUND);
+    let bottle = new BottleOnTheGround(canvas, worldSize, IMAGES.BOTTLES.GROUND, AUDIOS.BOTTLE.PLOPP);
     bottles.push(bottle);
   }
   return bottles;
@@ -60,7 +60,7 @@ function createBottlesOnTheGround(amount) {
 function createCoins(amount) {
   let coins = [];
   for (let i = 0; i < amount; i++) {
-    let coin = new Coin(canvas, worldSize, IMAGES.COINS);
+    let coin = new Coin(canvas, worldSize, IMAGES.COINS, AUDIOS.COINS);
     coins.push(coin);
   }
   return coins;
