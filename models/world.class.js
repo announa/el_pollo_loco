@@ -17,11 +17,12 @@ class World {
 
   constructor(worldCanvas, keyboard, createdLevel, worldSize, IMAGES, IMAGES2, AUDIOS) {
     this.worldCanvas = worldCanvas;
-    this.character = new Character(worldCanvas, IMAGES, AUDIOS.CHARACTER);
+    this.character = new Character(worldCanvas, IMAGES, AUDIOS);
     this.level = createdLevel;
     this.keyboard = keyboard;
     this.character.world = this;
-    this.level.endboss.gameCharacter = this.character;
+    this.level.endboss.world = this;
+    this.level.enemies.forEach((e) => (e.world = this));
     this.bottlesAmount = this.level.bottlesOnTheGround.length;
     this.coinsAmount = this.level.coins.length;
     this.coin_10 = new Coin(worldCanvas, worldSize, IMAGES2, AUDIOS.COINS, true);
@@ -289,7 +290,7 @@ class World {
     });
   }
 
-    /**
+  /**
    * Initiates the check for the collision between the character an a coin.
    */
   checkCoinCollisions() {
@@ -341,7 +342,7 @@ class World {
    */
   enemyDies(enemy, index, enemiesArray) {
     enemy.alive = false;
-    enemy.playCryingShortSound();
+    enemy.playSound(enemy.SOUNDS.HURT);
     setTimeout(() => {
       clearInterval(enemy.chickenInterval);
       enemiesArray.splice(index, 1);

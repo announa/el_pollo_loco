@@ -3,14 +3,16 @@ class ThrownBottle extends MovableObject {
   explode = false;
   destroyed = false;
 
-  constructor(worldCanvas, x, y, startspeed_x, toTheLeft, IMAGES) {
+  constructor(worldCanvas, x, y, startspeed_x, toTheLeft, IMAGES, AUDIOS) {
     super(worldCanvas);
     super.setImages(IMAGES);
     super.loadImage(this.IMAGES.ROTATING[0]);
+    super.setSounds(AUDIOS)
     this.setDimensions(x, y, startspeed_x);
     this.changeDirection = toTheLeft;
     this.animate();
     this.applyGravity(100);
+    this.playSound(this.SOUNDS.THROW)
   }
 
     /**
@@ -41,6 +43,14 @@ class ThrownBottle extends MovableObject {
       0.8 * this.width,
       this.changeDirection
     );
+  }
+
+  setSounds(AUDIOS) {
+    this.SOUNDS = AUDIOS;
+    this.sound_throw = new Audio(this.SOUNDS.THROW.AUDIO);
+    this.sound_throw.volume = this.SOUNDS.THROW.VOLUME;
+    this.sound_break = new Audio(this.SOUNDS.BREAK.AUDIO);
+    this.sound_break.volume = this.SOUNDS.BREAK.VOLUME;
   }
 
     /**
@@ -79,6 +89,7 @@ class ThrownBottle extends MovableObject {
     this.height = 0.2 * this.worldCanvas.height;
     this.width = 0.2 * this.worldCanvas.height;
     this.y_landing = this.y;
+    this.playSound(this.SOUNDS.BREAK)
     this.playAnimation(this.IMAGES.SALSA);
     if (this.img.src.includes('12.png')) {
       this.clearBottleIntervals(bottleInterval);

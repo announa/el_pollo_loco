@@ -122,6 +122,9 @@ function gameOver() {
   playing = false;
   pause = true;
   document.getElementById(`${world.gameOver}screen`).classList.remove('d-none');
+  if (world.gameOver == 'lost') {
+    world.character.playSound(world.character.SOUNDS.LOST);
+  }
   resetButtons();
   if (currentLevel == 3) {
     showEndScreen();
@@ -150,6 +153,7 @@ function showEndScreen() {
 }
 
 function nextLevel() {
+  stopRunningSounds();
   currentLevel++;
   restart();
 }
@@ -158,10 +162,20 @@ function nextLevel() {
  * Restarts the game.
  */
 async function restart() {
+  stopRunningSounds();
   playing = false;
   pause = true;
   window.cancelAnimationFrame(world.animationFrame);
   await clearAllIntervals();
   init();
   startGame();
+}
+
+/**
+ * Stops the running lost or win sound.
+ */
+function stopRunningSounds() {
+  let char = world.character;
+  let sounds = world.character.SOUNDS;
+  [sounds.WON, sounds.LOST].forEach((s) => char.stopSound(s));
 }

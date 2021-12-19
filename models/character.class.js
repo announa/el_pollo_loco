@@ -15,7 +15,7 @@ class Character extends MovableObject {
     super(worldCanvas);
     super.setImages(IMAGES.CHARACTER);
     super.loadImage(this.IMAGES.IDLE[0]);
-    this.setSounds(AUDIOS)
+    super.setSounds(AUDIOS.CHARACTER);
     /* this.sound_walking.volume = 0.5; */
     this.setDimensions();
     this.lifeBar = new StatusBar(worldCanvas, IMAGES.STATUSBARS.LIFEBAR, 100, 0.05);
@@ -53,19 +53,22 @@ class Character extends MovableObject {
     );
   }
 
-setSounds(AUDIOS){
-  this.SOUNDS = AUDIOS;
-  this.sound_walking = new Audio(this.SOUNDS.WALKING.AUDIO);
-  this.sound_walking.volume = this.SOUNDS.WALKING.VOLUME;
-  this.sound_jumping = new Audio(this.SOUNDS.JUMPING.AUDIO);
-  this.sound_jumping.volume = this.SOUNDS.JUMPING.VOLUME;
-}
+  setSounds(AUDIOS) {
+    this.SOUNDS = AUDIOS;
+    this.sound_walking = new Audio(this.SOUNDS.WALKING.AUDIO);
+    this.sound_walking.volume = this.SOUNDS.WALKING.VOLUME;
+    this.sound_jumping = new Audio(this.SOUNDS.JUMPING.AUDIO);
+    this.sound_jumping.volume = this.SOUNDS.JUMPING.VOLUME;
+    this.sound_won = new Audio(this.SOUNDS.WON.AUDIO);
+    this.sound_won.volume = this.SOUNDS.WON.VOLUME;
+  }
 
   /**
    * Initiates the character animation when the game is not paused and pushes the animation-interval to the intervals-array.
    */
   animate() {
     let characterInterval = setInterval(() => {
+      this.stopSound(this.SOUNDS.WALKING);
       if (!pause) {
         this.startAnimation();
       }
@@ -77,10 +80,9 @@ setSounds(AUDIOS){
    * checks the different character events and changes the animation depending on them.
    */
   startAnimation() {
-    this.sound_walking.pause();
     if (this.isDead()) {
       this.dyingAnimation();
-    } else if (this.world.gameOver == 'won' && this.x + 0.75 * this.worldCanvas.width < this.world.level.endboss.x) {
+    } else if (this.world.gameOver == 'won') {
       this.won();
     } else {
       this.checkForIdle();
@@ -96,6 +98,9 @@ setSounds(AUDIOS){
    * Checks if the character won the game and shows the winning-animation.
    */
   won() {
+    this.playSound(this.SOUNDS.AYAYAY);
+    this.playSound(this.SOUNDS.WON);
+    if(this.x + 0.75 * this.worldCanvas.width < this.world.level.endboss.x){
     if (!this.isAboveGround(this.y_landing)) {
       this.moveUp(20);
     }
@@ -107,6 +112,7 @@ setSounds(AUDIOS){
       }
     }
     this.jumpingAnimation();
+  }
   }
 
   /**
@@ -141,7 +147,7 @@ setSounds(AUDIOS){
     if (this.world.keyboard.UP && !this.isAboveGround(this.y_landing)) {
       this.moveUp(20);
       this.jumpingAnimation();
-      this.sound_jumping.play();
+      this.playSound(this.SOUNDS.JUMPING);
     }
     if (this.isAboveGround(this.y_landing)) {
       this.jumpingAnimation();
@@ -152,16 +158,16 @@ setSounds(AUDIOS){
     this.moveRight();
     if (!this.isAboveGround(this.y_landing)) {
       this.playAnimation(this.IMAGES.WALKING, 3);
-      this.sound_walking.play();
+      this.playSound(this.SOUNDS.WALKING);
     }
   }
-
+  
   walkLeft() {
     this.changeDirection = true;
     this.moveLeft();
     if (!this.isAboveGround(this.y_landing)) {
       this.playAnimation(this.IMAGES.WALKING, 3);
-      this.sound_walking.play();
+      this.playSound(this.SOUNDS.WALKING);
     }
   }
 
@@ -179,6 +185,7 @@ setSounds(AUDIOS){
 
   dyingAnimation() {
     if (!this.img.src.includes('Muerte')) {
+      this.playSound(this.SOUNDS.DEAD);
       this.gameOverTime = Date.now();
       this.world.gameOver = 'lost';
       this.y_landing = this.worldCanvas.height;
@@ -236,7 +243,8 @@ setSounds(AUDIOS){
       bottle_y,
       bottle_startspeed_x,
       this.changeDirection,
-      IMAGES.BOTTLES.THROWN
+      IMAGES.BOTTLES.THROWN,
+      AUDIOS.BOTTLE.THROWN
     );
     return bottle;
   }

@@ -6,7 +6,7 @@ class BottleOnTheGround extends GameComponents {
     super(worldCanvas);
     this.IMAGES = IMAGES;
     super.loadImage(this.IMAGES[Math.round(Math.random())]);
-    this.setAudios(AUDIOS);
+    super.setSounds(AUDIOS)
     this.setDimensions(worldSize);
   }
 
@@ -54,6 +54,6 @@ class BottleOnTheGround extends GameComponents {
   }
 
   playcollidingSound(){
-    this.plopp_sound.play();
+    this.playSound(this.SOUNDS.PLOPP);
   }
 }

@@ -6,6 +6,7 @@ class GameComponents {
   height;
   img;
   imageCache = {};
+  soundCache = {};
   currentImage = 0;
   resizePosition;
   cc = {
@@ -16,7 +17,7 @@ class GameComponents {
     y_2: 0,
   };
   IMAGES;
-  SOUNDS;
+  SOUNDS = {};
   images;
   hide = false;
 
@@ -44,11 +45,15 @@ class GameComponents {
   }
 
   /**
-   * Sets the GameComponents canvas-variable.
-   * @param {Object} worldCanvas - the canvas
+   * Creates a new Images-instance, sets its path and inserts it to the imageCache-object.
+   * @param {Array} imgArray - The array with the images that shall be loaded.
    */
-  setCanvas(worldCanvas) {
-    this.worldCanvas = worldCanvas;
+  loadAllImages(imgArray) {
+    imgArray.forEach((path) => {
+      let img = new Image();
+      img.src = path;
+      this.imageCache[path] = img;
+    });
   }
 
   /**
@@ -61,15 +66,43 @@ class GameComponents {
   }
 
   /**
-   * Creates a new Images-instances, sets its path and inserts it to the imageCache-object.
-   * @param {Array} imgArray - The array with the images that shall be loaded.
+   * Sets the GameComponents-instances SOUNDS-object and initiates the loading of the sound-cache.
+   * @param {Object} AUDIOS - The Object containing the audio paths and volume information
    */
-  loadAllImages(imgArray) {
-    imgArray.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
+  setSounds(AUDIOS) {
+    for (let key in AUDIOS) {
+      Object.defineProperty(this.SOUNDS, key, { value: AUDIOS[key].AUDIO });
+      this.loadSound(AUDIOS[key]);
+    }
+  }
+
+  /**
+   * Creates a new Audio-instance, sets its path and volume and inserts it to the soundCache-object.
+   * @param {Object} audio - The current audio-object containing the audios path and volume.
+   */
+  loadSound(audio) {
+    let sound = new Audio();
+    sound.src = audio.AUDIO;
+    sound.volume = audio.VOLUME;
+    this.soundCache[audio.AUDIO] = sound;
+  }
+
+  playSound(path){
+    let sound = this.soundCache[path];
+    sound.play();
+  }
+  
+  stopSound(path){
+    let sound = this.soundCache[path];
+    sound.pause();
+  }
+
+  /**
+   * Sets the GameComponents canvas-variable.
+   * @param {Object} worldCanvas - the canvas
+   */
+  setCanvas(worldCanvas) {
+    this.worldCanvas = worldCanvas;
   }
 
   /**

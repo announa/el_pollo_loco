@@ -3,22 +3,23 @@ class Chicken extends MovableObject {
   levelNo;
   alive = true;
   turnAroundTimeout;
+  soundTimeout;
   chickenInterval;
-  sound_talking;
-  sound_talking_short;
-  sound_cry;
+  world;
 
   constructor(worldCanvas, worldSize, currentLevel, IMAGES, AUDIOS) {
     super(worldCanvas);
     super.setImages(IMAGES);
     super.loadImage(this.IMAGES.WALKING[0]);
-    this.setSounds(AUDIOS);
+    super.setSounds(AUDIOS);
     this.levelNo = currentLevel;
     this.setDimensions(worldSize);
     this.setDirection();
     this.turnedAround = Date.now();
     this.setTurnArounTimer();
+    this.setSoundTimer();
     this.animate();
+    /* this.playChickenSounds(); */
   }
 
   /**
@@ -53,20 +54,17 @@ class Chicken extends MovableObject {
   }
 
   /**
+   * Sets a random timeout for the Chicken-sounds.
+   */
+  setSoundTimer() {
+    this.soundTimeout = Math.floor(3000 + Math.random() * 10000 + Date.now());
+  }
+
+  /**
    * Hands the parameters for calculating the chickens collision coordinates to setCollisionCoordinates().
    */
   getCollisionCoordinates() {
     this.setCollisionCoordinates(0, this.width, 0, this.width, 0, this.height, this.changeDirection);
-  }
-
-  setSounds(AUDIOS){
-    this.SOUNDS = AUDIOS;
-    this.sound_talking = new Audio(this.SOUNDS.TALKING.AUDIO);
-    this.sound_talking.volume = this.SOUNDS.TALKING.VOLUME;
-    this.sound_talking_short = new Audio(this.SOUNDS.TALKING_SHORT.AUDIO);
-    this.sound_talking_short.volume = this.SOUNDS.TALKING_SHORT.VOLUME;
-    this.sound_cry = new Audio(this.SOUNDS.CRY.AUDIO);
-    this.sound_cry.volume = this.SOUNDS.CRY.VOLUME;
   }
 
   /**
@@ -82,6 +80,7 @@ class Chicken extends MovableObject {
         } else {
           this.img = this.imageCache[this.IMAGES.DEAD[0]];
         }
+        /* this.playChickenSounds(); */
       }
     }, 100);
     intervals.push(this.chickenInterval);
@@ -109,14 +108,16 @@ class Chicken extends MovableObject {
     }
   }
 
-  playTalkingSound(){
-    this.sound_talking.play();
-  }
-
-  playTalkingShortSound(){
-    this.sound_talking.play();
-  }
-  playCryingShortSound(){
-    this.sound_cry.play();
+  playChickenSounds(){
+    if(this.soundTimeout < Date.now() && !this.world.isVisible(this.world.level.endboss)){
+    let soundNumber = Math.floor(Math.random() * 3);
+    if(soundNumber == 0) this.playSound(this.SOUNDS.TALKING);
+    if(soundNumber == 1) this.playSound(this.SOUNDS.TALKING_SHORT)
+    if(soundNumber == 2) this.playSound(this.SOUNDS.TALKING_LOUD)
+    if(this instanceof Chick){
+      this.playSound(this.SOUNDS.TALKING)
+    }
+    this.setSoundTimer();
+    }
   }
 }

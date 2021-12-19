@@ -8,8 +8,8 @@ class Coin extends MovableObject {
     super(worldCanvas);
     super.setImages(IMAGES)
     super.loadImage(this.IMAGES[0]);
+    super.setSounds(AUDIOS);
     this.setDimensions(worldSize, big);
-    this.setSounds(AUDIOS);
     this.animate();
   }
 
@@ -56,9 +56,9 @@ class Coin extends MovableObject {
   }
 
   playcollidingSound(){
-    this.sound_coin.play();
+    this.playSound(this.SOUNDS.COIN)
   }
   play10CoinsSound(){
-    this.sound_bling.play();
+    this.playSound(this.SOUNDS.BLING)
   }
 }

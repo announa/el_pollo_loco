@@ -13,7 +13,7 @@ function setLevel() {
     createCoins(amount[4]),
     createClouds(),
     createBgObjects(),
-    new Endboss(canvas, worldSize, IMAGES)
+    new Endboss(canvas, worldSize, IMAGES, AUDIOS.CHICKEN)
   );
 }
 
@@ -42,7 +42,7 @@ function createEnemies(amount1, amount2) {
     enemies.push(chicken);
   }
   for (let i = 0; i < amount2; i++) {
-    let chick = new Chick(canvas, worldSize, currentLevel, IMAGES.CHICK);
+    let chick = new Chick(canvas, worldSize, currentLevel, IMAGES.CHICK, AUDIOS.CHICK);
     enemies.push(chick);
   }
   return enemies;
@@ -51,7 +51,7 @@ function createEnemies(amount1, amount2) {
 function createBottlesOnTheGround(amount) {
   let bottles = [];
   for (let i = 0; i < amount; i++) {
-    let bottle = new BottleOnTheGround(canvas, worldSize, IMAGES.BOTTLES.GROUND, AUDIOS.BOTTLE.PLOPP);
+    let bottle = new BottleOnTheGround(canvas, worldSize, IMAGES.BOTTLES.GROUND, AUDIOS.BOTTLE.GROUND);
     bottles.push(bottle);
   }
   return bottles;

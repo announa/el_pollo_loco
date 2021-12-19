@@ -1,8 +1,8 @@
 class Chick extends Chicken {
   name = 'Pollito';
 
-  constructor(worldCanvas, worldSize, currentLevel, IMAGES) {
-    super(worldCanvas, worldSize, currentLevel, IMAGES);
+  constructor(worldCanvas, worldSize, currentLevel, IMAGES, AUDIOS) {
+    super(worldCanvas, worldSize, currentLevel, IMAGES, AUDIOS);
     super.loadImage(this.IMAGES.WALKING[0]);
   }
 

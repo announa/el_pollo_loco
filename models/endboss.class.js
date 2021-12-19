@@ -1,20 +1,17 @@
 class Endboss extends MovableObject {
   name = 'Senora Gallina';
-  sound_walking = new Audio('./audio/walking.mp3');
   startedWalking = 0;
   lifeBar;
-  gameCharacter;
+  world;
   animationInterval;
 
-  constructor(worldCanvas, bgImgAmount, IMAGES) {
+  constructor(worldCanvas, bgImgAmount, IMAGES, AUDIOS) {
     super(worldCanvas);
-    super.setImages(IMAGES.ENDBOSS);
+    super.setImages(IMAGES.ENDBOSS, IMAGES.ENDBOSS.WALKING);
     super.loadImage(this.IMAGES.WALKING[0]);
+    super.setSounds(AUDIOS)
     this.setDimensions(bgImgAmount);
     this.lifeBar = new StatusBar(this.worldCanvas, IMAGES.STATUSBARS.LIFEBAR, 100, null, this);
-    this.images = this.IMAGES.WALKING;
-    this.sound_walking.volume = 0.5;
-
     this.applyGravity(200);
     this.animate();
   }
@@ -62,7 +59,7 @@ class Endboss extends MovableObject {
    * checks the different endboss events and changes the animation depending on them.
    */
   startAnimation() {
-    this.sound_walking.pause();
+    this.stopSound(this.SOUNDS.WALKING);
     if (this.isDead()) {
       this.dyingAnimation();
     } else {
@@ -101,12 +98,12 @@ class Endboss extends MovableObject {
 
   walkLeft() {
     this.moveLeft();
-    this.sound_walking.play();
+    this.playSound(this.SOUNDS.WALKING);
   }
 
   walkRight() {
     this.moveRight();
-    this.sound_walking.play();
+    this.playSound(this.SOUNDS.WALKING);
   }
 
   /**
@@ -122,6 +119,9 @@ class Endboss extends MovableObject {
       this.startedWalking = new Date().getTime();
       this.images = this.IMAGES.WALKING;
     }
+/*     if(this.img.src.includes('G11')){
+      this.playSound(this.SOUNDS.TALKING_SHORT);
+    } */
   }
 
   /**
@@ -143,8 +143,8 @@ class Endboss extends MovableObject {
    */
   notWatchingCharacter() {
     return (
-      (this.x + 0.5 * this.width < this.gameCharacter.x && !this.changeDirection) ||
-      (this.x + 0.5 * this.width > this.gameCharacter.x + this.gameCharacter.width && this.changeDirection)
+      (this.x + 0.5 * this.width < this.world.character.x && !this.changeDirection) ||
+      (this.x + 0.5 * this.width > this.world.character.x + this.world.character.width && this.changeDirection)
     );
   }
 
@@ -161,8 +161,8 @@ class Endboss extends MovableObject {
    */
   nearCharacter() {
     return (
-      this.gameCharacter.x + this.gameCharacter.width > this.x - this.worldCanvas.width &&
-      this.gameCharacter.x < this.x + this.width + this.worldCanvas.width
+      this.world.character.x + this.world.character.width > this.x - this.worldCanvas.width &&
+      this.world.character.x < this.x + this.width + this.worldCanvas.width
     );
   }
 
@@ -172,8 +172,8 @@ class Endboss extends MovableObject {
    */
   nextToCharacter() {
     return (
-      this.x - (this.gameCharacter.x + this.gameCharacter.width) < 0.2 * this.worldCanvas.width &&
-      -(this.x + this.width - this.gameCharacter.x) < 0.2 * this.worldCanvas.width
+      this.x - (this.world.character.x + this.world.character.width) < 0.2 * this.worldCanvas.width &&
+      -(this.x + this.width - this.world.character.x) < 0.2 * this.worldCanvas.width
     );
   }
 
@@ -182,6 +182,10 @@ class Endboss extends MovableObject {
       this.currentImage = 0;
     }
     this.images = this.IMAGES.ATTACK;
+    if(this.img.src.includes('G13')){
+      this.playSound(this.SOUNDS.ANGRY)
+      this.playSound(this.SOUNDS.FLY)
+    }
   }
 
   dyingAnimation() {
@@ -190,9 +194,10 @@ class Endboss extends MovableObject {
     }, 80);
     intervals.push(enbossInterval_2);
     if (!this.img.src.includes('Muerte')) {
-      this.gameCharacter.gameOverTime = Date.now();
-      this.gameCharacter.world.gameOver = 'won';
+      this.world.character.gameOverTime = Date.now();
+      this.world.character.world.gameOver = 'won';
       this.currentImage = 0;
+      this.playSound(this.SOUNDS.HURT);
     }
     this.playAnimation(this.IMAGES.DEAD);
     if (this.currentImage > 2) {
