@@ -120,6 +120,9 @@ class MovableObject extends GameComponents {
   getHurt(percentage) {
     this.looseEnergy(percentage);
     this.lifeBar.updateStatusBar(this.energy);
+    if(this instanceof Endboss) {
+    this.stopSound(this.SOUNDS.ANGRY)
+    };
     this.playSound(this.SOUNDS.HURT)
   }
 
