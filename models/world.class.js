@@ -1,5 +1,4 @@
 class World {
-  worldCanvas;
   lastKeyEvent;
   character;
   bottlesAmount;
@@ -9,11 +8,11 @@ class World {
   ctx;
   keyboard;
   camera_X = 0;
-  play = false;
   gameOver = false;
   gameOverTime = 0;
   coin_10;
   animationFrame;
+  sound_theme;
 
   constructor(worldCanvas, keyboard, createdLevel, worldSize, IMAGES, IMAGES2, AUDIOS) {
     this.worldCanvas = worldCanvas;
@@ -29,6 +28,13 @@ class World {
     this.coin_10.hide = true;
     this.ctx = canvas.getContext('2d');
     this.checkEvents();
+    this.setSounds(AUDIOS.BACKGROUND);
+    this.sound_theme.play();
+  }
+
+  setSounds(AUDIO) {
+    this.sound_theme = new Audio(AUDIO.THEME.AUDIO);
+    this.sound_theme.volume = AUDIO.THEME.VOLUME;
   }
 
   /**
@@ -181,7 +187,11 @@ class World {
 
   checkEvents() {
     let worldInterval = setInterval(() => {
+      if (playing && pause) {
+        this.sound_theme.pause();
+      }
       if (!pause) {
+        this.sound_theme.play();
         this.checkForThrownBottle();
         this.checkForCollisions();
         this.checkIf10Coins();
@@ -209,7 +219,15 @@ class World {
   }
 
   checkIfGameOver() {
+    if (this.gameOver) {
+      this.sound_theme.pause();
+    }
     if (this.character.gameOverTime - Date.now() < -1500 && !world.character.isAboveGround(world.character.y_landing)) {
+      if (this.gameOver == 'won') {
+        this.character.playSound(this.character.SOUNDS.WON);
+      } else {
+        this.character.playSound(this.character.SOUNDS.LOST);
+      }
       gameOver();
     }
   }

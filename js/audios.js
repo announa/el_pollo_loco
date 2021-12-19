@@ -1,4 +1,10 @@
 const AUDIOS = {
+  BACKGROUND: {
+    THEME: {
+      AUDIO: './audio/background_theme.mp3',
+      VOLUME: 0.4,
+    },
+  },
   CHARACTER: {
     WALKING: {
       AUDIO: './audio/walking.mp3',
@@ -22,7 +28,7 @@ const AUDIOS = {
     },
     WON: {
       AUDIO: './audio/winning_sound.mp3',
-      VOLUME: 0.5,
+      VOLUME: 0.7,
     },
     LOST: {
       AUDIO: './audio/lost_sound.mp3',
@@ -62,12 +68,12 @@ const AUDIOS = {
   CHICK: {
     TALKING: {
       AUDIO: 'audio/chirck_chirping.mp3',
-      VOLUME: 0.5
+      VOLUME: 0.5,
     },
     HURT: {
       AUDIO: './audio/chick_dead.mp3',
-      VOLUME: 0.5
-    }
+      VOLUME: 0.5,
+    },
   },
   BOTTLE: {
     GROUND: {

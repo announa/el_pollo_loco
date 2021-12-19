@@ -16,12 +16,10 @@ class Character extends MovableObject {
     super.setImages(IMAGES.CHARACTER);
     super.loadImage(this.IMAGES.IDLE[0]);
     super.setSounds(AUDIOS.CHARACTER);
-    /* this.sound_walking.volume = 0.5; */
     this.setDimensions();
     this.lifeBar = new StatusBar(worldCanvas, IMAGES.STATUSBARS.LIFEBAR, 100, 0.05);
     this.bottleBar = new StatusBar(worldCanvas, IMAGES.STATUSBARS.BOTTLEBAR, 0, 0.375);
     this.coinBar = new StatusBar(worldCanvas, IMAGES.STATUSBARS.COINBAR, 0, 0.7);
-
     this.applyGravity(200);
     this.animate();
   }
@@ -99,7 +97,6 @@ class Character extends MovableObject {
    */
   won() {
     this.playSound(this.SOUNDS.AYAYAY);
-    this.playSound(this.SOUNDS.WON);
     if(this.x + 0.75 * this.worldCanvas.width < this.world.level.endboss.x){
     if (!this.isAboveGround(this.y_landing)) {
       this.moveUp(20);

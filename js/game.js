@@ -122,11 +122,8 @@ function gameOver() {
   playing = false;
   pause = true;
   document.getElementById(`${world.gameOver}screen`).classList.remove('d-none');
-  if (world.gameOver == 'lost') {
-    world.character.playSound(world.character.SOUNDS.LOST);
-  }
   resetButtons();
-  if (currentLevel == 3) {
+  if (currentLevel == 3 && world.gameOver == 'won') {
     showEndScreen();
     setRestartBtn('game');
     currentLevel = 1;
@@ -147,8 +144,8 @@ function resetButtons() {
 
 function showEndScreen() {
   setTimeout(() => {
-    document.getElementById('gameover-screen').classList.remove('d-none');
     document.getElementById('wonscreen').classList.add('d-none');
+    document.getElementById('gameover-screen').classList.remove('d-none');
   }, 1500);
 }
 
