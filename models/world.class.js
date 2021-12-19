@@ -28,11 +28,11 @@ class World {
     this.coin_10.hide = true;
     this.ctx = canvas.getContext('2d');
     this.checkEvents();
-    this.setSounds(AUDIOS.BACKGROUND);
+    this.setSound(AUDIOS.BACKGROUND);
     this.sound_theme.play();
   }
 
-  setSounds(AUDIO) {
+  setSound(AUDIO) {
     this.sound_theme = new Audio(AUDIO.THEME.AUDIO);
     this.sound_theme.volume = AUDIO.THEME.VOLUME;
   }
@@ -144,28 +144,6 @@ class World {
       (obj.changeDirection && (this.camera_X < obj.x - obj.width || this.camera_X - this.worldCanvas.width > obj.x))
     );
   }
-
-  /*     drawBorder(obj) {
-    if (obj instanceof MovableObject || obj instanceof BottleOnTheGround || obj instanceof Coin) {
-      this.ctx.beginPath();
-      this.ctx.lineWidth = '2px';
-      this.ctx.strokeStyle = 'blue';
-      if (obj instanceof Chick) {
-        this.ctx.rect(obj.x + 0.1 * obj.width, obj.y + 0.1 * obj.height, 0.8 * obj.width, 0.8 * obj.height);
-      } else if (obj instanceof Endboss) {
-        this.ctx.rect(obj.x + 0.05 * obj.width, obj.y + 0.2 * obj.height, 0.85 * obj.width, 0.7 * obj.height);
-      } else if (obj instanceof Character) {
-        this.ctx.rect(obj.x + 0.18 * obj.width, obj.y + 0.4 * obj.height, 0.55 * obj.width, 0.55 * obj.height);
-      } else if (obj instanceof BottleOnTheGround) {
-        this.ctx.rect(obj.x + 0.35 * obj.width, obj.y + 0.2 * obj.height, 0.4 * obj.width, 0.7 * obj.height);
-      } else if (obj instanceof Coin) {
-        this.ctx.rect(obj.x + 0.35 * obj.width, obj.y + 0.35 * obj.height, 0.3 * obj.width, 0.3 * obj.height);
-      } else if (obj instanceof ThrownBottle) {
-        this.ctx.rect(obj.x + 0.25 * obj.width, obj.y + 0.25 * obj.height, 0.5 * obj.width, 0.5 * obj.height);
-      }
-      this.ctx.stroke();
-    }
-  } */
 
   /**
    * Flips the image --> when objects change their direction.

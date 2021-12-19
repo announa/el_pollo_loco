@@ -44,14 +44,6 @@ const AUDIOS = {
       AUDIO: './audio/Chicken_talk.mp3',
       VOLUME: 0.5,
     },
-    TALKING_SHORT: {
-      AUDIO: 'audio/Chicken_talk_short.mp3',
-      VOLUME: 0.5,
-    },
-    TALKING_LOUD: {
-      AUDIO: 'audio/Chicken_talk_loud.mp3',
-      VOLUME: 0.5,
-    },
     ANGRY: {
       AUDIO: './audio/chicken_angry.mp3',
       VOLUME: 0.5,
@@ -66,10 +58,6 @@ const AUDIOS = {
     },
   },
   CHICK: {
-    TALKING: {
-      AUDIO: 'audio/chirck_chirping.mp3',
-      VOLUME: 0.5,
-    },
     HURT: {
       AUDIO: './audio/chick_dead.mp3',
       VOLUME: 0.5,

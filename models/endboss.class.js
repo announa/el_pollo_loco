@@ -119,9 +119,6 @@ class Endboss extends MovableObject {
       this.startedWalking = new Date().getTime();
       this.images = this.IMAGES.WALKING;
     }
-/*     if(this.img.src.includes('G11')){
-      this.playSound(this.SOUNDS.TALKING_SHORT);
-    } */
   }
 
   /**

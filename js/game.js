@@ -7,15 +7,23 @@ let pause = true;
 let intervals = [];
 let currentLevel = 1;
 let level;
+let loading;
 
 /**
  * Loads the world objects.
  */
-function init() {
+async function init() {
+  loading = Date.now();
   setCanvasSize();
   setLevel();
   world = new World(canvas, keyboard, level, worldSize, IMAGES, IMAGES.COINS, AUDIOS);
 }
+
+/* function loadWorld() {
+  return new Promise((resolve, reject) => {
+    resolve();
+  });
+} */
 
 /**
  * Sets the canvas pixel size dependint on the canvas-container-size.
@@ -28,10 +36,18 @@ function setCanvasSize() {
 }
 
 function startGame() {
-  prepareCanvas();
-  playing = true;
-  pause = false;
-  world.draw();
+  if(loading - Date.now() > -2700){
+  document.getElementById('loading-screen').classList.remove('d-none');
+  }
+  let loadingInterval = setInterval(() => {
+    if(loading - Date.now() < -3000){
+      prepareCanvas();
+      playing = true;
+      pause = false;
+      world.draw();
+      clearInterval(loadingInterval);
+    }
+  }, 25);
 }
 
 /**
@@ -49,6 +65,7 @@ function prepareCanvas() {
  * Hides the startscreen and the game over-screens.
  */
 function hideScreens() {
+  document.getElementById('loading-screen').classList.add('d-none');
   let screens = Array.from(document.querySelectorAll('.screen'));
   screens.forEach((screen) => {
     screen.classList.add('hide-startscreen');
@@ -63,6 +80,7 @@ function setButtons() {
   Array.from(document.querySelectorAll('button')).forEach((button) => button.classList.remove('button--foreground'));
   document.getElementById('next-btn').classList.add('d-none');
   document.getElementById('pause-btn').classList.remove('d-none');
+  document.getElementById('next-btn').disabled = false;
   document.getElementById('pause-btn').disabled = false;
   setRestartBtn('level');
 }
@@ -104,20 +122,6 @@ function pauseGame() {
   }
 }
 
-/**
- * Clears all the intervals that hav been set in the world objects.
- */
-function clearAllIntervals() {
-  return new Promise((resolve, reject) => {
-    let intervalAmount = intervals.length;
-    for (let i = 0; i < intervalAmount; i++) {
-      clearInterval(intervals[0]);
-      intervals.shift();
-    }
-    resolve();
-  });
-}
-
 function gameOver() {
   playing = false;
   pause = true;
@@ -150,6 +154,7 @@ function showEndScreen() {
 }
 
 function nextLevel() {
+  document.getElementById('next-btn').disabled = true;
   stopRunningSounds();
   currentLevel++;
   restart();
@@ -164,6 +169,7 @@ async function restart() {
   pause = true;
   window.cancelAnimationFrame(world.animationFrame);
   await clearAllIntervals();
+  showStartscreen();
   init();
   startGame();
 }
@@ -175,4 +181,24 @@ function stopRunningSounds() {
   let char = world.character;
   let sounds = world.character.SOUNDS;
   [sounds.WON, sounds.LOST].forEach((s) => char.stopSound(s));
+}
+
+
+/**
+ * Clears all the intervals that hav been set in the world objects.
+ */
+ function clearAllIntervals() {
+  return new Promise((resolve, reject) => {
+    let intervalAmount = intervals.length;
+    for (let i = 0; i < intervalAmount; i++) {
+      clearInterval(intervals[0]);
+      intervals.shift();
+    }
+    resolve();
+  });
+}
+
+function showStartscreen(){
+  document.getElementById(`${world.gameOver}screen`).classList.add('d-none');
+  document.getElementById('startscreen').classList.remove('d-none');
 }

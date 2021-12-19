@@ -107,17 +107,4 @@ class Chicken extends MovableObject {
       this.setTurnArounTimer();
     }
   }
-
-  playChickenSounds(){
-    if(this.soundTimeout < Date.now() && !this.world.isVisible(this.world.level.endboss)){
-    let soundNumber = Math.floor(Math.random() * 3);
-    if(soundNumber == 0) this.playSound(this.SOUNDS.TALKING);
-    if(soundNumber == 1) this.playSound(this.SOUNDS.TALKING_SHORT)
-    if(soundNumber == 2) this.playSound(this.SOUNDS.TALKING_LOUD)
-    if(this instanceof Chick){
-      this.playSound(this.SOUNDS.TALKING)
-    }
-    this.setSoundTimer();
-    }
-  }
 }
