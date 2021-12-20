@@ -14,6 +14,7 @@ let loading;
  */
 async function init() {
   loading = Date.now();
+  addTouchEvents();
   setCanvasSize();
   setLevel();
   world = new World(canvas, keyboard, level, worldSize, IMAGES, IMAGES.COINS, AUDIOS);
