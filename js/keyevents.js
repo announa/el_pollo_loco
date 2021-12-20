@@ -20,7 +20,7 @@ function checkKeyDown(event) {
   if (event.key === 'ArrowDown') {
     keyboard.DOWN = true;
   }
-  if (event.key === 'd') {
+  if (event.key === 'd' || event.key === 'D') {
     keyboard.D = true;
     world.lastKeyEvent = Date.now();
   }
@@ -46,7 +46,7 @@ function checkKeyUp(event) {
     keyboard.DOWN = false;
     /* world.lastKeyEvent = Date.now(); */
   }
-  if (event.key === 'd') {
+  if (event.key === 'd' || event.key === 'D') {
     keyboard.D = false;
     world.lastKeyEvent = Date.now();
   }

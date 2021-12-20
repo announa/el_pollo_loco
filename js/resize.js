@@ -31,6 +31,7 @@ function getCurrentPositions() {
 
 function getNonArrayObjectPositions() {
   world.character.resizePosition = { x: world.character.x, y: world.character.y };
+  world.coin_10.resizePosition = { x: world.coin_10.x, y: world.coin_10.y };
   world.level.endboss.resizePosition = { x: world.level.endboss.x, y: world.level.endboss.y };
   world.level.endboss.lifeBar.resizePosition = { x: world.level.endboss.lifeBar.x, y: world.level.endboss.lifeBar.y };
 }
@@ -77,7 +78,7 @@ function resizeCanvasInObjects() {
 
 function resizeCanvasInNonArrayObjects() {
   let char = world.character;
-  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss, world.level.endboss.lifeBar].forEach(
+  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss, world.level.endboss.lifeBar, world.coin_10].forEach(
     (obj) => {
       obj.setCanvas(canvas);
     }
@@ -94,7 +95,7 @@ function resizeObjects() {
 
 function resizeNonArrayObjects(){
   let char = world.character;
-  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss].forEach(obj => obj.setDimensions());
+  [char, char.lifeBar, char.bottleBar, char.coinBar, world.level.endboss, world.coin_10].forEach(obj => obj.setDimensions());
   world.level.endboss.lifeBar.setDimensions(world.level.endboss);
 }
 
@@ -115,7 +116,7 @@ function restoreObjectPositions() {
 }
 
 function restoreNonArrayObjects() {
-  [world.character, world.level.endboss, world.level.endboss.lifeBar].forEach((object) => {
+  [world.character, world.level.endboss, world.level.endboss.lifeBar, world.coin_10].forEach((object) => {
     object.y = (object.resizePosition.y / canvasSize.y) * canvas.height;
     object.x = (object.resizePosition.x / canvasSize.x) * canvas.width;
   });

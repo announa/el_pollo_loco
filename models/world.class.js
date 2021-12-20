@@ -29,7 +29,6 @@ class World {
     this.ctx = canvas.getContext('2d');
     this.checkEvents();
     this.setSound(AUDIOS.BACKGROUND);
-    this.sound_theme.play();
   }
 
   setSound(AUDIO) {
@@ -165,9 +164,7 @@ class World {
 
   checkEvents() {
     let worldInterval = setInterval(() => {
-      if (playing && pause) {
         this.sound_theme.pause();
-      }
       if (!pause) {
         this.sound_theme.play();
         this.checkForThrownBottle();
