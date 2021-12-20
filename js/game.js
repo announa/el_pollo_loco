@@ -13,6 +13,7 @@ let loading;
  * Loads the world objects.
  */
 async function init() {
+  canvas = document.getElementById('canvas');
   loading = Date.now();
   addTouchEvents();
   setCanvasSize();
@@ -28,6 +29,10 @@ function setCanvasSize() {
   canvasContainer = document.getElementById('canvas-container');
   canvas.height = canvasContainer.clientHeight;
   canvas.width = canvasContainer.clientWidth;
+  if(canvasContainer.clientWidth < 850){
+    canvas.width = 1200;
+    canvas.height = 674;
+  }
 }
 
 function startGame() {
