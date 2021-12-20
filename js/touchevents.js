@@ -1,40 +1,47 @@
-let lastTouchY
+let lastTouchY;
+let lastTouchX;
 
-function addTouchEvents(){
- let body = document.body;
- body.addEventListener('touchstart', walkCharacter)
- body.addEventListener('touchend', stopCharacter)
- body.addEventListener('touchmove', moveCharacter)
+function addTouchEvents() {
+  let body = document.body;
+  body.addEventListener('touchstart', walkCharacter);
+  body.addEventListener('touchend', stopCharacter);
+  body.addEventListener('touchmove', moveCharacter, { passive: false });
 }
 
-function walkCharacter(event){
- if(event.touches[0].clientX < window.innerWidth / 2){
-  keyboard.LEFT = true;
- } else{
-  keyboard.RIGHT = true;
- }
- console.log(event.touches[0].clientX)
-}
-
-function stopCharacter(){
- keyboard.LEFT = false;
- keyboard.RIGHT = false;
- keyboard.UP = false;
-}
-
-function moveCharacter(event){
- if(event.touches[0].clientX < window.innerWidth / 2){
-  keyboard.LEFT = true;
-  keyboard.RIGHT = false;
- } else{
-  keyboard.RIGHT = true;
-  keyboard.LEFT = false;
- }
- if(event.touches[0].clientY - lastTouchY < -20){
-  keyboard.UP = true;
- }
- else{
-  keyboard.UP = false;
- }
+function walkCharacter(event) {
+ lastTouchX = event.touches[0].clientX;
  lastTouchY = event.touches[0].clientY;
+
+  if (event.touches[0].clientX < window.innerWidth / 2) {
+    keyboard.LEFT = true;
+  } else {
+    keyboard.RIGHT = true;
+  }
+  event.preventDefault();
+}
+
+function stopCharacter() {
+  keyboard.LEFT = false;
+  keyboard.RIGHT = false;
+  keyboard.UP = false;
+}
+
+function moveCharacter(event) {
+  if (Math.abs(event.touches[0].clientY - lastTouchY) < 20) {
+    event.preventDefault();
+  }
+  if (event.touches[0].clientX - lastTouchX < -5) {
+    keyboard.LEFT = true;
+    keyboard.RIGHT = false;
+  } else if (event.touches[0].clientX - lastTouchX > 5) {
+    keyboard.RIGHT = true;
+    keyboard.LEFT = false;
+  }
+  if (event.touches[0].clientY - lastTouchY < -5) {
+    keyboard.UP = true;
+  } else {
+    keyboard.UP = false;
+  }
+  lastTouchX = event.touches[0].clientX;
+  lastTouchY = event.touches[0].clientY;
 }

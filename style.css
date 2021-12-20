@@ -9,8 +9,13 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  /* background-color: #000; */
-  background: rgba(0, 0, 0, 0.1);
+  background-color: #000;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .d-none {
@@ -34,7 +39,7 @@ h2 {
 }
 
 p {
-    font-size: 1.3rem;
+  font-size: 1.3rem;
   margin: 0.6rem 0;
 }
 
@@ -65,16 +70,16 @@ canvas {
   transition: all 500ms ease-in-out;
 }
 
-#startscreen{
+#startscreen {
   background-image: url('./img/9.Intro _ Outro Image/Start Screen/Opcion 1.png');
 }
-#lostscreen{
+#lostscreen {
   background-image: url('./img/9.Intro _ Outro Image/_Game over_ screen/2.oh no you lost!.png');
 }
-#wonscreen{
+#wonscreen {
   background-image: url('./img/9.Intro _ Outro Image/_Game over_ screen/you won.png');
 }
-#gameover-screen{
+#gameover-screen {
   background-image: url('./img/9.Intro _ Outro Image/_Game over_ screen/3.Game over.png');
 }
 
@@ -85,10 +90,7 @@ canvas {
 
 /* ----------  LOADING  ----------- */
 
-#loading-screen{
-}
-
-#loading-bar{
+#loading-bar {
   position: absolute;
   top: 15%;
   left: 50%;
@@ -101,17 +103,17 @@ canvas {
   overflow: hidden;
 }
 
-#status{
+#status {
   height: 100%;
-  background: radial-gradient(circle at 50% 50%,rgba(255, 255, 255, 0.5) 10%, transparent 40%);
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5) 10%, transparent 40%);
   animation: loading-animation 1s linear infinite;
 }
 
 @keyframes loading-animation {
-  0%{
+  0% {
     transform: translateX(-70%);
   }
-  100%{
+  100% {
     transform: translateX(70%);
   }
 }
@@ -142,14 +144,14 @@ button {
   box-shadow: 1px 1px 2px 2px #a0220a;
 }
 
-.button--foreground{
+.button--foreground {
   background: linear-gradient(#ffc322 10%, #ffd900 30%, #ffd900 70%, #ffc322 90%);
   color: #a0220a;
 }
 
-.button--foreground:hover{
+.button--foreground:hover {
   background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
-  linear-gradient(#ffc322 10%, #ffd900 30%, #ffd900 70%, #ffc322 90%);
+    linear-gradient(#ffc322 10%, #ffd900 30%, #ffd900 70%, #ffc322 90%);
 }
 
 button:hover {
@@ -169,17 +171,16 @@ button:disabled:hover {
   color: #b86352;
 }
 
-.animated-btn{
+.animated-btn {
   animation: btn-animation 650ms ease-in-out infinite alternate;
 }
 
-@keyframes btn-animation{
-  0%{
+@keyframes btn-animation {
+  0% {
     box-shadow: 1px 1px 2px 2px rgba(255, 195, 34, 0.8);
   }
-  100%{
+  100% {
     box-shadow: 0px 0px 40px 20px rgba(255, 195, 34, 0.8);
-
   }
 }
 
@@ -224,53 +225,50 @@ button:disabled:hover {
 
 /* -------------  MEDIA QUERIES  --------------- */
 
-
-@media (max-width: 700px), (max-height: 450px)  {
-  button{
+@media (max-width: 700px), (max-height: 450px) {
+  button {
     padding: 0.3rem 0.5rem;
   }
 
-  .animated-btn{
+  .animated-btn {
     animation: btn-animation700 650ms ease-in-out infinite alternate;
   }
 
-  @keyframes btn-animation700{
-    0%{
+  @keyframes btn-animation700 {
+    0% {
       box-shadow: 1px 1px 2px 2px rgba(255, 195, 34, 0.8);
     }
-    100%{
+    100% {
       box-shadow: 0px 0px 20px 10px rgba(255, 195, 34, 0.8);
-  
     }
   }
 }
 
 @media (max-width: 500px), (max-height: 350px) {
-  #button-container{
+  #button-container {
     padding: 0 5px;
     bottom: 5px;
   }
-  button{
+  button {
     padding: 0.15rem 0.25rem;
   }
-  .animated-btn{
+  .animated-btn {
     animation: btn-animation500 650ms ease-in-out infinite alternate;
   }
 
-  @keyframes btn-animation500{
-    0%{
+  @keyframes btn-animation500 {
+    0% {
       box-shadow: 1px 1px 2px 2px rgba(255, 195, 34, 0.8);
     }
-    100%{
+    100% {
       box-shadow: 0px 0px 15px 7px rgba(255, 195, 34, 0.8);
-  
     }
   }
 }
 
 @media (min-aspect-ratio: 16/9) {
-  #canvas-container{
-  height: 100vh;
-  width: unset;
+  #canvas-container {
+    height: 100vh;
+    width: unset;
   }
 }

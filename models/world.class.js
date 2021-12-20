@@ -199,6 +199,9 @@ class World {
   checkIfGameOver() {
     if (this.gameOver) {
       this.sound_theme.pause();
+      this.character.stopSound(this.character.SOUNDS.WALKING);
+      this.level.endboss.stopSound(this.level.endboss.SOUNDS.WALKING);
+      this.level.endboss.stopSound(this.level.endboss.SOUNDS.ANGRY);
     }
     if (this.character.gameOverTime - Date.now() < -1500 && !world.character.isAboveGround(world.character.y_landing)) {
       if (this.gameOver == 'won') {
