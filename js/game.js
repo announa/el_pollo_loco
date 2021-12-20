@@ -20,12 +20,6 @@ async function init() {
   world = new World(canvas, keyboard, level, worldSize, IMAGES, IMAGES.COINS, AUDIOS);
 }
 
-/* function loadWorld() {
-  return new Promise((resolve, reject) => {
-    resolve();
-  });
-} */
-
 /**
  * Sets the canvas pixel size dependint on the canvas-container-size.
  */
@@ -39,16 +33,7 @@ function setCanvasSize() {
 function startGame() {
   showLoadingScreen();
   disableButtons();
-  let loadingInterval = setInterval(() => {
-    if (loading - Date.now() < -3000) {
-      hideStartscreen();
-      setButtons();
-      playing = true;
-      pause = false;
-      world.draw();
-      clearInterval(loadingInterval);
-    }
-  }, 25);
+  showCanvas();
 }
 
 function showLoadingScreen() {
@@ -57,20 +42,30 @@ function showLoadingScreen() {
   }
 }
 
-function disableButtons() {
-  Array.from(document.querySelectorAll('button')).forEach((button) => (button.disabled = true));
-}
-
 /**
- * Hides the startscreen or endscreen and changes the appearence of the buttons. If help is open, it will be closed.
+ * Disables all the buttons while loading the game.
  */
-function prepareCanvas() {
-  hideScreens();
+function disableButtons() {
+  Array.from(document.querySelectorAll('.control-btn')).forEach((button) => (button.disabled = true));
+  document.getElementById('bottle-btn').style = '';
+}
 
+function showCanvas() {
+  let loadingInterval = setInterval(() => {
+    if (loading - Date.now() < -3000) {
+      hideStartscreen();
+      enableButtons();
+      setGameButtons();
+      playing = true;
+      pause = false;
+      world.draw();
+      clearInterval(loadingInterval);
+    }
+  }, 25);
 }
 
 /**
- * Hides the startscreen and the game over-screens.
+ * Hides the startscreen with an animation and the help-modal if it's open.
  */
 function hideStartscreen() {
   let startscreen = document.getElementById('startscreen');
@@ -85,12 +80,16 @@ function hideStartscreen() {
   }
 }
 
-function setButtons() {
-  Array.from(document.querySelectorAll('button')).forEach((button) => {
+function enableButtons() {
+  Array.from(document.querySelectorAll('.control-btn')).forEach((button) => {
     button.classList.remove('button--foreground');
     button.disabled = false;
   });
+}
+
+function setGameButtons() {
   document.getElementById('next-btn').classList.add('d-none');
+  document.getElementById('bottle-btn').style.visibility = 'visible';
   document.getElementById('pause-btn').classList.remove('d-none');
   document.getElementById('pause-btn').innerHTML = 'Pause';
   setRestartBtn('level');
@@ -136,12 +135,18 @@ function pauseGame() {
 function gameOver() {
   playing = false;
   pause = true;
-  document.getElementById(`${world.gameOver}screen`).classList.remove('d-none');
+  showGameOverScreen();
   resetButtons();
   if (currentLevel == 3 && world.gameOver == 'won') {
     showEndScreen();
-    setRestartBtn('game');
     currentLevel = 1;
+  }
+}
+
+function showGameOverScreen() {
+  document.getElementById(`${world.gameOver}screen`).classList.remove('d-none');
+  if (currentLevel == 3 && world.gameOver == 'won') {
+    showEndScreen();
   }
 }
 
@@ -151,9 +156,14 @@ function gameOver() {
 function resetButtons() {
   Array.from(document.querySelectorAll('button')).forEach((button) => button.classList.add('button--foreground'));
   document.getElementById('pause-btn').disabled = true;
-  if (world.gameOver == 'won' && currentLevel < 3) {
-    document.getElementById('next-btn').classList.remove('d-none');
-    document.getElementById('pause-btn').classList.add('d-none');
+  document.getElementById('bottle-btn').style = '';
+  if (world.gameOver == 'won') {
+    if (currentLevel < 3) {
+      document.getElementById('next-btn').classList.remove('d-none');
+      document.getElementById('pause-btn').classList.add('d-none');
+    } else {
+      setRestartBtn('game');
+    }
   }
 }
 
@@ -210,8 +220,10 @@ function clearAllIntervals() {
 }
 
 function showStartscreen() {
-  if (world.gameOver) {
+  Array.from(document.querySelectorAll('.screen')).forEach(s => s.classList.add('d-none'));
+/*   if (world.gameOver) {
     document.getElementById(`${world.gameOver}screen`).classList.add('d-none');
-  }
+    if
+  } */
   document.getElementById('startscreen').classList.remove('d-none');
 }

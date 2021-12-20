@@ -47,11 +47,13 @@
           <div id="status"></div>
         </div>
       </div>
+      <button type="button" id="bottle-btn" class="button--foreground" onclick="world.character.throwBottle()"><img id="bottle-btn__img"
+        src="./img/6.botella/Rotacion/Mesa de trabajo 1 copia 3.png" alt=""></button>
       <div id="button-container">
-        <button type="button" id="start-btn" class="button--foreground" onclick="startGame()">Start Game</button>
-        <button type="button" id="help-btn" class="button--foreground" onclick="openHelp()">Help</button>
-        <button type="button" id="pause-btn" class="button--foreground" onclick="pauseGame()" disabled>Pause</button>
-        <button type="button" id="next-btn" class="button--foreground animated-btn d-none" onclick="nextLevel()">Next Level</button>
+        <button type="button" id="start-btn" class="control-btn button--foreground" onclick="startGame()">Start Game</button>
+        <button type="button" id="help-btn" class="control-btn button--foreground" onclick="openHelp()">Help</button>
+        <button type="button" id="pause-btn" class="control-btn button--foreground" onclick="pauseGame()" disabled>Pause</button>
+        <button type="button" id="next-btn" class="control-btn button--foreground animated-btn d-none" onclick="nextLevel()">Next Level</button>
       </div>
       <div id="help-modal" class="container-size d-none">
         <div id="close-help" onclick="closeHelp()">

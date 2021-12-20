@@ -9,6 +9,8 @@ function addTouchEvents() {
 }
 
 function walkCharacter(event) {
+ world.lastKeyEvent = Date.now();
+ if(!event.target.id.includes('btn')){
  lastTouchX = event.touches[0].clientX;
  lastTouchY = event.touches[0].clientY;
 
@@ -18,6 +20,7 @@ function walkCharacter(event) {
     keyboard.RIGHT = true;
   }
   event.preventDefault();
+ }
 }
 
 function stopCharacter() {
@@ -44,4 +47,5 @@ function moveCharacter(event) {
   }
   lastTouchX = event.touches[0].clientX;
   lastTouchY = event.touches[0].clientY;
+  world.lastKeyEvent = Date.now();
 }
