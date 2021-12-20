@@ -243,7 +243,7 @@ button:disabled:hover {
 
 /* -------------  MEDIA QUERIES  --------------- */
 
-@media (max-width: 700px), (max-height: 450px) {
+@media (max-width: 600px), (max-height: 450px) {
   button {
     padding: 0.3rem 0.5rem;
   }
@@ -266,7 +266,7 @@ button:disabled:hover {
   }
 }
 
-@media (max-width: 500px), (max-height: 350px) {
+@media (max-width: 450px), (max-height: 350px) {
   #button-container {
     padding: 0 5px;
     bottom: 5px;
