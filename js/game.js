@@ -125,6 +125,7 @@ function pauseGame() {
     if (!pause) {
       pause = true;
       pauseBtn.innerHTML = 'Go on!';
+      stopRunningSounds();
     } else {
       pause = false;
       pauseBtn.innerHTML = 'Pause';
@@ -203,6 +204,10 @@ function stopRunningSounds() {
   let sounds = world.character.SOUNDS;
   [sounds.WON, sounds.LOST].forEach((s) => char.stopSound(s));
   world.sound_theme.pause();
+  let endboss = world.level.endboss;
+  endboss.stopSound(endboss.SOUNDS.WALKING);
+  endboss.stopSound(endboss.SOUNDS.FLY);
+  endboss.stopSound(endboss.SOUNDS.ANGRY);
 }
 
 /**

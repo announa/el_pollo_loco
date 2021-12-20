@@ -184,7 +184,7 @@ button:disabled:hover {
   }
 }
 
-#bottle-btn{
+#bottle-btn {
   display: none;
   position: absolute;
   top: 50%;
@@ -196,7 +196,7 @@ button:disabled:hover {
   visibility: hidden;
 }
 
-#bottle-btn__img{
+#bottle-btn__img {
   height: 100%;
   width: auto;
   transform: rotateZ(15deg);
@@ -243,6 +243,12 @@ button:disabled:hover {
 
 /* -------------  MEDIA QUERIES  --------------- */
 
+@media (max-width: 700px) {
+  #bottle-btn {
+    display: unset;
+  }
+}
+
 @media (max-width: 600px), (max-height: 450px) {
   button {
     padding: 0.3rem 0.5rem;
@@ -260,9 +266,12 @@ button:disabled:hover {
       box-shadow: 0px 0px 20px 10px rgba(255, 195, 34, 0.8);
     }
   }
+}
 
-  #bottle-btn{
-    display: unset;
+@media (max-width: 550px) {
+  #bottle-btn {
+    width: 30px;
+    height: 30px;
   }
 }
 
@@ -286,10 +295,13 @@ button:disabled:hover {
       box-shadow: 0px 0px 15px 7px rgba(255, 195, 34, 0.8);
     }
   }
+}
 
-  #bottle-btn{
-    width: 30px;
-    height: 30px;
+@media (max-width: 400px) {
+  #bottle-btn {
+    border-radius: 5px;
+    width: 20px;
+    height: 20px;
   }
 }
 

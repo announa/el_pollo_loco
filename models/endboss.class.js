@@ -49,6 +49,7 @@ class Endboss extends MovableObject {
   animate() {
     let endbossInterval = setInterval(() => {
       if (this.nearCharacter() && !pause) {
+        this.stopSound(this.SOUNDS.WALKING);
         this.startAnimation();
       }
     }, 100);
@@ -59,7 +60,7 @@ class Endboss extends MovableObject {
    * checks the different endboss events and changes the animation depending on them.
    */
   startAnimation() {
-    this.stopSound(this.SOUNDS.WALKING);
+
     if (this.isDead()) {
       this.dyingAnimation();
     } else {
